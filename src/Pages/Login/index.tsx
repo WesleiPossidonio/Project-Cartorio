@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
-import { ReactComponent as ImageLogin } from '../../assets/image-login2.svg'
+import ImageLogin from '../../assets/Image-Logint.svg'
 import { useUser } from '../../hooks/useUser'
 import { FormLogin } from './components/FormLogin'
 import { ContainerInput, ImageMainLogin } from './style'
