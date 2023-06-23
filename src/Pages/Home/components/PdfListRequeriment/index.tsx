@@ -20,16 +20,6 @@ export const PdfGenerator = (data: ListRequerimentProps) => {
 
   const listCompletedFiltered = Object.fromEntries(completedApplicationList)
 
-  const notCompletedApplicationList = Object.entries(data).filter(
-    ([key, value]) => {
-      return value === 'Não'
-    }
-  )
-
-  const listNotCompletedFiltered = Object.fromEntries(
-    notCompletedApplicationList
-  )
-
   const documentDefinition = {
     pageSize: { width: 595.28, height: 841.89 },
     pageMargins: [15, 50, 15, 40] as [number, number, number, number],
@@ -108,46 +98,6 @@ export const PdfGenerator = (data: ListRequerimentProps) => {
 
       { text: 'Lista de exigencias Pendentes', style: 'subTitle' },
 
-      {
-        ul: [
-          listNotCompletedFiltered.lista_e_edital &&
-            'Apresentar lista de presença e edital; (CNCGJ Art. 951)',
-
-          listNotCompletedFiltered.listCompletedFiltered &&
-            'Apresentar declaração emitida pelo Ministério do Trabalho \n referente a unicidade sindical e da base territorial; (CNCGJ Art. 935 § 4º)',
-
-          listNotCompletedFiltered.assinatura_do_advogado &&
-            'Colher assinatura do advogado no ato apresentado para registro; (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)',
-
-          listNotCompletedFiltered.declaracao_de_desimpedimento &&
-            'Colher assinatura do advogado no ato apresentado para registro; (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)',
-
-          listNotCompletedFiltered.livro_rasao &&
-            'Apresentar livro razão ou contábil anteriormente registrado; (CNCGJ Art. 960 § 1º)',
-
-          listNotCompletedFiltered.ppe &&
-            'Apresentar declaração de pessoa politicamente exposta (PPE)',
-
-          listNotCompletedFiltered.dissolucao_ou_exticao &&
-            'No caso de dissolução ou extinção deverá conter no documento: (liquidação, divisão de cotas de sócios, inexistência de ativo e passivo, guarda dos livros etc.) (CNCGJ Art. 953)',
-
-          listNotCompletedFiltered.fundacoes &&
-            'Nos atos referentes a fundações, exigir-se-á aprovação prévia do Ministério Público; (CNCGJ Art. 941)',
-
-          listNotCompletedFiltered.reconhecimento_de_firma &&
-            'Apresentar reconhecimento de firme no requerimento do DBE',
-
-          listNotCompletedFiltered.preechimento_completo &&
-            'Preencher todos os campos do formulário/requerimento',
-
-          listNotCompletedFiltered.oab &&
-            'Apresentar cópia da OAB do representante jurídico do ato apresentado',
-
-          listNotCompletedFiltered.documentacao_de_identificacao &&
-            'Apresentar cópia simples do documento de identificação de',
-        ],
-        style: 'list',
-      },
       {
         text: `Funcionário responsável pela análize: ${
           userDataLogin?.name

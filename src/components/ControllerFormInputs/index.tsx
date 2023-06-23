@@ -30,14 +30,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('lista_e_edital')}
             />
             <LabelCheck htmlFor="lista_e_edital_true">Sim</LabelCheck>
-
-            <input
-              id="lista_e_edital_false"
-              type="radio"
-              value="Não"
-              {...register('lista_e_edital')}
-            />
-            <LabelCheck htmlFor="lista_e_edital_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -54,14 +46,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('declaracao_sindical')}
             />
             <LabelCheck htmlFor="declaracao_sindical_true">Sim</LabelCheck>
-
-            <input
-              id="declaracao_sindical_false"
-              type="radio"
-              value="Não"
-              {...register('declaracao_sindical')}
-            />
-            <LabelCheck htmlFor="declaracao_sindical_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -78,14 +62,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('assinatura_do_advogado')}
             />
             <LabelCheck htmlFor="assinatura_do_advogado_true">Sim</LabelCheck>
-
-            <input
-              id="assinatura_do_advogado_false"
-              type="radio"
-              value="Não"
-              {...register('assinatura_do_advogado')}
-            />
-            <LabelCheck htmlFor="assinatura_do_advogado_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -102,14 +78,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('declaracao_criminal')}
             />
             <LabelCheck htmlFor="declaracao_criminal_true">Sim</LabelCheck>
-
-            <input
-              id="declaracao_criminal_false"
-              type="radio"
-              value="Não"
-              {...register('declaracao_criminal')}
-            />
-            <LabelCheck htmlFor="declaracao_criminal_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -126,14 +94,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('requisitos_estatuto')}
             />
             <LabelCheck htmlFor="requisitos_estatuto_true">Sim</LabelCheck>
-
-            <input
-              id="requisitos_estatuto_false"
-              type="radio"
-              value="Não"
-              {...register('requisitos_estatuto')}
-            />
-            <LabelCheck htmlFor="requisitos_estatuto_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -152,16 +112,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
             <LabelCheck htmlFor="declaracao_de_desimpedimento_true">
               Sim
             </LabelCheck>
-
-            <input
-              id="declaracao_de_desimpedimento_false"
-              type="radio"
-              value="Não"
-              {...register('declaracao_de_desimpedimento')}
-            />
-            <LabelCheck htmlFor="declaracao_de_desimpedimento_false">
-              Não
-            </LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -178,14 +128,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('livro_rasao')}
             />
             <LabelCheck htmlFor="livro_rasao_true">Sim</LabelCheck>
-
-            <input
-              id="livro_rasao_false"
-              type="radio"
-              value="Não"
-              {...register('livro_rasao')}
-            />
-            <LabelCheck htmlFor="livro_rasao_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
       </ContentInput>
@@ -203,14 +145,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('ppe')}
             />
             <LabelCheck htmlFor="ppe_true">Sim</LabelCheck>
-
-            <input
-              id="ppe_false"
-              type="radio"
-              value="Não"
-              {...register('ppe')}
-            />
-            <LabelCheck htmlFor="ppe_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -228,14 +162,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('dissolucao_ou_exticao')}
             />
             <LabelCheck htmlFor="dissolucao_ou_exticao_true">Sim</LabelCheck>
-
-            <input
-              id="dissolucao_ou_exticao_false"
-              type="radio"
-              value="Não"
-              {...register('dissolucao_ou_exticao')}
-            />
-            <LabelCheck htmlFor="dissolucao_ou_exticao_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -252,14 +178,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('fundacoes')}
             />
             <LabelCheck htmlFor="fundacoes_true">Sim</LabelCheck>
-
-            <input
-              id="fundacoes_false"
-              type="radio"
-              value="Não"
-              {...register('fundacoes')}
-            />
-            <LabelCheck htmlFor="fundacoes_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -275,14 +193,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('reconhecimento_de_firma')}
             />
             <LabelCheck htmlFor="reconhecimento_de_firma_true">Sim</LabelCheck>
-
-            <input
-              id="reconhecimento_de_firma_false"
-              type="radio"
-              value="Não"
-              {...register('reconhecimento_de_firma')}
-            />
-            <LabelCheck htmlFor="reconhecimento_de_firma_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -298,14 +208,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('preechimento_completo')}
             />
             <LabelCheck htmlFor="preechimento_completo_true">Sim</LabelCheck>
-
-            <input
-              id="preechimento_completo_false"
-              type="radio"
-              value="Não"
-              {...register('preechimento_completo')}
-            />
-            <LabelCheck htmlFor="preechimento_completo_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -322,14 +224,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
               {...register('oab')}
             />
             <LabelCheck htmlFor="oab_true">Sim</LabelCheck>
-
-            <input
-              id="oab_false"
-              type="radio"
-              value="Não"
-              {...register('oab')}
-            />
-            <LabelCheck htmlFor="oab_false">Não</LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>
 
@@ -346,16 +240,6 @@ export const ControllerFormInputs = ({ register }: ControllerProps) => {
             />
             <LabelCheck htmlFor="documentacao_de_identificacao_true">
               Sim
-            </LabelCheck>
-
-            <input
-              id="documentacao_de_identificacao_false"
-              type="radio"
-              value="Não"
-              {...register('documentacao_de_identificacao')}
-            />
-            <LabelCheck htmlFor="documentacao_de_identificacao_false">
-              Não
             </LabelCheck>
           </ContainerInput>
         </ContainerCheckInput>

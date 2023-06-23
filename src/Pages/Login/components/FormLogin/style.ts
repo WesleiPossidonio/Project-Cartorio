@@ -67,7 +67,7 @@ export const Button = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.colors['base-button']};
-    color: ${({ theme }) => theme.colors['base-background-page']};
+    color: #fff;
     transition: 0.5s ease-in-out;
   }
 `

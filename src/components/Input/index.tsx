@@ -8,9 +8,9 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ error, ClassName, ...props }, ref) => {
+  ({ error, ...props }, ref) => {
     return (
-      <InputWrapper className={ClassName}>
+      <InputWrapper>
         <InputContaineStyle hasError={!!error}>
           <InputStyled ref={ref} {...props} />
         </InputContaineStyle>
