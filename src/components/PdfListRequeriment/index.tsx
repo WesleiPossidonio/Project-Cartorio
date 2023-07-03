@@ -6,7 +6,7 @@ import pdfImage from '../../assets/imagePdf.svg'
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
 import { useUser } from '../../hooks/useUser'
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs
+pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfMake.vfs
 
 export const PdfGenerator = (data: ListRequerimentProps) => {
   const { userDataLogin } = useUser()
