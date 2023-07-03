@@ -27,8 +27,8 @@ export const FormLogin = () => {
   return (
     <ContentInputLogin>
       <div>
-        <ImageLogo src={LogoCartorio} alt="" />
-        <ImageMainLogin src={ImageLogin} alt="" />
+        <ImageLogo src={LogoCartorio as unknown as string} alt="" />
+        <ImageMainLogin src={ImageLogin as unknown as string} alt="" />
       </div>
 
       <Label htmlFor="email">
