@@ -14,7 +14,7 @@ export const defaultThemes = {
     'base-title': '#010101',
   },
   fontSizes: {
-    'text-regular-s': '0.8210125rem',
+    'text-regular-s': '0.875rem',
     'text-regular-m': '1.009725rem',
     'text-regular-l': '1.1rem',
 

@@ -1,8 +1,10 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import { Button } from '../../components/Button'
 import { MenuPage } from '../../components/MenuPage'
-import { TitleText } from '../../components/typography'
+import { PdfGenerator } from '../../components/PdfListRequeriment'
+import { TextRegular, TitleText } from '../../components/typography'
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
 import {
   ContainerButton,
@@ -10,6 +12,7 @@ import {
   ContainerList,
   Content,
   ContentDataClient,
+  ContentDataList,
   ContentList,
   ContentRequeriement,
 } from './style'
@@ -27,27 +30,28 @@ export const CuratedList = () => {
     navigate('/')
   }
 
+  const handlePrintDataUser = () => {
+    console.log(state)
+
+    const data = state
+    PdfGenerator(data)
+  }
+
   return (
     <ContainerHome>
       <MenuPage />
       <ContentRequeriement>
         <TitleText size="s">Lista Selecionada</TitleText>
-        <button onClick={handleNavidateToHome}>Voltar ao Inicio</button>
+        <Button onClick={handleNavidateToHome}>Voltar ao Inicio</Button>
         <Content>
           <ContentDataClient>
             <TitleText size="s">Dados do Solicitante</TitleText>
             <div>
               <h4>
-                Nª do Exame:
-                <strong>{state.numero_do_protocolo}</strong>
-              </h4>
-              <h4>
                 Nome da Instituição:{' '}
                 <strong>{state.nome_da_instituicao}</strong>{' '}
               </h4>
-              <h4>
-                Data de Análize: <strong>23/06/2023</strong>{' '}
-              </h4>
+
               <h4>
                 CNPJ: <strong>{state.cnpj}</strong>{' '}
               </h4>
@@ -66,137 +70,150 @@ export const CuratedList = () => {
           </ContentDataClient>
           <TitleText size="s">Lista de Exigência</TitleText>
           <ContainerList>
-            <ContentList>
-              {state.declaracao_sindical === 'Sim' && (
+            <ContentDataList>
+              <div>
                 <h4>
-                  Apresentar declaração emitida pelo Ministério do Trabalho
-                  referente a unicidade sindical e da base territorial; (CNCGJ
-                  Art. 935 § 4º)?
+                  Nª do Exame:
+                  <strong>{state.numero_do_protocolo}</strong>
                 </h4>
-              )}
+                <h4>
+                  Data de Análize: <strong>23/06/2023</strong>{' '}
+                </h4>
+              </div>
 
-              {state.lista_e_edital === 'Sim' && (
-                <h4>
-                  Apresentou lista de presença e edital; (CNCGJ Art. 951)?
-                </h4>
-              )}
+              <ContentList>
+                {state.declaracao_sindical === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar declaração emitida pelo Ministério do Trabalho
+                    referente a unicidade sindical e da base territorial; (CNCGJ
+                    Art. 935 § 4º)
+                  </TextRegular>
+                )}
 
-              {state.assinatura_do_advogado === 'Sim' && (
-                <h4>
-                  Colheu assinatura do advogado no ato apresentado para
-                  registro; (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)?
-                </h4>
-              )}
+                {state.lista_e_edital === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar lista de presença e edital; (CNCGJ Art. 951)
+                  </TextRegular>
+                )}
 
-              {state.declaracao_criminal === 'Sim' && (
-                <h4>
-                  Apresentou declaração de desimpedimento e/ou certidão
-                  criminal; (CNCGJ Art. 932 § 1º)?
-                </h4>
-              )}
+                {state.assinatura_do_advogado === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Colher assinatura do advogado no ato apresentado para
+                    registro; (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)
+                  </TextRegular>
+                )}
 
-              {state.declaracao_de_desimpedimento === 'Sim' && (
-                <h4>
-                  Apresentou declaração de desimpedimento (contratos e
-                  averbações de sociedade simples, ME, EPP); (CNCGJ Art. 938)
-                </h4>
-              )}
+                {state.declaracao_criminal === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar declaração de desimpedimento e/ou certidão
+                    criminal; (CNCGJ Art. 932 § 1º)
+                  </TextRegular>
+                )}
 
-              {state.livro_rasao === 'Sim' && (
-                <h4>
-                  Apresentou livro razão ou contábil anteriormente registrado;
-                  (CNCGJ Art. 960 § 1º)
-                </h4>
-              )}
+                {state.declaracao_de_desimpedimento === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar declaração de desimpedimento (contratos e
+                    averbações de sociedade simples, ME, EPP); (CNCGJ Art. 938)
+                  </TextRegular>
+                )}
 
-              {state.requisitos_estatuto === 'Sim' && (
-                <h4>
-                  Apresentou cópia do estatuto registrado no Distrito Federal
-                  (Obs:para diretórios de partidos políticos); (CNCGJ Art. 945)
-                </h4>
-              )}
+                {state.livro_rasao === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar livro razão ou contábil anteriormente registrado;
+                    (CNCGJ Art. 960 § 1º)
+                  </TextRegular>
+                )}
 
-              {state.ppe === 'Sim' && (
-                <h4>
-                  Apresentou declaração de pessoa politicamente exposta (PPE);
-                  (Provimento CNJ 88/2019)
-                </h4>
-              )}
-            </ContentList>
+                {state.requisitos_estatuto === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar cópia do estatuto registrado no Distrito Federal
+                    (Obs:para diretórios de partidos políticos); (CNCGJ Art.
+                    945)
+                  </TextRegular>
+                )}
+
+                {state.ppe === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar declaração de pessoa politicamente exposta (PPE);
+                    (Provimento CNJ 88/2019)
+                  </TextRegular>
+                )}
+
+                {state.requisitos_estatuto === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar os requisitos obrigatórios para criação do
+                    estatuto; (Lei 10.406/2002 Art. 54)
+                  </TextRegular>
+                )}
+
+                {state.requisitos_estatuto === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar os requisitos obrigatórios para criação do
+                    estatuto; (Lei 10.406/2002 Art. 54)
+                  </TextRegular>
+                )}
+
+                {state.dissolucao_ou_exticao === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    No caso de dissolução ou extinção houve no documento:
+                    (liquidação, divisão de cotas de sócios, inexistência de
+                    ativo e passivo, guarda dos livros etc.) (CNCGJ Art. 953)
+                  </TextRegular>
+                )}
+
+                {state.fundacoes === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Nos atos referentes a fundações, exigir-se-á aprovação
+                    prévia do Ministério Público; (CNCGJ Art. 941)
+                  </TextRegular>
+                )}
+
+                {state.requisitos_estatuto === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar os requisitos obrigatórios no Estatuto: relação
+                    de documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no
+                    Art. 120 / Lei 10.406 Art. 46)
+                  </TextRegular>
+                )}
+
+                {state.reconhecimento_de_firma === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar reconhecimento de firme no requerimento do DBE
+                  </TextRegular>
+                )}
+
+                {state.campo_de_assinatura === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Preencheu todos os campos do formulário/requerimento{' '}
+                  </TextRegular>
+                )}
+
+                {state.oab === 'Sim' && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar cópia da OAB do representante jurídico do ato
+                    apresentado
+                  </TextRegular>
+                )}
+
+                {state.documentacao_de_identificacao && (
+                  <TextRegular size="s" weight={700}>
+                    Apresentar cópia simples do documento de identificação de:
+                  </TextRegular>
+                )}
+
+                {state.informacao_divergente === 'Sim' && (
+                  <TextRegular>Divergência de informação</TextRegular>
+                )}
+              </ContentList>
+            </ContentDataList>
 
             <div></div>
-
-            <ContentList>
-              {state.requisitos_estatuto === 'Sim' && (
-                <h4>
-                  Apresentou os requisitos obrigatórios para criação do
-                  estatuto; (Lei 10.406/2002 Art. 54)
-                </h4>
-              )}
-
-              {state.requisitos_estatuto === 'Sim' && (
-                <h4>
-                  Apresentou os requisitos obrigatórios para criação do
-                  estatuto; (Lei 10.406/2002 Art. 54)
-                </h4>
-              )}
-
-              {state.dissolucao_ou_exticao === 'Sim' && (
-                <h4>
-                  No caso de dissolução ou extinção houve no documento:
-                  (liquidação, divisão de cotas de sócios, inexistência de ativo
-                  e passivo, guarda dos livros etc.) (CNCGJ Art. 953) ?
-                </h4>
-              )}
-
-              {state.fundacoes === 'Sim' && (
-                <h4>
-                  Nos atos referentes a fundações, exigir-se-á aprovação prévia
-                  do Ministério Público; (CNCGJ Art. 941) ?
-                </h4>
-              )}
-
-              {state.requisitos_estatuto === 'Sim' && (
-                <h4>
-                  Apresentou os requisitos obrigatórios no Estatuto: relação de
-                  documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art.
-                  120 / Lei 10.406 Art. 46) ?
-                </h4>
-              )}
-
-              {state.reconhecimento_de_firma === 'Sim' && (
-                <h4>
-                  Apresentar reconhecimento de firme no requerimento do DBE
-                </h4>
-              )}
-
-              {state.campo_de_assinatura === 'Sim' && (
-                <h4>Preencheu todos os campos do formulário/requerimento ?</h4>
-              )}
-
-              {state.oab === 'Sim' && (
-                <h4>
-                  Apresentou cópia da OAB do representante jurídico do ato
-                  apresentado ?
-                </h4>
-              )}
-
-              {state.documentacao_de_identificacao && (
-                <h4>
-                  Apresentou cópia simples do documento de identificação de:
-                </h4>
-              )}
-
-              {state.informacao_divergente === 'Sim' && (
-                <h4>Divergência de informação</h4>
-              )}
-            </ContentList>
           </ContainerList>
 
           <ContainerButton>
-            <button>Atualizar Lista</button>
-            <button>Imprimir</button>
-            <button>Enviar Por E-mail</button>
+            <Button>Atualizar Lista</Button>
+            <Button onClick={handlePrintDataUser}>Imprimir</Button>
+            <Button>Enviar Por E-mail</Button>
           </ContainerButton>
         </Content>
       </ContentRequeriement>

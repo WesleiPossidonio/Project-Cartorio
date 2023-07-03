@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as zod from 'zod'
 
+import { Button } from '../../components/Button'
 import { ControllerFormInputs } from '../../components/ControllerFormInputs'
 import { Input } from '../../components/Input'
 import { MenuPage } from '../../components/MenuPage'
@@ -11,8 +12,8 @@ import { TitleText } from '../../components/typography'
 import { useRequeriment } from '../../hooks/useRequeriment'
 import {
   ButtonCreateRequeriment,
-  ButtonHome,
   ContainerForm,
+  ContentRequeriment,
   SectionCreateRequirement,
 } from './styled'
 
@@ -79,9 +80,9 @@ export const FormCreateRequeriment = () => {
   return (
     <SectionCreateRequirement>
       <MenuPage />
-      <div>
+      <ContentRequeriment>
         <TitleText size="s">Adicionar Exigência</TitleText>
-        <ButtonHome onClick={handleNavigateToHome}>Voltar ao Início</ButtonHome>
+        <Button onClick={handleNavigateToHome}>Voltar ao Início</Button>
 
         <form onSubmit={handleSubmit(handleCreateRequeriment)}>
           <TitleText size="s">Criar Exigência</TitleText>
@@ -129,7 +130,7 @@ export const FormCreateRequeriment = () => {
             Enviar Dados
           </ButtonCreateRequeriment>
         </form>
-      </div>
+      </ContentRequeriment>
     </SectionCreateRequirement>
   )
 }

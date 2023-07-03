@@ -31,45 +31,6 @@ export const SearchInput = styled.input`
     font-size: 1rem;
   }
 `
-
-export const ButtonHeader = styled.button`
-  padding: 1rem;
-  border: none;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-
-  cursor: pointer;
-
-  font-size: 1rem;
-  box-shadow: -5px 0px 31px 0px rgba(0, 0, 0, 0.1);
-
-  background: #2b3d63;
-  color: #fff;
-
-  font-weight: 600;
-  font-size: 1rem;
-`
-
-const BaseButton = styled.button`
-  padding: 1rem;
-  height: 3.5rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-
-  box-shadow: -5px 0px 31px 0px rgba(0, 0, 0, 0.1);
-
-  border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-`
-
 export const ContainerButton = styled.div`
   padding-left: 0.5rem;
   display: flex;
@@ -77,14 +38,4 @@ export const ContainerButton = styled.div`
   justify-content: flex-start;
   gap: 1rem;
   margin-top: 1rem;
-`
-
-export const ButtonUpContent = styled(BaseButton)`
-  background: #265a63;
-  color: #fff;
-`
-
-export const ButtonUpContentCreate = styled(BaseButton)`
-  background: #2b3d63;
-  color: #fff;
 `

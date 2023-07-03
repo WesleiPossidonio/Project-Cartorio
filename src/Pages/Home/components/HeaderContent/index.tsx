@@ -5,17 +5,10 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as zod from 'zod'
 
+import { Button } from '../../../../components/Button'
 import { TitleText } from '../../../../components/typography'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
-import {
-  ButtonHeader,
-  ButtonUpContent,
-  ButtonUpContentCreate,
-  ContainerButton,
-  HeaderHome,
-  SearchForm,
-  SearchInput,
-} from './styled'
+import { ContainerButton, HeaderHome, SearchForm, SearchInput } from './styled'
 
 const searchFormSchema = zod.object({
   query: zod.string(),
@@ -62,20 +55,20 @@ export const HeaderContent = () => {
           placeholder="Pesquise.."
           {...register('query')}
         />
-        <ButtonHeader type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting}>
           <MagnifyingGlass size={20} />
           Buscar
-        </ButtonHeader>
+        </Button>
       </SearchForm>
 
       <ContainerButton>
-        <ButtonUpContentCreate onClick={handleNavigatePage}>
+        <Button onClick={handleNavigatePage}>
           <PlusCircle size={30} /> Criar Exigencia
-        </ButtonUpContentCreate>
-        <ButtonUpContent onClick={handleNavigatePageListConcluted}>
+        </Button>
+        <Button onClick={handleNavigatePageListConcluted}>
           <CheckCircle size={30} />
           Concluídos
-        </ButtonUpContent>
+        </Button>
       </ContainerButton>
     </HeaderHome>
   )

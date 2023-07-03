@@ -7,17 +7,6 @@ export const SectionCreateRequirement = styled.section`
   align-items: flex-start;
   justify-content: center;
 
-  > div {
-    position: fixed;
-    top: 6rem;
-    bottom: 0;
-    right: 0;
-    width: 80%;
-    padding: 3rem;
-    background: #f2f3ee;
-    overflow-y: auto;
-  }
-
   > p {
     align-self: flex-start;
   }
@@ -38,6 +27,21 @@ export const SectionCreateRequirement = styled.section`
   form h1 {
     align-self: flex-start;
     margin: 1.8rem 2.5rem;
+  }
+`
+
+export const ContentRequeriment = styled.div`
+  position: fixed;
+  top: 6rem;
+  bottom: 0;
+  right: 0;
+  width: 80%;
+  padding: 3rem;
+  background: #f2f3ee;
+  overflow-y: auto;
+
+  > h1 {
+    margin-bottom: 1rem;
   }
 `
 
