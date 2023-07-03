@@ -10,7 +10,7 @@ import { toast } from 'react-toastify'
 
 import { PdfList } from '../components/PdfList'
 import { CreateRequerimentFormInputs } from '../Pages/CreateRequeriment'
-import { PdfGenerator } from '../Pages/Home/components/PdfListRequeriment'
+import { PdfGenerator } from '../components/PdfListRequeriment'
 import api from '../services/api'
 
 export interface ListRequerimentProps {

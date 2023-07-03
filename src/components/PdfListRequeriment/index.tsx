@@ -1,17 +1,15 @@
 import pdfMake from 'pdfmake/build/pdfmake'
-// eslint-disable-next-line import-helpers/order-imports
 import pdfFonts from 'pdfMake/build/vfs_fonts'
-
 import { Alignment, Content } from 'pdfmake/interfaces'
 
-import pdfImage from '../../../../assets/imagePdf.svg'
-import { ListRequerimentProps } from '../../../../contexts/RequerimentContext'
-import { useUser } from '../../../../hooks/useUser'
+import pdfImage from '../../assets/imagePdf.svg'
+import { ListRequerimentProps } from '../../contexts/RequerimentContext'
+import { useUser } from '../../hooks/useUser'
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 export const PdfGenerator = (data: ListRequerimentProps) => {
-  pdfMake.vfs = pdfFonts.pdfMake.vfs
   const { userDataLogin } = useUser()
-  // console.log(userDataLogin)
 
   const completedApplicationList = Object.entries(data).filter(
     ([key, value]) => {
