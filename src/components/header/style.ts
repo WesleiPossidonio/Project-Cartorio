@@ -33,3 +33,10 @@ export const DataUserName = styled.div`
   flex-direction: column;
   justify-content: center;
 `
+export const ContentName = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+`

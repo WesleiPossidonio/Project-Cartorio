@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes } from 'react'
+import React, { forwardRef, InputHTMLAttributes } from 'react'
 
 import { TextRegular } from '../typography'
 import { InputContaineStyle, InputStyled, InputWrapper } from './style'

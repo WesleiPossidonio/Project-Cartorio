@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { ClipboardText, PlusCircle } from 'phosphor-react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { CreateUserModal } from '../CreateUserModal'
 import { TextRegular } from '../typography'

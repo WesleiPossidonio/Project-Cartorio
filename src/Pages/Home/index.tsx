@@ -1,4 +1,6 @@
 // import { useRequeriment } from '../../hooks/useRequeriment'
+import React from 'react'
+
 import { TableRequeriment } from '../../components/ListRequeriment'
 import { MenuPage } from '../../components/MenuPage'
 import { HeaderContent } from './components/HeaderContent'
