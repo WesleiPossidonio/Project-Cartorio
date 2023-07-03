@@ -32,7 +32,7 @@ export const Login = () => {
   return (
     <ContainerInput>
       <div>
-        <ImageMainLogin src={ImageLogin} alt="" />
+        <ImageMainLogin src={ImageLogin as unknown as string} alt="" />
       </div>
 
       <form action="#" onSubmit={handleSubmit(handleConfirmOrder)}>

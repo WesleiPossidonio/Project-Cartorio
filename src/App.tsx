@@ -13,10 +13,9 @@ export function App() {
     <BrowserRouter>
       <ThemeProvider theme={defaultThemes}>
         <AppProvider>
-          <ToastContainer style={{ zIndex: '99999' }} />
+          <ToastContainer />
           <Router />
           <GlobalStyle />
-          <ToastContainer />
         </AppProvider>
       </ThemeProvider>
     </BrowserRouter>

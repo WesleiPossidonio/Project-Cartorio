@@ -2,7 +2,7 @@ import pdfMake from 'pdfmake/build/pdfmake'
 // eslint-disable-next-line import-helpers/order-imports
 import pdfFonts from 'pdfMake/build/vfs_fonts'
 
-import { Alignment } from 'pdfmake/interfaces'
+import { Alignment, Content } from 'pdfmake/interfaces'
 
 import pdfImage from '../../../../assets/imagePdf.svg'
 import { ListRequerimentProps } from '../../../../contexts/RequerimentContext'
@@ -116,7 +116,7 @@ export const PdfGenerator = (data: ListRequerimentProps) => {
         ],
         style: 'list',
       },
-    ],
+    ] as Content[],
 
     footer: {
       columns: [

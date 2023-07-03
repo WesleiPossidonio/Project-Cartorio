@@ -15,7 +15,7 @@ import {
 } from './style'
 
 const createUserFormSchema = zod.object({
-  admin: zod.boolean(),
+  admin: zod.string(),
   name: zod.string(),
   email: zod.string().email('Por Favor digite um email válido'),
   password: zod.string(),
@@ -36,12 +36,13 @@ export const CreateUserModal = () => {
   } = useForm<CreateUserFormInputs>({
     resolver: zodResolver(createUserFormSchema),
     defaultValues: {
-      admin: true,
+      admin: 'sim',
     },
   })
 
   const handleCreateNewUser = async (data: CreateUserFormInputs) => {
     const { admin, email, name, password, registration } = data
+
     const isAdmin = Boolean(admin)
 
     await handleCreateUser({
@@ -52,7 +53,7 @@ export const CreateUserModal = () => {
       registration,
     })
 
-    console.log(isAdmin, email, name, password)
+    console.log(isAdmin, admin, email, name, password)
     reset()
   }
 

@@ -7,9 +7,7 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     outline: 0;
     font-family: 'Poppins', sans-serif;
-
-   
- }
+  }
 
  html {
   @media (max-width: 1260px){

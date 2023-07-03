@@ -13,9 +13,10 @@ import {
 
 export const Header = () => {
   const { userDataLogin } = useUser()
+
   return (
     <ContainerHeader>
-      <ImageLogo src={Logo} alt="" />
+      <ImageLogo src={Logo as unknown as string} alt="" />
       <ContainerUser>
         <User fontSize={32} />
         <Line></Line>

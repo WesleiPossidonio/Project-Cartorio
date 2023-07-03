@@ -88,8 +88,6 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     LoadDataUser()
   }, [])
 
-  console.log(userDataLogin)
-
   const handleCreateUser = useCallback(async (data: CreaterUser) => {
     const { password, admin, email, name, registration } = data
 
