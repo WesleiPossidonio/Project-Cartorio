@@ -8,9 +8,8 @@ import {
 } from 'react'
 import { toast } from 'react-toastify'
 
-import { PdfList } from '../components/PdfList'
-import { CreateRequerimentFormInputs } from '../Pages/CreateRequeriment'
 import { PdfGenerator } from '../components/PdfListRequeriment'
+import { CreateRequerimentFormInputs } from '../Pages/CreateRequeriment'
 import api from '../services/api'
 
 export interface ListRequerimentProps {
@@ -261,8 +260,6 @@ export const RequerimentContextProvider = ({
 
         const listPdf = { ...data, numeroDoProtocolo: numberProtocolClient }
         console.log(listPdf)
-
-        PdfList(listPdf)
 
         PdfGenerator(listPdf)
       } catch (error) {
