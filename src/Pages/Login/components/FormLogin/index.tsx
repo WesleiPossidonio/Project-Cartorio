@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 
-import ImageLogin from '../../../../assets/image-login2.svg'
-import LogoCartorio from '../../../../assets/Logo-cartorio.jpg'
+import ImageLogin from '../../../../assets/Image-Logint.svg'
+import LogoCartorio from '../../../../assets/Logo-Cartorio.svg'
 import { Input } from '../../../../components/Input'
 import {
   Button,

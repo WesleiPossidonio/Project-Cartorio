@@ -71,6 +71,7 @@ export const FormCreateRequeriment = () => {
   const handleCreateRequeriment = async (data: CreateRequerimentFormInputs) => {
     console.log(data)
     CreateRequeriment(data)
+
     reset()
   }
 

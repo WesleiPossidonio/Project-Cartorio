@@ -18,6 +18,7 @@ interface UserLoginProps {
 interface ResponseDataUser {
   admin: boolean
   id: string
+  registration: string
   email: string
   name: string
   token: string

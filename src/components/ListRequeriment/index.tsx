@@ -9,8 +9,9 @@ import {
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import { ChangeEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { useRequeriment } from '../../../../hooks/useRequeriment'
+import { useRequeriment } from '../../hooks/useRequeriment'
 import {
   ListRequerimentTable,
   TableHeader2,
@@ -22,18 +23,10 @@ export const TableRequeriment = () => {
   const { dataListRequeriment, dataInpuSearch, filteredDataRequeriment } =
     useRequeriment()
 
+  const navigate = useNavigate()
+
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-
-  const completedApplicationList = dataListRequeriment.filter((data) => {
-    return data.estado_do_requerimento === 'Concluído'
-  })
-
-  const completedFilteredDataRequeriment = filteredDataRequeriment.filter(
-    (data) => {
-      return data.estado_do_requerimento === 'Concluído'
-    }
-  )
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -44,17 +37,21 @@ export const TableRequeriment = () => {
     setPage(0)
   }
 
-  const handleClickRequeriment = (id: number) => {
-    const selecteRequeriment = completedApplicationList.filter(
-      (data) => data.id === id
+  const handleSelectAList = (id: number) => {
+    const curatedList = dataListRequeriment.filter((data) => data.id === id)
+
+    const listSelected = Object.fromEntries(
+      curatedList.map((item, index) => [`objeto${index + 1}`, item])
     )
 
-    console.log(selecteRequeriment)
+    navigate('/lista-selecionada', {
+      state: listSelected.objeto1,
+    })
   }
 
   const emptyRows =
     rowsPerPage -
-    Math.min(rowsPerPage, completedApplicationList.length - page * rowsPerPage)
+    Math.min(rowsPerPage, dataListRequeriment.length - page * rowsPerPage)
 
   return (
     <ListRequerimentTable>
@@ -72,17 +69,17 @@ export const TableRequeriment = () => {
         <TableBody>
           {dataInpuSearch.length > 0
             ? (rowsPerPage > 0
-                ? completedFilteredDataRequeriment.slice(
+                ? filteredDataRequeriment.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : completedFilteredDataRequeriment
+                : filteredDataRequeriment
               ).map((data) => {
                 return (
                   <TableRowContentList
                     key={data.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={() => handleClickRequeriment(data.id)}
+                    onClick={() => data.id && handleSelectAList(data.id)}
                   >
                     <TableContentList>
                       {data.numero_do_protocolo}
@@ -110,17 +107,17 @@ export const TableRequeriment = () => {
                 )
               })
             : (rowsPerPage > 0
-                ? completedApplicationList.slice(
+                ? dataListRequeriment.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : completedApplicationList
+                : dataListRequeriment
               ).map((data) => {
                 return (
                   <TableRowContentList
                     key={data.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={() => handleClickRequeriment(data.id)}
+                    onClick={() => data.id && handleSelectAList(data.id)}
                   >
                     <TableContentList>
                       {data.numero_do_protocolo}
@@ -164,8 +161,8 @@ export const TableRequeriment = () => {
         component="div"
         count={
           dataListRequeriment
-            ? completedApplicationList.length
-            : completedFilteredDataRequeriment.length
+            ? dataListRequeriment.length
+            : filteredDataRequeriment.length
         }
         rowsPerPage={rowsPerPage}
         labelRowsPerPage="Itens por página:"

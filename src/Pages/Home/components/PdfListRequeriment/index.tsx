@@ -4,6 +4,7 @@ import pdfFonts from 'pdfMake/build/vfs_fonts'
 
 import { Alignment } from 'pdfmake/interfaces'
 
+import pdfImage from '../../../../assets/imagePdf.svg'
 import { ListRequerimentProps } from '../../../../contexts/RequerimentContext'
 import { useUser } from '../../../../hooks/useUser'
 
@@ -25,7 +26,7 @@ export const PdfGenerator = (data: ListRequerimentProps) => {
     pageMargins: [15, 50, 15, 40] as [number, number, number, number],
     content: [
       {
-        image: 'https://imgbly.com/ib/tv0jBiLjIs.jpg',
+        image: pdfImage,
         width: 595.28,
         height: 150,
         style: 'imageHeader',

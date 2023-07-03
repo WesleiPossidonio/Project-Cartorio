@@ -1,6 +1,6 @@
 import { User } from 'phosphor-react'
 
-import Logo from '../../assets/Logo-cartorio.jpg'
+import Logo from '../../assets/Logo-Cartorio.svg'
 import { useUser } from '../../hooks/useUser'
 import { TextRegular } from '../typography'
 import {

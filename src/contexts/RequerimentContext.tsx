@@ -8,67 +8,68 @@ import {
 } from 'react'
 import { toast } from 'react-toastify'
 
+import { PdfList } from '../components/PdfList'
 import { CreateRequerimentFormInputs } from '../Pages/CreateRequeriment'
 import { PdfGenerator } from '../Pages/Home/components/PdfListRequeriment'
 import api from '../services/api'
 
 export interface ListRequerimentProps {
-  id: number
-  nome_da_instituicao: string
-  estado_do_requerimento: string
-  numero_do_protocolo: string
-  nome_do_representante: string
-  cnpj: string
-  email_do_representante: string
-  telefone_contato: string
-  declaracao_sindical: string
-  lista_e_edital: string
-  assinatura_do_advogado: string
-  declaracao_criminal: string
-  declaracao_de_desimpedimento: string
-  livro_rasao: string
-  ppe: string
-  requisitos_estatuto: string
-  dissolucao_ou_exticao: string
-  fundacoes: string
-  reconhecimento_de_firma: string
-  preechimento_completo: string
-  oab: string
-  documentacao_de_identificacao: string
-  campo_de_assinatura: string
-  retificacao_de_redacao: string
-  informacao_divergente: string
-  quais_informacoes_divergentes: string | null
-  updatedAt: string
+  id?: number
+  nome_da_instituicao?: string
+  estado_do_requerimento?: string
+  numero_do_protocolo?: string
+  nome_do_representante?: string
+  cnpj?: string
+  email_do_representante?: string
+  telefone_contato?: string
+  declaracao_sindical?: string
+  lista_e_edital?: string
+  assinatura_do_advogado?: string
+  declaracao_criminal?: string
+  declaracao_de_desimpedimento?: string
+  livro_rasao?: string
+  ppe?: string
+  requisitos_estatuto?: string
+  dissolucao_ou_exticao?: string
+  fundacoes?: string
+  reconhecimento_de_firma?: string
+  preechimento_completo?: string
+  oab?: string
+  documentacao_de_identificacao?: string
+  campo_de_assinatura?: string
+  retificacao_de_redacao?: string
+  informacao_divergente?: string
+  quais_informacoes_divergentes?: string | null
+  updatedAt?: string
 }
 
 interface SendMailProps {
-  assinatura_do_advogado: string
-  declaracao_criminal: string
-  estado_do_requerimento: string
-  numero_do_protocolo: string
-  cnpj: string
-  declaracao_de_desimpedimento: string
-  declaracao_sindical: string
-  dissolucao_ou_exticao: string
-  documentacao_de_identificacao: string
-  email_do_representante: string
-  fundacoes: string
-  lista_e_edital: string
-  livro_rasao: string
-  nome_da_instituicao: string
-  nome_do_representante: string
-  oab: string
-  ppe: string
-  preechimento_completo: string
-  reconhecimento_de_firma: string
-  requisitos_estatuto: string
-  telefone_contato: string
+  assinatura_do_advogado?: string
+  declaracao_criminal?: string
+  estado_do_requerimento?: string
+  numero_do_protocolo?: string
+  cnpj?: string
+  declaracao_de_desimpedimento?: string
+  declaracao_sindical?: string
+  dissolucao_ou_exticao?: string
+  documentacao_de_identificacao?: string
+  email_do_representante?: string
+  fundacoes?: string
+  lista_e_edital?: string
+  livro_rasao?: string
+  nome_da_instituicao?: string
+  nome_do_representante?: string
+  oab?: string
+  ppe?: string
+  preechimento_completo?: string
+  reconhecimento_de_firma?: string
+  requisitos_estatuto?: string
+  telefone_contato?: string
 
-  campo_de_assinatura: string
-  retificacao_de_redacao: string
-  informacao_divergente: string
-  quais_informacoes_divergentes: string
+  campo_de_assinatura?: string
+  retificacao_de_redacao?: string
+  informacao_divergente?: string
+  quais_informacoes_divergentes?: string
 }
 
 interface RequerimentContextType {
@@ -127,8 +128,12 @@ export const RequerimentContextProvider = ({
   const filteredRequeriment = (query: string) => {
     const filteredRequeriment = dataListRequeriment.filter((data) => {
       return (
-        data.nome_da_instituicao.toLowerCase().includes(query.toLowerCase()) ||
-        data.numero_do_protocolo.toLowerCase().includes(query.toLowerCase())
+        (data.nome_da_instituicao &&
+          data.nome_da_instituicao
+            .toLowerCase()
+            .includes(query.toLowerCase())) ||
+        (data.numero_do_protocolo &&
+          data.numero_do_protocolo.toLowerCase().includes(query.toLowerCase()))
       )
     })
 
@@ -137,17 +142,9 @@ export const RequerimentContextProvider = ({
   }
 
   const sendMail = useCallback(async (dataSendMail: SendMailProps) => {
-    const completedApplicationList = Object.entries(dataSendMail).filter(
-      ([key, value]) => {
-        return value === 'Sim'
-      }
-    )
-
-    const listCompletedFiltered = Object.fromEntries(completedApplicationList)
-
     const notCompletedApplicationList = Object.entries(dataSendMail).filter(
       ([key, value]) => {
-        return value === 'Não'
+        return value === 'Sim'
       }
     )
 
@@ -170,7 +167,6 @@ export const RequerimentContextProvider = ({
         email_do_representante,
         nome_da_instituicao,
         nome_do_representante,
-        itens_da_lista_concluidos: listCompletedFiltered,
         itens_da_lista_pendetes: listNotCompletedFiltered,
       })
     } catch (error) {
@@ -222,20 +218,12 @@ export const RequerimentContextProvider = ({
       const currentDate = new Date().getFullYear()
       const numberProtocolString = `${numberProtocolClient}/${currentDate}`
 
-      const uncompletedList = Object.entries(data).filter(([key, value]) => {
-        return value === 'não'
-      })
-
-      const uncompletedListFiltered = Object.fromEntries(uncompletedList)
-
       try {
         const createRequermentResponse = await toast.promise(
           api.post('requerimentData', {
             assinatura_do_advogado,
             declaracao_criminal,
-            estado_do_requerimento: uncompletedListFiltered
-              ? 'Pendente'
-              : 'Concluído',
+            estado_do_requerimento: 'Pendente',
             numero_do_protocolo: numberProtocolString,
             cnpj: formattedCnpj,
             declaracao_de_desimpedimento,
@@ -266,12 +254,15 @@ export const RequerimentContextProvider = ({
             error: 'Ops! Verifique so Dados Digitados',
           }
         )
+
         const { data } = createRequermentResponse
 
         setDataListRequeriment([...dataListRequeriment, data])
 
         const listPdf = { ...data, numeroDoProtocolo: numberProtocolClient }
         console.log(listPdf)
+
+        PdfList(listPdf)
 
         PdfGenerator(listPdf)
       } catch (error) {
@@ -281,7 +272,7 @@ export const RequerimentContextProvider = ({
       const dataSendMail = {
         assinatura_do_advogado,
         declaracao_criminal,
-        estado_do_requerimento: uncompletedList ? 'Pendente' : 'Concluído',
+        estado_do_requerimento: 'Pendente',
         numero_do_protocolo: numberProtocolString,
         cnpj: formattedCnpj,
         declaracao_de_desimpedimento,
