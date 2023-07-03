@@ -1,5 +1,5 @@
 import pdfMake from 'pdfmake/build/pdfmake'
-import pdfFonts from 'pdfMake/build/vfs_fonts'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
 import { Alignment, Content } from 'pdfmake/interfaces'
 
 import pdfImage from '../../assets/imagePdf.svg'
