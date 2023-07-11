@@ -9,6 +9,7 @@ import {
   ContainerHeader,
   ContainerUser,
   ContentName,
+  ContentUser,
   DataUserName,
   ImageLogo,
   Line,
@@ -34,17 +35,19 @@ export const Header = ({ setMenuIsVisible }: HeaderProps) => {
     <ContainerHeader>
       <ImageLogo src={Logo as unknown as string} alt="" />
       <ContainerUser>
-        <User fontSize={32} />
-        <Line></Line>
-        <DataUserName>
-          <ContentName>
-            <TextRegular>Olá,</TextRegular>
-            <TextRegular weight={700} onClick={handleGoOut}>
-              Sair
-            </TextRegular>
-          </ContentName>
-          <TextRegular size="l">Dr. {userDataLogin?.name}</TextRegular>
-        </DataUserName>
+        <ContentUser>
+          <User fontSize={32} />
+          <Line></Line>
+          <DataUserName>
+            <ContentName>
+              <TextRegular>Olá,</TextRegular>
+              <TextRegular weight={700} onClick={handleGoOut}>
+                Sair
+              </TextRegular>
+            </ContentName>
+            <TextRegular size="l">Dr. {userDataLogin?.name}</TextRegular>
+          </DataUserName>
+        </ContentUser>
         <List
           size={32}
           onClick={() => setMenuIsVisible(true)}

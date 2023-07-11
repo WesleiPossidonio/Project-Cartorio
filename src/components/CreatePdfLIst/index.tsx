@@ -84,7 +84,9 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
           <Image src={ImageLogo} style={styles.image} />
         </View>
         <View style={styles.header}>
-          <Text style={styles.textheader2}>Data da Recepção: 27/05/2000</Text>
+          <Text style={styles.textheader2}>
+            Data da Recepção: {data.Data_da_Recepcao}
+          </Text>
           {data.updatedAt && (
             <Text style={styles.textheader2}>
               Data da Exigência: {data.updatedAt}
@@ -236,8 +238,6 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
             E-mail: rtd-pj@macae1oficio.com.br
           </Text>
         </View>
-
-        {/* Adicione mais campos de acordo com o seu formulário */}
       </Page>
     </Document>
   )

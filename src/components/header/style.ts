@@ -45,11 +45,23 @@ export const Line = styled.div`
   border-left: 1px solid #000;
 `
 
+export const ContentUser = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
+`
+
 export const DataUserName = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
 `
+
 export const ContentName = styled.div`
   display: flex;
   align-items: center;

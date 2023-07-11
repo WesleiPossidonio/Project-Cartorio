@@ -18,12 +18,7 @@ export const Container = styled.section<ContainerProps>`
   align-items: center;
   justify-content: center;
 
-  background: rgba(17, 18, 17, 0.95);
-  background: linear-gradient(
-    34deg,
-    rgba(25, 88, 24, 0.95) 0%,
-    rgba(17, 18, 17, 0.95) 95%
-  );
+  background: ${({ theme }) => theme.colors['base-button']};
 
   opacity: 0;
   pointer-events: none;
@@ -64,4 +59,72 @@ export const Container = styled.section<ContainerProps>`
         transform: scale(1);
       }
     `}
+`
+
+interface ContainerButtonProps {
+  selected: boolean
+}
+
+export const ContainerButton = styled.button<ContainerButtonProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 6px;
+
+  svg {
+    color: #000;
+  }
+`
+export const ButtonMobile = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 6px;
+
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  background: ${({ theme }) => theme.colors['base-bg-image']};
+
+  color: ${({ theme }) => theme.colors['base-text']};
+`
+export const Line = styled.div`
+  height: 1.8rem;
+  border-left: 1px solid #fff;
+`
+
+export const ContentUser = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  margin-bottom: 1rem;
+
+  color: #fff;
+
+  p {
+    color: #fff;
+  }
+`
+
+export const DataUserName = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+
+export const ContentName = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
 `
