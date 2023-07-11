@@ -1,9 +1,9 @@
-import reactRefresh from '@vitejs/plugin-react-refresh'
+import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  plugins: [reactRefresh()],
+  plugins: [react()],
   resolve: {
     alias: {
       '@react-pdf/renderer': resolve(
