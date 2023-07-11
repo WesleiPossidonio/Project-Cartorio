@@ -19,14 +19,21 @@ import {
   TableRowContentList,
 } from './style'
 
-export const TableRequeriment = () => {
-  const { dataListRequeriment, dataInpuSearch, filteredDataRequeriment } =
-    useRequeriment()
+export const TableRequerimentCompleted = () => {
+  const {
+    dataListRequeriment,
+    dataInpuSearch,
+    filteredDataConclutedRequeriment,
+  } = useRequeriment()
 
   const navigate = useNavigate()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+
+  const listCompleted = dataListRequeriment.filter((data) => {
+    return data.estado_do_requerimento === 'Concluido'
+  })
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -38,7 +45,7 @@ export const TableRequeriment = () => {
   }
 
   const handleSelectAList = (id: number) => {
-    const curatedList = dataListRequeriment.filter((data) => data.id === id)
+    const curatedList = listCompleted.filter((data) => data.id === id)
 
     const listSelected = Object.fromEntries(
       curatedList.map((item, index) => [`objeto${index + 1}`, item])
@@ -51,7 +58,7 @@ export const TableRequeriment = () => {
 
   const emptyRows =
     rowsPerPage -
-    Math.min(rowsPerPage, dataListRequeriment.length - page * rowsPerPage)
+    Math.min(rowsPerPage, listCompleted.length - page * rowsPerPage)
 
   return (
     <ListRequerimentTable>
@@ -63,17 +70,17 @@ export const TableRequeriment = () => {
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
             <TableHeader2>Estado do Requerimento</TableHeader2>
-            {/* <TableHeader2>Concluir</TableHeader2> */}
+            {/* <TableCell>Ação</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {dataInpuSearch.length > 0
             ? (rowsPerPage > 0
-                ? filteredDataRequeriment.slice(
+                ? filteredDataConclutedRequeriment.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : filteredDataRequeriment
+                : filteredDataConclutedRequeriment
               ).map((data) => {
                 return (
                   <TableRowContentList
@@ -100,18 +107,18 @@ export const TableRequeriment = () => {
                     <TableContentList>
                       {data.estado_do_requerimento}
                     </TableContentList>
-                    {/* <TableContentList>
-                      <button>Concluir</button>
-                    </TableContentList> */}
+                    {/* <TableCell>
+                  <button>Atualizar</button> <button>Concluir</button>
+                </TableCell> */}
                   </TableRowContentList>
                 )
               })
             : (rowsPerPage > 0
-                ? dataListRequeriment.slice(
+                ? listCompleted.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : dataListRequeriment
+                : listCompleted
               ).map((data) => {
                 return (
                   <TableRowContentList
@@ -160,9 +167,9 @@ export const TableRequeriment = () => {
         rowsPerPageOptions={[5, 10, 15]}
         component="div"
         count={
-          dataListRequeriment
-            ? dataListRequeriment.length
-            : filteredDataRequeriment.length
+          listCompleted
+            ? listCompleted.length
+            : filteredDataConclutedRequeriment.length
         }
         rowsPerPage={rowsPerPage}
         labelRowsPerPage="Itens por página:"

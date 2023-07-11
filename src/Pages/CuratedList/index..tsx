@@ -1,11 +1,17 @@
+import { PDFDownloadLink } from '@react-pdf/renderer'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Button } from '../../components/Button'
-import { MenuPage } from '../../components/MenuPage'
-import { PdfGenerator } from '../../components/PdfListRequeriment'
-import { TextRegular, TitleText } from '../../components/typography'
+import {
+  Button,
+  CreatePdfList,
+  MenuPage,
+  TextRegular,
+  TitleText,
+} from '../../components'
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
+import { useRequeriment } from '../../hooks/useRequeriment'
+import { useUser } from '../../hooks/useUser'
 import {
   ContainerButton,
   ContainerHome,
@@ -23,6 +29,9 @@ interface LocationProps {
 
 export const CuratedList = () => {
   const { state } = useLocation() as unknown as LocationProps
+  const { sendMail } = useRequeriment()
+
+  const { userDataLogin } = useUser()
 
   const navigate = useNavigate()
 
@@ -30,11 +39,15 @@ export const CuratedList = () => {
     navigate('/')
   }
 
-  const handlePrintDataUser = () => {
-    console.log(state)
+  const handleUpdateDataUser = () => {
+    navigate('/atualizar-lista', {
+      state,
+    })
+  }
 
-    const data = state
-    PdfGenerator(data)
+  const handleSendMail = () => {
+    const dataSendMAil = state
+    sendMail(dataSendMAil)
   }
 
   return (
@@ -206,14 +219,19 @@ export const CuratedList = () => {
                 )}
               </ContentList>
             </ContentDataList>
-
-            <div></div>
           </ContainerList>
 
           <ContainerButton>
-            <Button>Atualizar Lista</Button>
-            <Button onClick={handlePrintDataUser}>Imprimir</Button>
-            <Button>Enviar Por E-mail</Button>
+            <Button onClick={handleUpdateDataUser}>Atualizar Lista</Button>
+            <PDFDownloadLink
+              className="button"
+              document={<CreatePdfList data={state} dataUser={userDataLogin} />}
+              fileName="Exigência"
+            >
+              {({ loading }) => (loading ? 'Carregando PDF' : 'Imprimir')}
+            </PDFDownloadLink>
+
+            <Button onClick={handleSendMail}>Enviar Por E-mail</Button>
           </ContainerButton>
         </Content>
       </ContentRequeriement>

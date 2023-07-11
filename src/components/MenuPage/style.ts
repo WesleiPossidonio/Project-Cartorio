@@ -19,6 +19,10 @@ export const MenuContainer = styled.aside`
   svg {
     color: #2b3d63;
   }
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
 `
 
 interface MenuContainerProps {

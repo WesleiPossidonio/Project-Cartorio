@@ -1,4 +1,4 @@
-import { User } from 'phosphor-react'
+import { List, User } from 'phosphor-react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -14,7 +14,11 @@ import {
   Line,
 } from './style'
 
-export const Header = () => {
+interface HeaderProps {
+  setMenuIsVisible: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const Header = ({ setMenuIsVisible }: HeaderProps) => {
   const navigate = useNavigate()
 
   const { userDataLogin } = useUser()
@@ -23,6 +27,8 @@ export const Header = () => {
     localStorage.removeItem('cartorio:userData1.0')
     navigate('/login')
   }
+
+  console.log(userDataLogin)
 
   return (
     <ContainerHeader>
@@ -39,6 +45,11 @@ export const Header = () => {
           </ContentName>
           <TextRegular size="l">Dr. {userDataLogin?.name}</TextRegular>
         </DataUserName>
+        <List
+          size={32}
+          onClick={() => setMenuIsVisible(true)}
+          className="mobile"
+        />
       </ContainerUser>
     </ContainerHeader>
   )

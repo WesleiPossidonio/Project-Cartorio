@@ -21,6 +21,23 @@ export const ContainerUser = styled.div`
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+
+  .mobile {
+    display: none;
+  }
+
+  @media (max-width: 1023px) {
+    .mobile {
+      display: initial;
+    }
+    > nav {
+      display: none;
+    }
+  }
+
+  @media (max-width: 700px) {
+    padding: 14.5px 16px;
+  }
 `
 
 export const Line = styled.div`

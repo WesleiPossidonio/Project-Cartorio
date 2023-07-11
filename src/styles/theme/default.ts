@@ -12,6 +12,9 @@ export const defaultThemes = {
     'base-text': '#000',
     'base-subtitle': '#d1d1d1',
     'base-title': '#010101',
+
+    'base-blue': '#2b3d63',
+    'base-green': '#265a63',
   },
   fontSizes: {
     'text-regular-s': '0.875rem',

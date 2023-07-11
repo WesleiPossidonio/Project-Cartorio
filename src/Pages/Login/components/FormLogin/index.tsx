@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 
 import ImageLogin from '../../../../assets/Image-Logint.svg'
 import LogoCartorio from '../../../../assets/Logo-Cartorio.svg'
-import { Input } from '../../../../components/Input'
+import { Input } from '../../../../components'
 import {
   Button,
   ContentInputLogin,

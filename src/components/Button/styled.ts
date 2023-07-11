@@ -2,16 +2,21 @@ import styled from 'styled-components'
 
 interface ButtonContainerProps {
   concluted?: boolean
+  buttonSubmit?: boolean
 }
 
 export const ButtonContainer = styled.button<ButtonContainerProps>`
-  padding: 1rem;
-  border: none;
-  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+
+  width: ${({ buttonSubmit }) => buttonSubmit && '20rem'};
+  padding: 1.1rem;
+  border: none;
+  border-radius: 6px;
+
+  margin-top: ${({ buttonSubmit }) => buttonSubmit && '5rem'};
 
   cursor: pointer;
 
@@ -23,4 +28,13 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
 
   font-weight: 600;
   font-size: 1rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.8rem;
+    padding: 0.9rem;
+
+    svg {
+      width: 2rem;
+    }
+  }
 `

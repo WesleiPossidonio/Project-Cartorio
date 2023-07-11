@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { TableRequeriment } from '../../components/ListRequeriment'
-import { MenuPage } from '../../components/MenuPage'
+import { MenuPage, TableRequerimentCompleted } from '../../components'
 import { HeaderContent } from './components/HeaderContent'
 import { ContainerHome, ContainerMainList, ContentRequeriement } from './style'
 
@@ -12,7 +11,7 @@ export const CompletedAplicationList = () => {
       <ContentRequeriement>
         <ContainerMainList>
           <HeaderContent />
-          <TableRequeriment />
+          <TableRequerimentCompleted />
         </ContainerMainList>
       </ContentRequeriement>
     </ContainerHome>

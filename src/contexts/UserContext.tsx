@@ -15,7 +15,7 @@ interface UserLoginProps {
   password: string
 }
 
-interface ResponseDataUser {
+export interface ResponseDataUser {
   admin: boolean
   id: string
   registration: string
@@ -35,7 +35,7 @@ interface CreaterUser {
 interface UserContextType {
   handleCreateUser: (data: CreaterUser) => Promise<void>
   handleLoginUser: (data: UserLoginProps) => Promise<void>
-  userDataLogin: ResponseDataUser | undefined
+  userDataLogin: ResponseDataUser
 }
 
 interface UserContextProviderProps {
@@ -46,7 +46,9 @@ export const UserContext = createContext({} as UserContextType)
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   const navigate = useNavigate()
-  const [userDataLogin, setUserDataLogin] = useState<ResponseDataUser>()
+  const [userDataLogin, setUserDataLogin] = useState<ResponseDataUser>(
+    {} as ResponseDataUser
+  )
 
   const handleLoginUser = useCallback(
     async (data: UserLoginProps) => {
@@ -80,9 +82,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const LoadDataUser = async () => {
       const dataUserLogin = await localStorage.getItem('cartorio:userData1.0')
 
-      if (dataUserLogin) {
-        setUserDataLogin(JSON.parse(dataUserLogin))
-      }
+      dataUserLogin && setUserDataLogin(JSON.parse(dataUserLogin))
     }
 
     LoadDataUser()

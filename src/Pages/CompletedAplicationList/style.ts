@@ -17,17 +17,10 @@ export const ContentRequeriement = styled.main`
   padding: 3rem;
   background: #f2f3ee;
   overflow-y: scroll;
+
+  @media (max-width: 1023px) {
+    width: 100%;
+  }
 `
 
 export const ContainerMainList = styled.div``
-
-// export const ContainerTable = styled.div`
-//   margin-top: 2rem;
-//   width: 100%;
-//   height: 500px;
-
-//   border-radius: 6px;
-//   padding: 1rem;
-
-//   background-color: #fff;
-// `

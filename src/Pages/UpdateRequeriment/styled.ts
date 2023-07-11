@@ -1,6 +1,6 @@
 import { styled } from 'styled-components'
 
-export const SectionCreateRequirement = styled.section`
+export const ContainerUpdate = styled.section`
   width: 100%;
   height: 100vh;
   display: flex;
@@ -27,14 +27,6 @@ export const SectionCreateRequirement = styled.section`
   form h1 {
     align-self: flex-start;
     margin: 1.8rem 2.5rem;
-  }
-
-  form button {
-    margin-top: 2rem;
-  }
-
-  a {
-    text-decoration: none;
   }
 `
 

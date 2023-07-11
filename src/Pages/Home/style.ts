@@ -17,6 +17,14 @@ export const ContentRequeriement = styled.main`
   padding: 3rem;
   background: #f2f3ee;
   overflow-y: scroll;
+
+  @media (max-width: 1023px) {
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+  }
 `
 
 export const ContainerMainList = styled.div``

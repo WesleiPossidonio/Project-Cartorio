@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as zod from 'zod'
 
-import { Button } from '../../../../components/Button'
-import { TitleText } from '../../../../components/typography'
+import { Button, TitleText } from '../../../../components'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { ContainerButton, HeaderHome, SearchForm, SearchInput } from './styled'
 

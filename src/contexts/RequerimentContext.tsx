@@ -8,8 +8,7 @@ import React, {
 } from 'react'
 import { toast } from 'react-toastify'
 
-import { PdfGenerator } from '../components/PdfListRequeriment'
-import { CreateRequerimentFormInputs } from '../Pages/CreateRequeriment'
+// import { PdfGenerator } from '../components/PdfListRequeriment'
 import api from '../services/api'
 
 export interface ListRequerimentProps {
@@ -38,47 +37,27 @@ export interface ListRequerimentProps {
   campo_de_assinatura?: string
   retificacao_de_redacao?: string
   informacao_divergente?: string
-  quais_informacoes_divergentes?: string | null
-  updatedAt?: string
-}
-
-interface SendMailProps {
-  assinatura_do_advogado?: string
-  declaracao_criminal?: string
-  estado_do_requerimento?: string
-  numero_do_protocolo?: string
-  cnpj?: string
-  declaracao_de_desimpedimento?: string
-  declaracao_sindical?: string
-  dissolucao_ou_exticao?: string
-  documentacao_de_identificacao?: string
-  email_do_representante?: string
-  fundacoes?: string
-  lista_e_edital?: string
-  livro_rasao?: string
-  nome_da_instituicao?: string
-  nome_do_representante?: string
-  oab?: string
-  ppe?: string
-  preechimento_completo?: string
-  reconhecimento_de_firma?: string
-  requisitos_estatuto?: string
-  telefone_contato?: string
-
-  campo_de_assinatura?: string
-  retificacao_de_redacao?: string
-  informacao_divergente?: string
   quais_informacoes_divergentes?: string
+  updatedAt?: string
+  Data_da_Recepcao?: string
+  requisitos_de_estatutos_fundadores?: string
+  requisitos_criacao_de_estatuto?: string
+  Data_da_Atualizacao?: string
 }
 
 interface RequerimentContextType {
   dataListRequeriment: ListRequerimentProps[]
   filteredDataRequeriment: ListRequerimentProps[]
+  filteredDataConclutedRequeriment: ListRequerimentProps[]
   dataInpuSearch: string
   selectAListRequeriment: ListRequerimentProps[]
+  requestListDataPDF: ListRequerimentProps
   setSelectAListRequeriment: (curatedList: ListRequerimentProps[]) => void
-  CreateRequeriment: (data: CreateRequerimentFormInputs) => void
+  CreateRequeriment: (data: ListRequerimentProps) => Promise<void>
   filteredRequeriment: (query: string) => void
+  filteredRequerimentConcluted: (query: string) => void
+  updateRequeriment: (data: ListRequerimentProps) => Promise<void>
+  sendMail: (dataSendMail: ListRequerimentProps) => Promise<void>
 }
 
 interface RequerimentProviderProps {
@@ -93,10 +72,17 @@ export const RequerimentContextProvider = ({
   const [dataListRequeriment, setDataListRequeriment] = useState<
     ListRequerimentProps[]
   >([])
-  const [numberProtocolClient, setNumberProtocolClient] = useState(650)
+  const [requestListDataPDF, setRequestListDataPDF] =
+    useState<ListRequerimentProps>({})
+  const [numberProtocolClient, setNumberProtocolClient] =
+    useState<string>('650/2023')
   const [dataInpuSearch, setDataInpuSearch] = useState('')
   const [filteredDataRequeriment, setFilteredDataRequeriment] =
     useState<ListRequerimentProps[]>(dataListRequeriment)
+  const [
+    filteredDataConclutedRequeriment,
+    setFilteredConclutedDataRequeriment,
+  ] = useState<ListRequerimentProps[]>(dataListRequeriment)
   const [selectAListRequeriment, setSelectAListRequeriment] = useState<
     ListRequerimentProps[]
   >([])
@@ -112,17 +98,34 @@ export const RequerimentContextProvider = ({
     getListRequeriment()
 
     const loadNumberProtocol = async () => {
+      const lastNumberProtocol =
+        dataListRequeriment[dataListRequeriment.length - 1]
+
       const getNumberProtocol = await localStorage.getItem(
         'cartorio:numberProtocol'
       )
 
-      if (getNumberProtocol) {
-        setNumberProtocolClient(JSON.parse(getNumberProtocol))
+      if (
+        lastNumberProtocol &&
+        getNumberProtocol !== lastNumberProtocol.numero_do_protocolo
+      ) {
+        setNumberProtocolClient(lastNumberProtocol.numero_do_protocolo || '')
+        await localStorage.setItem(
+          'cartorio:numberProtocol',
+          JSON.stringify(lastNumberProtocol.numero_do_protocolo)
+        )
+      }
+
+      if (
+        lastNumberProtocol &&
+        getNumberProtocol === lastNumberProtocol.numero_do_protocolo
+      ) {
+        setNumberProtocolClient(getNumberProtocol)
       }
     }
 
     loadNumberProtocol()
-  }, [getListRequeriment, numberProtocolClient])
+  }, [dataListRequeriment, getListRequeriment, numberProtocolClient])
 
   const filteredRequeriment = (query: string) => {
     const filteredRequeriment = dataListRequeriment.filter((data) => {
@@ -140,10 +143,26 @@ export const RequerimentContextProvider = ({
     setDataInpuSearch(query)
   }
 
-  const sendMail = useCallback(async (dataSendMail: SendMailProps) => {
+  const filteredRequerimentConcluted = (query: string) => {
+    const filteredRequeriment = dataListRequeriment.filter((data) => {
+      return (
+        (data.nome_da_instituicao &&
+          data.nome_da_instituicao
+            .toLowerCase()
+            .includes(query.toLowerCase())) ||
+        (data.numero_do_protocolo &&
+          data.numero_do_protocolo.toLowerCase().includes(query.toLowerCase()))
+      )
+    })
+
+    setFilteredConclutedDataRequeriment(filteredRequeriment)
+    setDataInpuSearch(query)
+  }
+
+  const sendMail = useCallback(async (dataSendMail: ListRequerimentProps) => {
     const notCompletedApplicationList = Object.entries(dataSendMail).filter(
       ([key, value]) => {
-        return value === 'Sim'
+        return value ? 'Sim' : 'Não'
       }
     )
 
@@ -157,6 +176,8 @@ export const RequerimentContextProvider = ({
       nome_da_instituicao,
       nome_do_representante,
       numero_do_protocolo,
+      Data_da_Recepcao,
+      telefone_contato,
     } = dataSendMail
 
     try {
@@ -166,6 +187,8 @@ export const RequerimentContextProvider = ({
         email_do_representante,
         nome_da_instituicao,
         nome_do_representante,
+        Data_da_Recepcao,
+        telefone_contato,
         itens_da_lista_pendetes: listNotCompletedFiltered,
       })
     } catch (error) {
@@ -174,7 +197,7 @@ export const RequerimentContextProvider = ({
   }, [])
 
   const CreateRequeriment = useCallback(
-    async (data: CreateRequerimentFormInputs) => {
+    async (data: ListRequerimentProps) => {
       const {
         assinatura_do_advogado,
         declaracao_criminal,
@@ -195,16 +218,8 @@ export const RequerimentContextProvider = ({
         reconhecimento_de_firma,
         requisitos_estatuto,
         telefone_contato,
+        estado_do_requerimento,
       } = data
-
-      const regex = /(\d{2})(\d{5})(\d{4})/
-
-      const formatedNumberPhone = telefone_contato.replace(regex, '($1) $2-$3')
-
-      const formattedCnpj = `${cnpj.substring(0, 2)}.${cnpj.substring(
-        2,
-        5
-      )}.${cnpj.substring(5, 8)}/${cnpj.substring(8, 12)}-${cnpj.substring(12)}`
 
       const numberProtocol = numberProtocolClient + 1
 
@@ -214,62 +229,30 @@ export const RequerimentContextProvider = ({
         JSON.stringify(numberProtocol)
       )
 
-      const currentDate = new Date().getFullYear()
-      const numberProtocolString = `${numberProtocolClient}/${currentDate}`
+      const regex = /(\d{2})(\d{5})(\d{4})/
 
-      try {
-        const createRequermentResponse = await toast.promise(
-          api.post('requerimentData', {
-            assinatura_do_advogado,
-            declaracao_criminal,
-            estado_do_requerimento: 'Pendente',
-            numero_do_protocolo: numberProtocolString,
-            cnpj: formattedCnpj,
-            declaracao_de_desimpedimento,
-            declaracao_sindical,
-            dissolucao_ou_exticao,
-            documentacao_de_identificacao,
-            email_do_representante,
-            fundacoes,
-            lista_e_edital,
-            livro_rasao,
-            nome_da_instituicao,
-            nome_do_representante,
-            oab,
-            ppe,
-            preechimento_completo,
-            reconhecimento_de_firma,
-            requisitos_estatuto,
-            telefone_contato: formatedNumberPhone,
+      const formatedNumberPhone =
+        telefone_contato && telefone_contato.replace(regex, '($1) $2-$3')
 
-            campo_de_assinatura: 'teste',
-            retificacao_de_redacao: 'teste',
-            informacao_divergente: 'teste',
-            quais_informacoes_divergentes: 'teste',
-          }),
-          {
-            pending: 'Verificando seus dados',
-            success: 'Exigencia Criada com Sucesso!',
-            error: 'Ops! Verifique so Dados Digitados',
-          }
-        )
+      const formattedCnpj = `${cnpj && cnpj.substring(0, 2)}.${
+        cnpj && cnpj.substring(2, 5)
+      }.${cnpj && cnpj.substring(5, 8)}/${cnpj && cnpj.substring(8, 12)}-${
+        cnpj && cnpj.substring(12)
+      }`
 
-        const { data } = createRequermentResponse
+      const currentDate = new Date()
 
-        setDataListRequeriment([...dataListRequeriment, data])
+      const currentDateDay = currentDate.getDate()
+      const currentDateMonth = currentDate.getMonth() + 1
+      const currentDateYears = currentDate.getFullYear()
+      const numberProtocolString = `${numberProtocolClient}/${currentDateYears}`
 
-        const listPdf = { ...data, numeroDoProtocolo: numberProtocolClient }
-        console.log(listPdf)
+      const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
 
-        PdfGenerator(listPdf)
-      } catch (error) {
-        console.log(error)
-      }
-
-      const dataSendMail = {
+      const newListRequeriment = {
         assinatura_do_advogado,
         declaracao_criminal,
-        estado_do_requerimento: 'Pendente',
+        estado_do_requerimento,
         numero_do_protocolo: numberProtocolString,
         cnpj: formattedCnpj,
         declaracao_de_desimpedimento,
@@ -287,7 +270,8 @@ export const RequerimentContextProvider = ({
         preechimento_completo,
         reconhecimento_de_firma,
         requisitos_estatuto,
-        telefone_contato,
+        telefone_contato: formatedNumberPhone,
+        Data_da_Recepcao: dataString,
 
         campo_de_assinatura: 'teste',
         retificacao_de_redacao: 'teste',
@@ -295,21 +279,76 @@ export const RequerimentContextProvider = ({
         quais_informacoes_divergentes: 'teste',
       }
 
-      sendMail(dataSendMail)
+      try {
+        await toast.promise(api.post('requerimentData', newListRequeriment), {
+          pending: 'Verificando seus dados',
+          success: 'Exigencia Criada com Sucesso!',
+          error: 'Ops! Verifique os Dados Digitados',
+        })
+
+        setRequestListDataPDF(newListRequeriment)
+
+        setDataListRequeriment((prevState) => [
+          ...prevState,
+          newListRequeriment,
+        ])
+
+        sendMail(newListRequeriment)
+
+        // PdfGenerator(listPdf)
+      } catch (error) {
+        console.log(error)
+      }
     },
-    [numberProtocolClient, sendMail, dataListRequeriment]
+    [numberProtocolClient, sendMail]
+  )
+
+  const updateRequeriment = useCallback(
+    async (data: ListRequerimentProps) => {
+      const currentDate = new Date()
+      const currentDateDay = currentDate.getDate()
+      const currentDateMonth = currentDate.getMonth() + 1
+      const currentDateYears = currentDate.getFullYear()
+
+      const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
+
+      const updatedList = { ...data, Data_da_Atualizacao: dataString }
+
+      try {
+        const createRequermentResponse = await toast.promise(
+          api.put(`requeriment/${updatedList.id}`, updatedList),
+          {
+            pending: 'Verificando seus dados',
+            success: 'Exigencia Atualizada com Sucesso!',
+            error: 'Ops! Verifique so Dados Digitados',
+          }
+        )
+
+        const { data } = createRequermentResponse
+
+        setDataListRequeriment([...dataListRequeriment, data])
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [dataListRequeriment]
   )
 
   return (
     <RequerimentContext.Provider
       value={{
         dataListRequeriment,
-        CreateRequeriment,
-        dataInpuSearch,
-        filteredRequeriment,
         filteredDataRequeriment,
         selectAListRequeriment,
+        dataInpuSearch,
+        requestListDataPDF,
+        filteredDataConclutedRequeriment,
+        CreateRequeriment,
+        filteredRequeriment,
         setSelectAListRequeriment,
+        updateRequeriment,
+        sendMail,
+        filteredRequerimentConcluted,
       }}
     >
       {children}
