@@ -8,7 +8,6 @@ import React, {
 } from 'react'
 import { toast } from 'react-toastify'
 
-// import { PdfGenerator } from '../components/PdfListRequeriment'
 import api from '../services/api'
 
 export interface ListRequerimentProps {
