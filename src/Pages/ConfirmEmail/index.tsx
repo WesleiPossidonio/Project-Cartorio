@@ -9,7 +9,10 @@ import { useUser } from '../../hooks/useUser'
 import { ContainerUpdatePassword, ContentUpdatePassword, Form } from './style'
 
 const updatePasswordSchema = zod.object({
-  email: zod.string().nonempty('Por favor, digite o seu E-mail'),
+  email: zod
+    .string()
+    .email('Por favor, digite um email válido')
+    .nonempty('Por favor, digite o seu E-mail'),
 })
 
 type CreateConfirmEmailFormInputs = zod.infer<typeof updatePasswordSchema>
@@ -46,7 +49,7 @@ export const ConfirmEmail = () => {
         <Form onSubmit={handleSubmit(handleConfirmPassword)}>
           <label htmlFor="password">
             <Input
-              type="password"
+              type="text"
               placeholder="Digite seu E-mail"
               {...register('email')}
               error={errors.email?.message}
