@@ -6,9 +6,11 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   const userData = localStorage.getItem('cartorio:userData1.0')
+  const confirmEmail = localStorage.getItem('cartorio:UserConfirmEmail')
   const token = userData && JSON.parse(userData).token
+  const tokenUpdatePassword = confirmEmail && JSON.parse(confirmEmail).token
 
-  if (token) {
+  if (token || tokenUpdatePassword) {
     config.headers.Authorization = `Bearer ${token}`
   }
 

@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 
 import ImageLogin from '../../../../assets/Image-Logint.svg'
 import LogoCartorio from '../../../../assets/Logo-Cartorio.svg'
-import { Input } from '../../../../components'
+import { Input, TextRegular } from '../../../../components'
 import {
   Button,
   ContentInputLogin,
@@ -52,6 +52,7 @@ export const FormLogin = () => {
           error={errors.password?.message}
         />
       </Label>
+      <TextRegular>Esqueceu a senha?</TextRegular>
       <Button>Fazer Login</Button>
     </ContentInputLogin>
   )

@@ -21,6 +21,7 @@ export const defaultThemes = {
     'text-regular-m': '1.009725rem',
     'text-regular-l': '1.1rem',
 
+    'title-regular-sm': '1rem',
     'title-regular-s': '1.5rem',
     'title-regular-m': '3rem',
     'title-regular-l': '4rem',

@@ -24,8 +24,12 @@ import {
 } from './styled'
 
 export const createRequerimentFormSchema = zod.object({
-  nome_da_instituicao: zod.string(),
-  nome_do_representante: zod.string(),
+  nome_da_instituicao: zod
+    .string()
+    .nonempty('Por favor, digite o nome da instituição'),
+  nome_do_representante: zod
+    .string()
+    .nonempty('Por favor, digite o nome do representante'),
   cnpj: zod
     .string()
     .min(14, 'Por Favor, digite o CNPJ valido')

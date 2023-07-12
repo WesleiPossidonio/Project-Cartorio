@@ -6,6 +6,7 @@ import { FormCreateRequeriment } from '../Pages/CreateRequeriment'
 import { CuratedList } from '../Pages/CuratedList/index.'
 import { Home } from '../Pages/Home'
 import { Login } from '../Pages/Login'
+import { ConfirmEmail, UpdatePaswordLogin } from '../Pages/UpdateLogin'
 import { UpdateRequeriment } from '../Pages/UpdateRequeriment'
 import { PrivateRoutes } from './privateRoutes'
 
@@ -13,6 +14,8 @@ export const Router = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/Atualizar-Senha" element={<UpdatePaswordLogin />} />
+      <Route path="/Confirmar-Email" element={<ConfirmEmail />} />
 
       <Route path="/" element={<PrivateRoutes />}>
         <Route path="/" element={<Home />} />

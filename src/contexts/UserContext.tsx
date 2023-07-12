@@ -32,9 +32,20 @@ interface CreaterUser {
   registration: string
 }
 
+interface ConfirmMailProps {
+  email: string
+}
+
+interface UpdatePasswordProps {
+  password: string
+  confirmPassword: string
+}
+
 interface UserContextType {
   handleCreateUser: (data: CreaterUser) => Promise<void>
   handleLoginUser: (data: UserLoginProps) => Promise<void>
+  confirmMail: (data: ConfirmMailProps) => Promise<void>
+  updatePassword: (data: UpdatePasswordProps) => Promise<void>
   userDataLogin: ResponseDataUser
 }
 
@@ -107,9 +118,61 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
   }, [])
 
+  const confirmMail = useCallback(
+    async (data: ConfirmMailProps) => {
+      const { email } = data
+
+      try {
+        const response = await toast.promise(
+          api.post('confirmMail', { email }),
+          {
+            pending: 'Verificando seus dados',
+            success: 'Email Encontrado! verifique seu email.',
+            error: 'E-mail não encontrado digite novamente 🤯',
+          }
+        )
+        const { data } = response
+        await localStorage.setItem(
+          'cartorio:UserConfirmEmail',
+          JSON.stringify(data)
+        )
+
+        setUserDataLogin(data)
+
+        setTimeout(() => {
+          navigate('/')
+        }, 1000)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [navigate]
+  )
+
+  const updatePassword = useCallback(async (data: UpdatePasswordProps) => {
+    const confirmEmail = localStorage.getItem('cartorio:UserConfirmEmail')
+    const idUser = confirmEmail && JSON.parse(confirmEmail).id
+
+    try {
+      await toast.promise(api.put(`requeriment/${idUser}`, data.password), {
+        pending: 'Verificando seus dados',
+        success: 'Exigencia Atualizada com Sucesso!',
+        error: 'Ops! Verifique so Dados Digitados',
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
   return (
     <UserContext.Provider
-      value={{ handleLoginUser, userDataLogin, handleCreateUser }}
+      value={{
+        handleLoginUser,
+        userDataLogin,
+        handleCreateUser,
+        confirmMail,
+        updatePassword,
+      }}
     >
       {children}
     </UserContext.Provider>

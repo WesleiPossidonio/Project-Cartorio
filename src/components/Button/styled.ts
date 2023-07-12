@@ -23,11 +23,15 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
   font-size: 1rem;
   box-shadow: -5px 0px 31px 0px rgba(0, 0, 0, 0.1);
 
-  background: ${({ concluted }) => (concluted ? '#265a63' : '#2b3d63')};
+  background: #2b3d63;
   color: #fff;
 
   font-weight: 600;
   font-size: 1rem;
+
+  &:hover {
+    opacity: 0.9;
+  }
 
   @media (max-width: 600px) {
     font-size: 0.8rem;

@@ -17,6 +17,10 @@ export const ContentInputLogin = styled.div`
     align-items: center;
     margin: 0 auto;
   }
+
+  p {
+    cursor: pointer;
+  }
 `
 
 export const ImageLogo = styled.img`
