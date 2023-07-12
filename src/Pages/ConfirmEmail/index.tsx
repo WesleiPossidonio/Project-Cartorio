@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
-import ImageLogoCartorio from '../../../assets/Logo-Cartorio.jpg'
+import ImageLogoCartorio from '../../assets/Logo-Cartorio.jpg'
 import { Button, Input, TextRegular, TitleText } from '../../components'
 import { useUser } from '../../hooks/useUser'
 import { ContainerUpdatePassword, ContentUpdatePassword, Form } from './style'
