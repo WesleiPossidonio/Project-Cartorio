@@ -12,7 +12,7 @@ const updatePasswordSchema = zod.object({
   email: zod.string().nonempty('Por favor, digite o seu E-mail'),
 })
 
-export type CreateRequerimentFormInputs = zod.infer<typeof updatePasswordSchema>
+type CreateConfirmEmailFormInputs = zod.infer<typeof updatePasswordSchema>
 
 export const ConfirmEmail = () => {
   const {
@@ -20,14 +20,14 @@ export const ConfirmEmail = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<CreateRequerimentFormInputs>({
+  } = useForm<CreateConfirmEmailFormInputs>({
     resolver: zodResolver(updatePasswordSchema),
     shouldUnregister: true,
   })
 
   const { confirmMail } = useUser()
 
-  const handleConfirmPassword = (data: CreateRequerimentFormInputs) => {
+  const handleConfirmPassword = (data: CreateConfirmEmailFormInputs) => {
     confirmMail(data)
     reset()
   }

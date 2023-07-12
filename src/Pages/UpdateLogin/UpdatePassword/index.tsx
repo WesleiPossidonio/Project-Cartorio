@@ -26,7 +26,7 @@ const updatePasswordSchema = zod
     path: ['confirmPassword'],
   })
 
-export type CreateRequerimentFormInputs = zod.infer<typeof updatePasswordSchema>
+type CreateUpdatePasswordFormInputs = zod.infer<typeof updatePasswordSchema>
 
 export const UpdatePaswordLogin = () => {
   const {
@@ -34,14 +34,14 @@ export const UpdatePaswordLogin = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<CreateRequerimentFormInputs>({
+  } = useForm<CreateUpdatePasswordFormInputs>({
     resolver: zodResolver(updatePasswordSchema),
     shouldUnregister: true,
   })
 
   const { updatePassword } = useUser()
 
-  const handleUpdatePassowrd = (data: CreateRequerimentFormInputs) => {
+  const handleUpdatePassowrd = (data: CreateUpdatePasswordFormInputs) => {
     updatePassword(data)
     reset()
   }
