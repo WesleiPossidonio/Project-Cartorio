@@ -1,5 +1,6 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 import ImageLogin from '../../../../assets/Image-Logint.svg'
 import LogoCartorio from '../../../../assets/Logo-Cartorio.svg'
@@ -24,6 +25,12 @@ export const FormLogin = () => {
   const { register, formState } = useFormContext()
 
   const { errors } = formState as unknown as ErrosType
+
+  const navigate = useNavigate()
+
+  const handleNavigateConfirmEmail = () => {
+    navigate('/Confirmar-Email')
+  }
 
   return (
     <ContentInputLogin>
@@ -52,7 +59,9 @@ export const FormLogin = () => {
           error={errors.password?.message}
         />
       </Label>
-      <TextRegular>Esqueceu a senha?</TextRegular>
+      <TextRegular onClick={handleNavigateConfirmEmail}>
+        Esqueceu a senha?
+      </TextRegular>
       <Button>Fazer Login</Button>
     </ContentInputLogin>
   )
