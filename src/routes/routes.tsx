@@ -1,13 +1,16 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import { CompletedAplicationList } from '../Pages/CompletedAplicationList'
-import { FormCreateRequeriment } from '../Pages/CreateRequeriment'
+import {
+  CompletedAplicationList,
+  ConfirmEmail,
+  FormCreateRequeriment,
+  Home,
+  Login,
+  UpdatePaswordLogin,
+  UpdateRequeriment,
+} from '../Pages'
 import { CuratedList } from '../Pages/CuratedList/index.'
-import { Home } from '../Pages/Home'
-import { Login } from '../Pages/Login'
-import { ConfirmEmail, UpdatePaswordLogin } from '../Pages/UpdateLogin'
-import { UpdateRequeriment } from '../Pages/UpdateRequeriment'
 import { PrivateRoutes } from './privateRoutes'
 
 export const Router = () => {
