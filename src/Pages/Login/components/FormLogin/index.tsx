@@ -35,7 +35,7 @@ export const FormLogin = () => {
   return (
     <ContentInputLogin>
       <div>
-        <ImageLogo src={LogoCartorio as unknown as string} alt="" />
+        <ImageLogo src={LogoCartorio as unknown as string} />
         <ImageMainLogin src={ImageLogin as unknown as string} alt="" />
       </div>
 
