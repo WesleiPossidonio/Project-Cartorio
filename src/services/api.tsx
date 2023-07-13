@@ -14,10 +14,6 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
     config.headers.Authorization = `Bearer ${token}`
   }
 
-  if (tokenUpdatePassword) {
-    config.headers.Authorization = `Bearer ${tokenUpdatePassword}`
-  }
-
   return config
 })
 
