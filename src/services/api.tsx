@@ -10,8 +10,12 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   const token = userData && JSON.parse(userData).token
   const tokenUpdatePassword = confirmEmail && JSON.parse(confirmEmail).token
 
-  if (token || tokenUpdatePassword) {
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`
+  }
+
+  if (tokenUpdatePassword) {
+    config.headers.Authorization = `Bearer ${tokenUpdatePassword}`
   }
 
   return config
