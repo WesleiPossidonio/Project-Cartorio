@@ -12,7 +12,7 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
   gap: 0.5rem;
 
   width: ${({ buttonSubmit }) => buttonSubmit && '20rem'};
-  padding: 1.1rem;
+  padding: 0.8rem;
   border: none;
   border-radius: 6px;
 

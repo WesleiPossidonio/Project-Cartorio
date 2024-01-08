@@ -1,7 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://api-cartorio.onrender.com/',
+  baseURL: 'https://api-cartorio.vercel.app/',
 })
 
 api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
@@ -12,6 +12,10 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
+  }
+
+  if (tokenUpdatePassword) {
+    config.headers.Authorization = `Bearer ${tokenUpdatePassword}`
   }
 
   return config

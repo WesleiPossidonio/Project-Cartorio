@@ -93,6 +93,7 @@ export const CreateUserModal = () => {
             required
             {...register('password')}
           />
+
           <Controller
             control={control}
             name="admin"

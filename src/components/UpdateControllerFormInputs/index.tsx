@@ -179,9 +179,7 @@ export const UpdateControllerFormInputs = ({
             </ContainerInput>
           </ContainerCheckInput>
         )}
-      </ContentInput>
 
-      <ContentInput>
         {state.requisitos_de_estatutos_fundadores === 'Sim' && (
           <ContainerCheckInput>
             <ContainerInput>

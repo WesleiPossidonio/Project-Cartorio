@@ -37,7 +37,10 @@ export const createRequerimentFormSchema = zod.object({
   email_do_representante: zod
     .string()
     .email('Por favor digite um email válido'),
-  telefone_contato: zod.string().min(11).max(11),
+  telefone_contato: zod
+    .string()
+    .min(11, 'Por Favor, digite o numero de telefone corretamente')
+    .max(11, 'Por Favor, digite o numero de telefone corretamente'),
   declaracao_sindical: zod.boolean().optional(),
   lista_e_edital: zod.boolean().optional().optional(),
   assinatura_do_advogado: zod.boolean().optional(),
@@ -54,10 +57,22 @@ export const createRequerimentFormSchema = zod.object({
   documentacao_de_identificacao: zod.boolean().optional(),
   requisitos_de_estatutos_fundadores: zod.boolean().optional(),
   requisitos_criacao_de_estatuto: zod.boolean().optional(),
-  // campo_de_assinatura: zod.string(),
-  // retificacao_de_redacao: zod.string(),
-  // informacao_divergente: zod.string(),
-  // quais_informacoes_divergentes: zod.string(),
+  campo_de_assinatura: zod.boolean().optional(),
+  retificacao_de_redacao: zod.boolean().optional(),
+  existe_exigencias_nao_listadas: zod.boolean().optional(),
+  primeira_exigencia_nao_listada: zod.string().optional(),
+  estado_da_primeira_exigencia_nao_listada: zod.boolean().optional(),
+  segunda_exigencia: zod.string().optional(),
+  estado_da_segunda_exigencia_nao_listada: zod.boolean().optional(),
+  terceira_exigencia_nao_listada: zod.string().optional(),
+  estado_da_terceira_exigencia_nao_listada: zod.boolean().optional(),
+  quarta_exigencia_nao_listada: zod.string().optional(),
+  estado_da_quarta_exigencia_nao_listada: zod.boolean().optional(),
+  quinta_exigencia_nao_listada: zod.string().optional(),
+  estado_da_quinta_exigencia_nao_listada: zod.boolean().optional(),
+
+  informacao_divergente: zod.boolean().optional(),
+  quais_informacoes_divergentes: zod.string().optional(),
 })
 
 export type CreateRequerimentFormInputs = zod.infer<
@@ -86,7 +101,6 @@ export const FormCreateRequeriment = () => {
   }
 
   const handleCreateRequeriment = async (data: CreateRequerimentFormInputs) => {
-    console.log(requestListDataPDF)
     const booleanData: Record<string, string> = {}
     const filteredEntries = Object.entries(data).filter(
       ([key, value]) => typeof value === 'boolean'

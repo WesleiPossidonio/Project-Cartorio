@@ -1,4 +1,5 @@
 import { NotePencil } from 'phosphor-react'
+import { useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 
 import { CreateRequerimentFormInputs } from '../../Pages/CreateRequeriment'
@@ -26,6 +27,13 @@ export const ControllerFormInputs = ({
   register,
   arrayInputList,
 }: ControllerProps) => {
+  const [divergentInformation, setDivergentInformation] =
+    useState<Boolean>(false)
+
+  const handleDivergentInformation = () => {
+    setDivergentInformation(!divergentInformation)
+  }
+
   return (
     <ContainerControllerInput>
       <ContentInput>
@@ -51,6 +59,23 @@ export const ControllerFormInputs = ({
             </ContainerCheckInput>
           )
         })}
+
+        <ContainerCheckInput>
+          <ContainerInput>
+            <input
+              id="list"
+              type="checkbox"
+              {...register('informacao_divergente')}
+              name="informacao_divergente"
+              onClick={handleDivergentInformation}
+            />
+
+            <LabelCheck htmlFor="list">
+              <NotePencil size={40} />
+              <div>Há informações divergentes</div>
+            </LabelCheck>
+          </ContainerInput>
+        </ContainerCheckInput>
       </ContentInput>
     </ContainerControllerInput>
   )

@@ -20,7 +20,7 @@ export const SearchForm = styled.form`
 
 export const SearchInput = styled.input`
   flex: 1;
-  padding: 1rem;
+  padding: 0.8rem;
   border: none;
   border-radius: 6px;
   box-shadow: -5px 0px 31px 0px rgba(0, 0, 0, 0.1);

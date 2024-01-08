@@ -1,5 +1,4 @@
 import { PDFDownloadLink } from '@react-pdf/renderer'
-import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import {

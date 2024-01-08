@@ -276,6 +276,9 @@ export const RequerimentContextProvider = ({
         retificacao_de_redacao: 'teste',
         informacao_divergente: 'teste',
         quais_informacoes_divergentes: 'teste',
+        existe_exigencias_nao_listadas: 'Teste',
+        requisitos_criacao_de_estatuto: 'teste adicionar no interface',
+        requisitos_de_estatutos_fundadores: 'teste adicionar no interface',
       }
 
       try {

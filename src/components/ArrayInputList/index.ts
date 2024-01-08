@@ -77,7 +77,7 @@ export const arrayInputList = [
   {
     id: 'documentacao_de_identificacao_true',
     name: 'documentacao_de_identificacao',
-    text: 'Apresentar cópia simples do documento de identificação de',
+    text: 'Apresentar cópia simples do documento de identificação',
   },
   {
     id: 'requisitos_de_estatutos_fundadores_true',
@@ -90,5 +90,10 @@ export const arrayInputList = [
     name: 'requisitos_criacao_de_estatuto',
     text: 'Apresentar os requisitos obrigatórios para criação do estatuto; ',
     spanText: '(Lei 10.406/2002 Art. 54)',
+  },
+  {
+    id: 'retificacao_de_redacao_true',
+    name: 'retificacao_de_redacao',
+    text: 'Retificar redação do documento apresentado:',
   },
 ]
