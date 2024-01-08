@@ -45,8 +45,17 @@ export const CuratedList = () => {
   }
 
   const handleSendMail = () => {
-    const dataSendMAil = state
-    sendMail(dataSendMAil)
+    const dataSendMail = state
+    const { name, registration } = userDataLogin
+
+    const ListSendMail = {
+      ...dataSendMail,
+      updateMail: true,
+      name,
+      registration,
+    }
+
+    sendMail(ListSendMail)
   }
 
   return (

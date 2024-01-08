@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-import React, { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useRequeriment } from '../../hooks/useRequeriment'

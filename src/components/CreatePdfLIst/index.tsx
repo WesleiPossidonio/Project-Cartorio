@@ -6,7 +6,6 @@ import {
   View,
   Image,
 } from '@react-pdf/renderer'
-import React from 'react'
 
 import ImageLogo from '../../assets/Logo-Cartorio.jpg'
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
@@ -85,7 +84,7 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
         </View>
         <View style={styles.header}>
           <Text style={styles.textheader2}>
-            Data da Recepção: {data.Data_da_Recepcao}
+            Data da Recepção: {data.data_da_recepcao}
           </Text>
           {data.updatedAt && (
             <Text style={styles.textheader2}>

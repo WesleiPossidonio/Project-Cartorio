@@ -114,7 +114,7 @@ export const ContainerButton = styled.div`
     align-items: center;
     justify-content: center;
 
-    padding: 1.1rem;
+    padding: 0.8rem;
     border: none;
     border-radius: 6px;
     margin-top: -2rem;

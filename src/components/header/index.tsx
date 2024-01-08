@@ -29,8 +29,6 @@ export const Header = ({ setMenuIsVisible }: HeaderProps) => {
     navigate('/login')
   }
 
-  console.log(userDataLogin)
-
   return (
     <ContainerHeader>
       <ImageLogo src={Logo as unknown as string} alt="" />

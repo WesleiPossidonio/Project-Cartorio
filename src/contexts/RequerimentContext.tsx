@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import { toast } from 'react-toastify'
 
+import { useUser } from '../hooks/useUser'
 import api from '../services/api'
 
 export interface ListRequerimentProps {
@@ -38,10 +39,16 @@ export interface ListRequerimentProps {
   informacao_divergente?: string
   quais_informacoes_divergentes?: string
   updatedAt?: string
-  Data_da_Recepcao?: string
+  data_da_recepcao?: string
   requisitos_de_estatutos_fundadores?: string
   requisitos_criacao_de_estatuto?: string
-  Data_da_Atualizacao?: string
+  data_da_atualizacao?: string
+}
+
+interface SendMailProps extends ListRequerimentProps {
+  updateMail: boolean
+  name: string
+  registration: string
 }
 
 interface RequerimentContextType {
@@ -56,7 +63,7 @@ interface RequerimentContextType {
   filteredRequeriment: (query: string) => void
   filteredRequerimentConcluted: (query: string) => void
   updateRequeriment: (data: ListRequerimentProps) => Promise<void>
-  sendMail: (dataSendMail: ListRequerimentProps) => Promise<void>
+  sendMail: (dataSendMail: SendMailProps) => Promise<void>
 }
 
 interface RequerimentProviderProps {
@@ -71,6 +78,7 @@ export const RequerimentContextProvider = ({
   const [dataListRequeriment, setDataListRequeriment] = useState<
     ListRequerimentProps[]
   >([])
+
   const [requestListDataPDF, setRequestListDataPDF] =
     useState<ListRequerimentProps>({})
   const [numberProtocolClient, setNumberProtocolClient] =
@@ -85,6 +93,8 @@ export const RequerimentContextProvider = ({
   const [selectAListRequeriment, setSelectAListRequeriment] = useState<
     ListRequerimentProps[]
   >([])
+
+  const { userDataLogin } = useUser()
 
   const getListRequeriment = useCallback(async () => {
     const listRequeriment = await api.get('requeriment')
@@ -124,7 +134,7 @@ export const RequerimentContextProvider = ({
     }
 
     loadNumberProtocol()
-  }, [dataListRequeriment, getListRequeriment, numberProtocolClient])
+  }, [getListRequeriment, numberProtocolClient])
 
   const filteredRequeriment = (query: string) => {
     const filteredRequeriment = dataListRequeriment.filter((data) => {
@@ -158,7 +168,7 @@ export const RequerimentContextProvider = ({
     setDataInpuSearch(query)
   }
 
-  const sendMail = useCallback(async (dataSendMail: ListRequerimentProps) => {
+  const sendMail = useCallback(async (dataSendMail: SendMailProps) => {
     const notCompletedApplicationList = Object.entries(dataSendMail).filter(
       ([key, value]) => {
         return value ? 'Sim' : 'Não'
@@ -175,21 +185,35 @@ export const RequerimentContextProvider = ({
       nome_da_instituicao,
       nome_do_representante,
       numero_do_protocolo,
-      Data_da_Recepcao,
+      data_da_recepcao,
       telefone_contato,
+      updateMail,
+      registration,
+      name,
     } = dataSendMail
 
+    const listSendEmail = {
+      numero_do_protocolo,
+      cnpj,
+      email_do_representante,
+      nome_da_instituicao,
+      nome_do_representante,
+      data_da_recepcao,
+      telefone_contato,
+      itens_da_lista_pendetes: listNotCompletedFiltered,
+      registration,
+      name,
+    }
+
     try {
-      await api.post('sendMail', {
-        numero_do_protocolo,
-        cnpj,
-        email_do_representante,
-        nome_da_instituicao,
-        nome_do_representante,
-        Data_da_Recepcao,
-        telefone_contato,
-        itens_da_lista_pendetes: listNotCompletedFiltered,
-      })
+      if (updateMail) {
+        await toast.promise(api.post('sendMail', listSendEmail), {
+          pending: 'Verificando seus dados',
+          success: 'Email enviado com Sucesso!',
+          error: 'Ops! Error no Servidor',
+        })
+      }
+      await api.post('sendMail', listSendEmail)
     } catch (error) {
       console.log(error)
     }
@@ -197,6 +221,7 @@ export const RequerimentContextProvider = ({
 
   const CreateRequeriment = useCallback(
     async (data: ListRequerimentProps) => {
+      const { name, registration } = userDataLogin
       const {
         assinatura_do_advogado,
         declaracao_criminal,
@@ -244,7 +269,7 @@ export const RequerimentContextProvider = ({
       const currentDateDay = currentDate.getDate()
       const currentDateMonth = currentDate.getMonth() + 1
       const currentDateYears = currentDate.getFullYear()
-      const numberProtocolString = `${numberProtocolClient}/${currentDateYears}`
+      const numberProtocolString = `${numberProtocolClient}-${currentDateYears}`
 
       const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
 
@@ -270,7 +295,7 @@ export const RequerimentContextProvider = ({
         reconhecimento_de_firma,
         requisitos_estatuto,
         telefone_contato: formatedNumberPhone,
-        Data_da_Recepcao: dataString,
+        data_da_recepcao: dataString,
 
         campo_de_assinatura: 'teste',
         retificacao_de_redacao: 'teste',
@@ -280,6 +305,8 @@ export const RequerimentContextProvider = ({
         requisitos_criacao_de_estatuto: 'teste adicionar no interface',
         requisitos_de_estatutos_fundadores: 'teste adicionar no interface',
       }
+
+      setDataListRequeriment((prevState) => [...prevState, newListRequeriment])
 
       try {
         await toast.promise(api.post('requerimentData', newListRequeriment), {
@@ -295,9 +322,12 @@ export const RequerimentContextProvider = ({
           newListRequeriment,
         ])
 
-        sendMail(newListRequeriment)
-
-        // PdfGenerator(listPdf)
+        sendMail({
+          ...newListRequeriment,
+          updateMail: false,
+          name,
+          registration,
+        })
       } catch (error) {
         console.log(error)
       }
@@ -314,7 +344,7 @@ export const RequerimentContextProvider = ({
 
       const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
 
-      const updatedList = { ...data, Data_da_Atualizacao: dataString }
+      const updatedList = { ...data, data_da_atualizacao: dataString }
 
       try {
         const createRequermentResponse = await toast.promise(
