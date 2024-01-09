@@ -91,6 +91,7 @@ export function UpdateRequeriment() {
                 type="text"
                 id="name-of-representative"
                 {...register('nome_do_representante')}
+                value={state.nome_do_representante}
               />
             </div>
 

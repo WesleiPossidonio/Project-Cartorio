@@ -39,8 +39,8 @@ export const createRequerimentFormSchema = zod.object({
     .email('Por favor digite um email válido'),
   telefone_contato: zod
     .string()
-    .min(11, 'Por Favor, digite o numero de telefone corretamente')
-    .max(11, 'Por Favor, digite o numero de telefone corretamente'),
+    .min(11, 'Por Favor, digite o numero de telefone corretamente'),
+  // .max(11, 'Por Favor, digite o numero de telefone corretamente'),
   declaracao_sindical: zod.boolean().optional(),
   lista_e_edital: zod.boolean().optional().optional(),
   assinatura_do_advogado: zod.boolean().optional(),
