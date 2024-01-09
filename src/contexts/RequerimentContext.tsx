@@ -258,11 +258,11 @@ export const RequerimentContextProvider = ({
       const formatedNumberPhone =
         telefone_contato && telefone_contato.replace(regex, '($1) $2-$3')
 
-      const formattedCnpj = `${cnpj && cnpj.substring(0, 2)}.${
-        cnpj && cnpj.substring(2, 5)
-      }.${cnpj && cnpj.substring(5, 8)}/${cnpj && cnpj.substring(8, 12)}-${
-        cnpj && cnpj.substring(12)
-      }`
+      // const formattedCnpj = `${cnpj && cnpj.substring(0, 2)}.${
+      //   cnpj && cnpj.substring(2, 5)
+      // }.${cnpj && cnpj.substring(5, 8)}/${cnpj && cnpj.substring(8, 12)}-${
+      //   cnpj && cnpj.substring(12)
+      // }`
 
       const currentDate = new Date()
 
@@ -278,7 +278,7 @@ export const RequerimentContextProvider = ({
         declaracao_criminal,
         estado_do_requerimento,
         numero_do_protocolo: numberProtocolString,
-        cnpj: formattedCnpj,
+        cnpj,
         declaracao_de_desimpedimento,
         declaracao_sindical,
         dissolucao_ou_exticao,
