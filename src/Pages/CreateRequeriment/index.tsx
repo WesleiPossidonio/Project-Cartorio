@@ -32,8 +32,8 @@ export const createRequerimentFormSchema = zod.object({
     .nonempty('Por favor, digite o nome do representante'),
   cnpj: zod
     .string()
-    .min(18, 'Por Favor, digite o CNPJ valido')
-    .max(18, 'Por Favor, digite o CNPJ valido'),
+    .min(19, 'Por Favor, digite o CNPJ valido')
+    .max(19, 'Por Favor, digite o CNPJ valido'),
   email_do_representante: zod
     .string()
     .email('Por favor digite um email válido'),
@@ -70,9 +70,7 @@ export const createRequerimentFormSchema = zod.object({
   estado_da_quarta_exigencia_nao_listada: zod.boolean().optional(),
   quinta_exigencia_nao_listada: zod.string().optional(),
   estado_da_quinta_exigencia_nao_listada: zod.boolean().optional(),
-
-  informacao_divergente: zod.boolean().optional(),
-  quais_informacoes_divergentes: zod.string().optional(),
+  informacao_divergente: zod.string().optional(),
 })
 
 export type CreateRequerimentFormInputs = zod.infer<
@@ -107,7 +105,7 @@ export const FormCreateRequeriment = () => {
     )
 
     filteredEntries.map(([key, value]) => {
-      return (booleanData[key] = value ? 'Sim' : 'Não')
+      return (booleanData[key] = value ? 'Pendente' : 'Recebido')
     })
 
     const {
@@ -116,6 +114,7 @@ export const FormCreateRequeriment = () => {
       nome_do_representante,
       telefone_contato,
       email_do_representante,
+      informacao_divergente,
     } = data
 
     const {
@@ -133,6 +132,10 @@ export const FormCreateRequeriment = () => {
       preechimento_completo,
       oab,
       documentacao_de_identificacao,
+      requisitos_criacao_de_estatuto,
+      requisitos_de_estatutos_fundadores,
+      campo_de_assinatura,
+      retificacao_de_redacao,
     } = booleanData
 
     const createRequerimentData = {
@@ -155,8 +158,18 @@ export const FormCreateRequeriment = () => {
       preechimento_completo,
       oab,
       documentacao_de_identificacao,
+      requisitos_criacao_de_estatuto,
+      requisitos_de_estatutos_fundadores,
+      campo_de_assinatura,
+      retificacao_de_redacao,
+      informacao_divergente:
+        informacao_divergente !== undefined
+          ? informacao_divergente
+          : 'Não há informações divergente',
       estado_do_requerimento: 'Pendente',
     }
+
+    console.log(createRequerimentData)
 
     CreateRequeriment(createRequerimentData)
 

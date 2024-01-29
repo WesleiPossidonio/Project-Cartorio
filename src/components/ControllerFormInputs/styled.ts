@@ -60,7 +60,10 @@ export const ContainerCheckInput = styled.div`
   input:checked#oab_true + label,
   input:checked#documentacao_de_identificacao_true + label,
   input:checked#requisitos_criacao_de_estatuto_true + label,
-  input:checked#requisitos_de_estatutos_fundadores_true + label {
+  input:checked#requisitos_de_estatutos_fundadores_true + label,
+  input:checked#retificacao_de_redacao_true + label,
+  input:checked#requisitos_criacao_de_estatuto_true + label,
+  input:checked#campo_de_assinatura_true + label {
     background: #265a63;
     color: #fff;
 
@@ -121,5 +124,41 @@ export const LabelCheck = styled.label`
     svg {
       display: none;
     }
+  }
+`
+export const ContainerButtonInfo = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    margin-top: 0.8rem;
+  }
+`
+export const TextArea = styled.textarea`
+  width: 50%;
+  height: 10rem;
+
+  align-self: flex-start;
+  margin-top: 1rem;
+
+  border: 2px solid #2b3d63;
+  border-radius: 8px;
+  padding: 0.8rem;
+
+  &:focus {
+    border-color: #265a63;
+  }
+
+  @media (max-width: 1200px) {
+    width: 100%;
   }
 `

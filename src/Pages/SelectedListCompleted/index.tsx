@@ -20,15 +20,15 @@ import {
   ContentDataList,
   ContentList,
   ContentRequeriement,
-} from './style'
+} from './styled'
 
 interface LocationProps {
   state: ListRequerimentProps
 }
 
-export const CuratedList = () => {
+export const SelectedListCompleted = () => {
   const { state } = useLocation() as unknown as LocationProps
-  const { sendMail, updateRequeriment } = useRequeriment()
+  const { sendMail } = useRequeriment()
 
   const { userDataLogin } = useUser()
 
@@ -36,12 +36,6 @@ export const CuratedList = () => {
 
   const handleNavidateToHome = () => {
     navigate('/')
-  }
-
-  const handleUpdateDataUser = () => {
-    navigate('/atualizar-lista', {
-      state,
-    })
   }
 
   const handleSendMail = () => {
@@ -56,10 +50,6 @@ export const CuratedList = () => {
     }
 
     sendMail(ListSendMail)
-  }
-
-  const handleCompletedList = () => {
-    updateRequeriment({ ...state, handleListConcluted: true })
   }
 
   return (
@@ -99,7 +89,7 @@ export const CuratedList = () => {
               <div>
                 <h4>
                   Nª do Exame:
-                  <strong>{state.numero_do_protocolo}</strong>
+                  <strong> {state.numero_do_protocolo}</strong>
                 </h4>
                 <h4>
                   Data de Análize: <strong>{state.data_da_recepcao}</strong>{' '}
@@ -235,8 +225,6 @@ export const CuratedList = () => {
           </ContainerList>
 
           <ContainerButton>
-            <Button onClick={handleCompletedList}>Concluir Lista</Button>
-            <Button onClick={handleUpdateDataUser}>Atualizar Lista</Button>
             <PDFDownloadLink
               className="button"
               document={<CreatePdfList data={state} dataUser={userDataLogin} />}

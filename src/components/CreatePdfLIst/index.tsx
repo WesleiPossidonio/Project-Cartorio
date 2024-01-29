@@ -108,60 +108,61 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
           <Text style={styles.titleList}>
             Nº do Exame: {data.numero_do_protocolo}
           </Text>
-          {data.lista_e_edital && (
+
+          {data.lista_e_edital === 'Pendente' && (
             <Text style={styles.text}>
               [ ] Apresentar lista de presença e edital; (CNCGJ Art. 951)
             </Text>
           )}
-          {data.assinatura_do_advogado && (
+          {data.declaracao_sindical === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Apresentar declaração emitida pelo Ministério do Trabalho
+              referente a unicidade sindical e da base territorial (CNCGJ Art.
+              935 § 4º)
+            </Text>
+          )}
+          {data.assinatura_do_advogado === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Colher assinatura do advogado no ato apresentado para
+              registro; (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)
+            </Text>
+          )}
+
+          {data.declaracao_criminal === 'Pendente' && (
             <Text style={styles.text}>
               [ ] Apresentar declaração de desimpedimento e/ou certidão
               criminal; (CNCGJ Art. 932 § 1º)
             </Text>
           )}
-          {data.declaracao_criminal && (
-            <Text style={styles.text}>
-              [ ] Apresentar declaração de desimpedimento e/ou certidão
-              criminal; (CNCGJ Art. 932 § 1º)
-            </Text>
-          )}
 
-          {data.declaracao_de_desimpedimento && (
-            <Text style={styles.text}>
-              [ ] Apresentar declaração de desimpedimento (contratos e
-              averbações de sociedade simples, ME, EPP); (CNCGJ Art. 938)
-            </Text>
-          )}
-
-          {data.livro_rasao && (
-            <Text style={styles.text}>
-              [ ] Apresentar livro razão ou contábil anteriormente registrado;
-              (CNCGJ Art. 960 § 1º)
-            </Text>
-          )}
-
-          {data.requisitos_estatuto && (
+          {data.requisitos_estatuto === 'Pendente' && (
             <Text style={styles.text}>
               [ ] Apresentar cópia do estatuto registrado no Distrito Federal
               (Obs:para diretórios de partidos políticos); (CNCGJ Art. 945)
             </Text>
           )}
 
-          {data.ppe && (
+          {data.declaracao_de_desimpedimento === 'Pendente' && (
             <Text style={styles.text}>
-              [ ] Apresentar declaração de pessoa politicamente exposta (PPE);
-              (Provimento CNJ 88/2019)
+              [ ] Apresentar declaração de desimpedimento (contratos e
+              averbações de sociedade simples, ME, EPP); (CNCGJ)
             </Text>
           )}
 
-          {data.requisitos_estatuto && (
+          {data.livro_rasao === 'Pendente' && (
             <Text style={styles.text}>
-              [ ] Apresentar os requisitos obrigatórios para criação do
-              estatuto; (Lei 10.406/2002 Art. 54)
+              Apresentar livro razão ou contábil anteriormente registrado;
+              (CNCGJ Art. 960 § 1º)
             </Text>
           )}
 
-          {data.dissolucao_ou_exticao && (
+          {data.ppe === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Apresentar declaração de pessoa politicamente exposta (PPE)
+            </Text>
+          )}
+
+          {data.requisitos_de_estatutos_fundadores === 'Pendente' && (
             <Text style={styles.text}>
               [ ] No caso de dissolução ou extinção deverá conter no documento:
               (liquidação, divisão de cotas de sócios, inexistência de ativo e
@@ -169,14 +170,47 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
             </Text>
           )}
 
-          {data.fundacoes && (
+          {data.dissolucao_ou_exticao === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] No caso de dissolução ou extinção apresentar o documento:
+              (liquidação, divisão de cotas de sócios, inexistência de ativo e
+              passivo, guarda dos livros etc.) (CNCGJ Art. 953)
+            </Text>
+          )}
+
+          {data.fundacoes === 'Pendente' && (
             <Text style={styles.text}>
               [ ] Nos atos referentes a fundações, exigir-se-á aprovação prévia
               do Ministério Público; (CNCGJ Art. 941)
             </Text>
           )}
 
-          {data.fundacoes && (
+          {data.reconhecimento_de_firma === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Apresentar reconhecimento de firme no requerimento do DBE
+            </Text>
+          )}
+
+          {data.preechimento_completo === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Preencher todos os campos do formulário/requerimento
+            </Text>
+          )}
+
+          {data.oab === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Apresentar cópia da OAB do representante jurídico do ato
+              apresentado
+            </Text>
+          )}
+
+          {data.documentacao_de_identificacao === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Apresentar cópia simples do documento de identificação
+            </Text>
+          )}
+
+          {data.requisitos_de_estatutos_fundadores === 'Pendente' && (
             <Text style={styles.text}>
               [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
               documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
@@ -184,26 +218,24 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
             </Text>
           )}
 
-          {data.reconhecimento_de_firma && (
+          {data.requisitos_criacao_de_estatuto === 'Pendente' && (
             <Text style={styles.text}>
-              [ ] Apresentar reconhecimento de firma no requerimento do DBE;
+              [ ] Apresentar os requisitos obrigatórios para criação do
+              estatuto; (Lei 10.406/2002 Art. 54)
             </Text>
           )}
 
-          {data.oab && (
+          {data.retificacao_de_redacao === 'Pendente' && (
             <Text style={styles.text}>
-              [ ] Apresentar cópia da OAB do representante jurídico do ato
-              apresentado;
+              [ ] Retificar redação do documento apresentado:
             </Text>
           )}
 
-          {data.documentacao_de_identificacao && (
+          {data.campo_de_assinatura === 'Pendente' && (
             <Text style={styles.text}>
-              [ ] Apresentar cópia simples do documento de identificação
+              [ ] Preencher todos os campos de assinatura
             </Text>
           )}
-
-          <Text></Text>
         </View>
 
         <View style={styles.contentInfoUser}>

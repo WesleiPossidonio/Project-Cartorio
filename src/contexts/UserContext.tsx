@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import api from '../services/api'
 
 interface UserLoginProps {
-  email: string
+  name: string
   password: string
 }
 
@@ -19,17 +19,17 @@ export interface ResponseDataUser {
   admin: boolean
   id: string
   registration: string
-  email: string
   name: string
   token: string
+  email: string
 }
 
 interface CreaterUser {
   admin: boolean
   name: string
   password: string
-  email: string
   registration: string
+  email: string
 }
 
 interface ConfirmMailProps {
@@ -63,15 +63,15 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
 
   const handleLoginUser = useCallback(
     async (data: UserLoginProps) => {
-      const { email, password } = data
+      const { name, password } = data
 
       try {
         const response = await toast.promise(
-          api.post('sessions', { email, password }),
+          api.post('sessions', { name, password }),
           {
             pending: 'Verificando seus dados',
             success: 'Seja bem-vindo(a)!',
-            error: 'Verifique seu email e senha 🤯',
+            error: 'Verifique o nome do usuário e senha 🤯',
           }
         )
         const { data } = response
@@ -100,19 +100,17 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   }, [])
 
   const handleCreateUser = useCallback(async (data: CreaterUser) => {
-    const { password, admin, email, name, registration } = data
+    const { password, admin, name, registration, email } = data
 
     try {
-      const createUserResponse = await toast.promise(
-        api.post('users', { password, admin, email, name, registration }),
+      await toast.promise(
+        api.post('users', { password, admin, name, registration, email }),
         {
           pending: 'Enviando Dados',
           success: 'Usuário Criado com Sucesso!',
           error: 'Usuário existente Verifique seu email e senha 🤯',
         }
       )
-
-      console.log(createUserResponse.data)
     } catch (error) {
       console.log(error)
     }
@@ -156,8 +154,8 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     try {
       await toast.promise(api.put(`requeriment/${idUser}`, data.password), {
         pending: 'Verificando seus dados',
-        success: 'Exigencia Atualizada com Sucesso!',
-        error: 'Ops! Verifique so Dados Digitados',
+        success: 'Senha Atualizada com Sucesso!',
+        error: 'Ops! Verifique os Dados Digitados',
       })
     } catch (error) {
       console.log(error)

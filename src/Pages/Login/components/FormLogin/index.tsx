@@ -39,14 +39,14 @@ export const FormLogin = () => {
         <ImageMainLogin src={ImageLogin as unknown as string} alt="" />
       </div>
 
-      <Label htmlFor="email">
-        Email:
+      <Label htmlFor="name">
+        Nome:
         <Input
           type="text"
-          id="email"
-          placeholder="Digite seu Email"
-          {...register('email')}
-          error={errors.email?.message}
+          id="name"
+          placeholder="Digite o Nome do Usuário"
+          {...register('name')}
+          error={errors.name?.message}
         />
       </Label>
       <Label htmlFor="password">

@@ -32,8 +32,8 @@ export const arrayInputList = [
   {
     id: 'declaracao_de_desimpedimento_true',
     name: 'declaracao_de_desimpedimento',
-    text: 'Apresentar declaração de desimpedimento',
-    spanText: '(contratos e averbações de sociedade simples, ME, EPP); (CNCGJ',
+    text: 'Apresentar declaração de desimpedimento;',
+    spanText: '(contratos e averbações de sociedade simples, ME, EPP); (CNCGJ)',
   },
   {
     id: 'livro_rasao_true',
@@ -45,11 +45,12 @@ export const arrayInputList = [
     id: 'ppe_true',
     name: 'ppe',
     text: 'Apresentar declaração de pessoa politicamente exposta (PPE)',
+    spanText: '(Provimento CNJ 88/2019)',
   },
   {
     id: 'dissolucao_ou_exticao_true',
     name: 'dissolucao_ou_exticao',
-    text: 'No caso de dissolução ou extinção apresentar o documento:',
+    text: 'No caso de dissolução ou extinção apresentar o documento;',
     spanText:
       '(liquidação, divisão de cotas de sócios, inexistência de ativo e passivo, guarda dos livros etc.) (CNCGJ Art. 953)',
   },
@@ -88,12 +89,17 @@ export const arrayInputList = [
   {
     id: 'requisitos_criacao_de_estatuto_true',
     name: 'requisitos_criacao_de_estatuto',
-    text: 'Apresentar os requisitos obrigatórios para criação do estatuto; ',
+    text: 'Apresentar os requisitos obrigatórios para criação do estatuto;',
     spanText: '(Lei 10.406/2002 Art. 54)',
   },
   {
     id: 'retificacao_de_redacao_true',
     name: 'retificacao_de_redacao',
-    text: 'Retificar redação do documento apresentado:',
+    text: 'Retificar redação do documento apresentado;',
+  },
+  {
+    id: 'campo_de_assinatura_true',
+    name: 'campo_de_assinatura',
+    text: 'Preencher todos os campos de assinatura;',
   },
 ]

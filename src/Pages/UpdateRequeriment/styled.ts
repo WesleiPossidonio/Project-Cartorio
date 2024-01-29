@@ -3,6 +3,7 @@ import { styled } from 'styled-components'
 export const ContainerUpdate = styled.section`
   width: 100%;
   height: 100vh;
+  min-height: max-content;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -134,4 +135,22 @@ export const ButtonHome = styled.button`
   margin-top: 1rem;
   border: 0;
   border-radius: 6px;
+`
+
+export const ContainerAddRequerimento = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.8rem;
+
+  margin-top: 2rem;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
 `

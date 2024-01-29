@@ -7,6 +7,7 @@ import {
   FormCreateRequeriment,
   Home,
   Login,
+  SelectedListCompleted,
   UpdatePaswordLogin,
   UpdateRequeriment,
 } from '../Pages'
@@ -26,6 +27,10 @@ export const Router = () => {
         <Route path="/lista-concluida" element={<CompletedAplicationList />} />
         <Route path="/lista-selecionada" element={<CuratedList />} />
         <Route path="/atualizar-lista" element={<UpdateRequeriment />} />
+        <Route
+          path="/lista-selecionada-concluida"
+          element={<SelectedListCompleted />}
+        />
       </Route>
     </Routes>
   )

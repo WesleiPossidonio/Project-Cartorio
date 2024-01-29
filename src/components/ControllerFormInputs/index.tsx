@@ -3,12 +3,16 @@ import { useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 
 import { CreateRequerimentFormInputs } from '../../Pages/CreateRequeriment'
+import { Button } from '../Button'
+import { TextRegular } from '../typography'
 import {
   ContainerInput,
   ContainerCheckInput,
   ContainerControllerInput,
   ContentInput,
   LabelCheck,
+  ContainerButtonInfo,
+  TextArea,
 } from './styled'
 
 interface StateInputListProps {
@@ -27,11 +31,10 @@ export const ControllerFormInputs = ({
   register,
   arrayInputList,
 }: ControllerProps) => {
-  const [divergentInformation, setDivergentInformation] =
-    useState<Boolean>(false)
+  const [divergentInformation, setDivergentInformation] = useState('')
 
-  const handleDivergentInformation = () => {
-    setDivergentInformation(!divergentInformation)
+  const handleDivergentInformation = (data: string) => {
+    setDivergentInformation(data)
   }
 
   return (
@@ -60,22 +63,38 @@ export const ControllerFormInputs = ({
           )
         })}
 
-        <ContainerCheckInput>
-          <ContainerInput>
-            <input
-              id="list"
-              type="checkbox"
-              {...register('informacao_divergente')}
-              name="informacao_divergente"
-              onClick={handleDivergentInformation}
-            />
+        <ContainerButtonInfo>
+          <TextRegular weight={700}>
+            Há alguma informação divergente?
+          </TextRegular>
+          <div>
+            <Button
+              selected={divergentInformation === 'sim' && true}
+              selectButton
+              type="button"
+              onClick={() => handleDivergentInformation('sim')}
+            >
+              Sim
+            </Button>
+            <Button
+              selected={divergentInformation === 'não' && true}
+              selectButton
+              type="button"
+              onClick={() => handleDivergentInformation('não')}
+            >
+              Não
+            </Button>
+          </div>
+        </ContainerButtonInfo>
 
-            <LabelCheck htmlFor="list">
-              <NotePencil size={40} />
-              <div>Há informações divergentes</div>
-            </LabelCheck>
-          </ContainerInput>
-        </ContainerCheckInput>
+        {divergentInformation === 'sim' && (
+          <TextArea
+            id="list"
+            placeholder="Digite as Informações Divergentes"
+            {...register('informacao_divergente')}
+            name="informacao_divergente"
+          />
+        )}
       </ContentInput>
     </ContainerControllerInput>
   )

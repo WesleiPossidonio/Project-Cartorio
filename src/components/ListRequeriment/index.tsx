@@ -28,6 +28,10 @@ export const TableRequeriment = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
+  const pendingList = dataListRequeriment.filter((list) => {
+    return list.estado_do_requerimento === 'Pendente'
+  })
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
@@ -38,7 +42,7 @@ export const TableRequeriment = () => {
   }
 
   const handleSelectAList = (id: number) => {
-    const curatedList = dataListRequeriment.filter((data) => data.id === id)
+    const curatedList = pendingList.filter((data) => data.id === id)
 
     const listSelected = Object.fromEntries(
       curatedList.map((item, index) => [`objeto${index + 1}`, item])
@@ -50,8 +54,7 @@ export const TableRequeriment = () => {
   }
 
   const emptyRows =
-    rowsPerPage -
-    Math.min(rowsPerPage, dataListRequeriment.length - page * rowsPerPage)
+    rowsPerPage - Math.min(rowsPerPage, pendingList.length - page * rowsPerPage)
 
   return (
     <ListRequerimentTable>
@@ -107,11 +110,11 @@ export const TableRequeriment = () => {
                 )
               })
             : (rowsPerPage > 0
-                ? dataListRequeriment.slice(
+                ? pendingList.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : dataListRequeriment
+                : pendingList
               ).map((data) => {
                 return (
                   <TableRowContentList
@@ -160,9 +163,7 @@ export const TableRequeriment = () => {
         rowsPerPageOptions={[5, 10, 15]}
         component="div"
         count={
-          dataListRequeriment
-            ? dataListRequeriment.length
-            : filteredDataRequeriment.length
+          pendingList ? pendingList.length : filteredDataRequeriment.length
         }
         rowsPerPage={rowsPerPage}
         labelRowsPerPage="Itens por página:"

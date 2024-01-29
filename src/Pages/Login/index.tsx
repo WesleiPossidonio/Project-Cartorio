@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
@@ -9,7 +8,7 @@ import { FormLogin } from './components/FormLogin'
 import { ContainerInput, ImageMainLogin } from './style'
 
 const confirmOrderLoginValidationSchema = zod.object({
-  email: zod.string().min(3, 'Informe o nome do usuário'),
+  name: zod.string().min(3, 'Informe o nome do usuário'),
   password: zod.string().min(4, 'Informe a Senha'),
 })
 

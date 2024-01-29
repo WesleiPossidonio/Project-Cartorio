@@ -1,6 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { ClipboardText, PlusCircle } from 'phosphor-react'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { CreateUserModal } from '../CreateUserModal'
 import { TextRegular } from '../typography'
@@ -10,9 +11,13 @@ export const MenuPage = () => {
   const [menuSelected1, setmenuSelectd1] = useState(false)
   const [menuSelected2, setmenuSelectd2] = useState(false)
 
+  const navigate = useNavigate()
+
   const handleIsSelected = () => {
     setmenuSelectd1(true)
     setmenuSelectd2(false)
+
+    navigate('/')
   }
 
   const handleIsSelected2 = () => {

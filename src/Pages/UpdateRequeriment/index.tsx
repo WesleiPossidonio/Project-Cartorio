@@ -1,11 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import { arrayInputList, ControllerFormInputs } from '../../components'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { MenuPage } from '../../components/MenuPage'
-import { TitleText } from '../../components/typography'
+import { TextRegular, TitleText } from '../../components/typography'
 import { UpdateControllerFormInputs } from '../../components/UpdateControllerFormInputs'
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
 import { useRequeriment } from '../../hooks/useRequeriment'
@@ -13,7 +15,12 @@ import {
   CreateRequerimentFormInputs,
   createRequerimentFormSchema,
 } from '../CreateRequeriment'
-import { ContainerForm, ContainerUpdate, ContentRequeriment } from './styled'
+import {
+  ContainerAddRequerimento,
+  ContainerForm,
+  ContainerUpdate,
+  ContentRequeriment,
+} from './styled'
 
 export interface LocationProps {
   state: ListRequerimentProps
@@ -21,6 +28,7 @@ export interface LocationProps {
 
 export function UpdateRequeriment() {
   const { state } = useLocation() as unknown as LocationProps
+  const [addDataToListUpdate, setAddDataToListUpdate] = useState('')
   const { updateRequeriment } = useRequeriment()
   const {
     register,
@@ -39,20 +47,24 @@ export function UpdateRequeriment() {
 
   const handleUpdateRequeriment = (data: CreateRequerimentFormInputs) => {
     const booleanData: Record<string, string> = {}
-    console.log('fui clicado:', data)
 
     const filteredEntries = Object.entries(data).filter(
       ([key, value]) => typeof value === 'boolean'
     )
 
     filteredEntries.map(([key, value]) => {
-      return (booleanData[key] = value ? 'Não' : 'Sim')
+      return (booleanData[key] = value ? 'Recebido' : 'Pendente')
     })
 
     const updatedData = { ...booleanData, id: state.id && state.id }
 
-    updateRequeriment(updatedData)
+    updateRequeriment({ ...updatedData, handleListConcluted: false })
+
     reset()
+  }
+
+  const handleAddDatatoList = (data: string) => {
+    setAddDataToListUpdate(data)
   }
 
   return (
@@ -118,6 +130,35 @@ export function UpdateRequeriment() {
           </ContainerForm>
 
           <UpdateControllerFormInputs register={register} />
+
+          <ContainerAddRequerimento>
+            <TextRegular weight={700}>
+              Esqueceu algum Item? Deseja Adicionar-lo?
+            </TextRegular>
+            <div>
+              <Button
+                type="button"
+                selectButton
+                onClick={() => handleAddDatatoList('Sim')}
+              >
+                Sim
+              </Button>
+              <Button
+                type="button"
+                selectButton
+                onClick={() => handleAddDatatoList('Não')}
+              >
+                Não
+              </Button>
+            </div>
+          </ContainerAddRequerimento>
+
+          {addDataToListUpdate === 'Sim' && (
+            <ControllerFormInputs
+              register={register}
+              arrayInputList={arrayInputList}
+            />
+          )}
 
           <Button type="submit" disabled={isSubmitting} buttonSubmit>
             Enviar Dados

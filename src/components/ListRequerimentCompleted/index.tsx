@@ -32,7 +32,7 @@ export const TableRequerimentCompleted = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const listCompleted = dataListRequeriment.filter((data) => {
-    return data.estado_do_requerimento === 'Concluido'
+    return data.estado_do_requerimento === 'Concluído'
   })
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -51,7 +51,7 @@ export const TableRequerimentCompleted = () => {
       curatedList.map((item, index) => [`objeto${index + 1}`, item])
     )
 
-    navigate('/lista-selecionada', {
+    navigate('/lista-selecionada-concluida', {
       state: listSelected.objeto1,
     })
   }
@@ -70,7 +70,6 @@ export const TableRequerimentCompleted = () => {
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
             <TableHeader2>Estado do Requerimento</TableHeader2>
-            {/* <TableCell>Ação</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -107,9 +106,6 @@ export const TableRequerimentCompleted = () => {
                     <TableContentList>
                       {data.estado_do_requerimento}
                     </TableContentList>
-                    {/* <TableCell>
-                  <button>Atualizar</button> <button>Concluir</button>
-                </TableCell> */}
                   </TableRowContentList>
                 )
               })
@@ -145,9 +141,6 @@ export const TableRequerimentCompleted = () => {
                     <TableContentList>
                       {data.estado_do_requerimento}
                     </TableContentList>
-                    {/* <TableCell>
-                    <button>Atualizar</button> <button>Concluir</button>
-                  </TableCell> */}
                   </TableRowContentList>
                 )
               })}
