@@ -142,21 +142,23 @@ export function UpdateRequeriment() {
               <Button
                 type="button"
                 selectButton
-                onClick={() => handleAddDatatoList('Sim')}
+                onClick={() => handleAddDatatoList('sim')}
+                selected={addDataToListUpdate === 'sim' && true}
               >
                 Sim
               </Button>
               <Button
                 type="button"
                 selectButton
-                onClick={() => handleAddDatatoList('Não')}
+                onClick={() => handleAddDatatoList('não')}
+                selected={addDataToListUpdate === 'não' && true}
               >
                 Não
               </Button>
             </div>
           </ContainerAddRequerimento>
 
-          {addDataToListUpdate === 'Sim' && (
+          {addDataToListUpdate === 'sim' && (
             <ControllerFormInputs
               register={register}
               arrayInputList={arrayInputList}

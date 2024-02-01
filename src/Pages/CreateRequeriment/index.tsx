@@ -169,8 +169,6 @@ export const FormCreateRequeriment = () => {
       estado_do_requerimento: 'Pendente',
     }
 
-    console.log(createRequerimentData)
-
     CreateRequeriment(createRequerimentData)
 
     reset()
