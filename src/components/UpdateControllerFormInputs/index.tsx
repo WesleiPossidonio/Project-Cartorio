@@ -1,4 +1,4 @@
-import { CheckCircle } from 'phosphor-react'
+import { Check } from 'phosphor-react'
 import React from 'react'
 import { UseFormRegister } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
@@ -25,17 +25,18 @@ export const UpdateControllerFormInputs = ({
   return (
     <ContainerControllerInput>
       <ContentInput>
-        {state.lista_e_edital === 'Sim' && (
+        {state.lista_e_edital === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
                 id="lista_e_edital_true"
                 type="checkbox"
                 {...register('lista_e_edital')}
+                name="lista_e_edital"
               />
 
               <LabelCheck htmlFor="lista_e_edital_true">
-                <CheckCircle size={40} />
+                <Check size={32} />
                 <p>
                   Apresentar lista de presença e edital;
                   <span> (CNCGJ Art. 951) </span>
@@ -45,7 +46,7 @@ export const UpdateControllerFormInputs = ({
           </ContainerCheckInput>
         )}
 
-        {state.declaracao_sindical === 'Sim' && (
+        {state.declaracao_sindical === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -56,7 +57,7 @@ export const UpdateControllerFormInputs = ({
               />
 
               <LabelCheck htmlFor="declaracao_sindical_true">
-                <CheckCircle size={40} />
+                <Check size={32} />
                 <p>
                   Apresentar declaração emitida pelo Ministério do Trabalho
                   referente a unicidade sindical e da base territorial;{' '}
@@ -67,7 +68,7 @@ export const UpdateControllerFormInputs = ({
           </ContainerCheckInput>
         )}
 
-        {state.assinatura_do_advogado === 'Sim' && (
+        {state.assinatura_do_advogado === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -78,7 +79,7 @@ export const UpdateControllerFormInputs = ({
               />
 
               <LabelCheck htmlFor="assinatura_do_advogado_true">
-                <CheckCircle size={40} />
+                <Check size={32} />
                 <p>
                   Colher assinatura do advogado no ato apresentado para
                   registro;
@@ -89,7 +90,7 @@ export const UpdateControllerFormInputs = ({
           </ContainerCheckInput>
         )}
 
-        {state.declaracao_criminal === 'Sim' && (
+        {state.declaracao_criminal === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -100,7 +101,7 @@ export const UpdateControllerFormInputs = ({
               />
 
               <LabelCheck htmlFor="declaracao_criminal_true">
-                <CheckCircle size={40} />
+                <Check size={32} />
                 <p>
                   Apresentar declaração de desimpedimento e/ou certidão
                   criminal;
@@ -111,7 +112,7 @@ export const UpdateControllerFormInputs = ({
           </ContainerCheckInput>
         )}
 
-        {state.requisitos_estatuto === 'Sim' && (
+        {state.requisitos_estatuto === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -121,7 +122,7 @@ export const UpdateControllerFormInputs = ({
                 name="requisitos_estatuto"
               />
               <LabelCheck htmlFor="requisitos_estatuto_true">
-                <CheckCircle size={40} />
+                <Check size={32} />
                 <p>
                   Apresentar cópia do estatuto registrado no Distrito Federal
                   <span>
@@ -134,7 +135,7 @@ export const UpdateControllerFormInputs = ({
           </ContainerCheckInput>
         )}
 
-        {state.declaracao_de_desimpedimento === 'Sim' && (
+        {state.declaracao_de_desimpedimento === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -144,7 +145,7 @@ export const UpdateControllerFormInputs = ({
                 name="declaracao_de_desimpedimento"
               />
               <LabelCheck htmlFor="declaracao_de_desimpedimento_true">
-                <CheckCircle size={40} />
+                <Check size={32} />
                 <p>
                   Apresentar declaração de desimpedimento{' '}
                   <span>
@@ -156,54 +157,27 @@ export const UpdateControllerFormInputs = ({
             </ContainerInput>
           </ContainerCheckInput>
         )}
-        {state.requisitos_criacao_de_estatuto === 'Sim' && (
+        {state.livro_rasao === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
-                id="requisitos_criacao_de_estatuto_true"
+                id="livro_rasao_true"
                 type="checkbox"
-                {...register('requisitos_criacao_de_estatuto')}
-                name="declaracao_de_desimpedimento"
+                {...register('livro_rasao')}
+                name="livro_rasao"
               />
-              <LabelCheck htmlFor="requisitos_criacao_de_estatuto_true">
-                <CheckCircle size={40} />
+              <LabelCheck htmlFor="livro_rasao_true">
+                <Check size={32} />
                 <p>
-                  Apresentar os requisitos obrigatórios no Estatuto: relação de
-                  documentos de fundadores;
-                  <span>
-                    ( CNCGJ Art. 945 / Lei 6.015 no Art. 120 / Lei 10.406 Art.
-                    46)
-                  </span>
+                  Apresentar livro razão ou contábil anteriormente registrado;
+                  <span>(CNCGJ Art. 960 § 1º)</span>
                 </p>
               </LabelCheck>
             </ContainerInput>
           </ContainerCheckInput>
         )}
 
-        {state.requisitos_de_estatutos_fundadores === 'Sim' && (
-          <ContainerCheckInput>
-            <ContainerInput>
-              <input
-                id="requisitos_de_estatutos_fundadores_true"
-                type="checkbox"
-                {...register('requisitos_de_estatutos_fundadores')}
-                name="requisitos_de_estatutos_fundadores"
-              />
-              <LabelCheck htmlFor="requisitos_de_estatutos_fundadores_true">
-                <CheckCircle size={40} />
-                <p>
-                  Apresentar os requisitos obrigatórios no Estatuto: relação de
-                  documentos de fundadores;
-                  <span>
-                    ( CNCGJ Art. 945 / Lei 6.015 no Art. 120 / Lei 10.406 Art.
-                    46)
-                  </span>
-                </p>
-              </LabelCheck>
-            </ContainerInput>
-          </ContainerCheckInput>
-        )}
-        {state.ppe === 'Sim' && (
+        {state.ppe === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -213,14 +187,16 @@ export const UpdateControllerFormInputs = ({
                 name="ppe"
               />
               <LabelCheck htmlFor="ppe_true">
-                <CheckCircle size={40} />
-                Apresentar declaração de pessoa politicamente exposta (PPE){' '}
+                <Check size={32} />
+                <p>
+                  Apresentar declaração de pessoa politicamente exposta (PPE)
+                  <span>(Provimento CNJ 88/2019)</span>
+                </p>
               </LabelCheck>
             </ContainerInput>
           </ContainerCheckInput>
         )}
-
-        {state.dissolucao_ou_exticao === 'Sim' && (
+        {state.dissolucao_ou_exticao === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -229,14 +205,13 @@ export const UpdateControllerFormInputs = ({
                 {...register('dissolucao_ou_exticao')}
                 name="dissolucao_ou_exticao"
               />
-
               <LabelCheck htmlFor="dissolucao_ou_exticao_true">
-                <CheckCircle size={40} />
+                <Check size={32} />
                 <p>
-                  No caso de dissolução ou extinção apresentar o documento:
+                  No caso de dissolução ou extinção apresentar o documento;
                   <span>
-                    (liquidação, pisão de cotas de sócios, inexistência de ativo
-                    e passivo, guarda dos livros etc.) (CNCGJ Art. 953)
+                    (liquidação, divisão de cotas de sócios, inexistência de
+                    ativo e passivo, guarda dos livros etc.) (CNCGJ Art. 953)
                   </span>
                 </p>
               </LabelCheck>
@@ -244,7 +219,7 @@ export const UpdateControllerFormInputs = ({
           </ContainerCheckInput>
         )}
 
-        {state.fundacoes === 'Sim' && (
+        {state.fundacoes === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -253,18 +228,20 @@ export const UpdateControllerFormInputs = ({
                 {...register('fundacoes')}
                 name="fundacoes"
               />
+
               <LabelCheck htmlFor="fundacoes_true">
-                <CheckCircle size={40} />
+                <Check size={32} />
                 <p>
                   Nos atos referentes a fundações, exigir-se-á aprovação prévia
-                  do Ministério Público; <span> (CNCGJ Art. 941) </span>
+                  do Ministério Público;
+                  <span>(CNCGJ Art. 941)</span>
                 </p>
               </LabelCheck>
             </ContainerInput>
           </ContainerCheckInput>
         )}
 
-        {state.reconhecimento_de_firma === 'Sim' && (
+        {state.reconhecimento_de_firma === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -273,16 +250,15 @@ export const UpdateControllerFormInputs = ({
                 {...register('reconhecimento_de_firma')}
                 name="reconhecimento_de_firma"
               />
-
               <LabelCheck htmlFor="reconhecimento_de_firma_true">
-                <CheckCircle size={40} />
-                Apresentar reconhecimento de firme no requerimento do DBE{' '}
+                <Check size={32} />
+                <p>presentar reconhecimento de firme no requerimento do DBE</p>
               </LabelCheck>
             </ContainerInput>
           </ContainerCheckInput>
         )}
 
-        {state.preechimento_completo === 'Sim' && (
+        {state.preechimento_completo === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
@@ -291,47 +267,132 @@ export const UpdateControllerFormInputs = ({
                 {...register('preechimento_completo')}
                 name="preechimento_completo"
               />
+
               <LabelCheck htmlFor="preechimento_completo_true">
-                <CheckCircle size={40} /> Preencher todos os campos do
-                formulário/requerimento{' '}
+                <Check size={32} />
+                <p>Preencher todos os campos do formulário/requerimento</p>{' '}
               </LabelCheck>
             </ContainerInput>
           </ContainerCheckInput>
         )}
 
-        {state.oab === 'Sim' && (
+        {state.oab === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
                 id="oab_true"
                 type="checkbox"
-                value="Não"
                 {...register('oab')}
                 name="oab"
               />
-
               <LabelCheck htmlFor="oab_true">
-                <CheckCircle size={40} />
-                Apresentar cópia da OAB do representante jurídico do ato
-                apresentado
+                <Check size={32} />
+                <p>
+                  Apresentar cópia da OAB do representante jurídico do ato
+                  apresentado
+                </p>{' '}
               </LabelCheck>
             </ContainerInput>
           </ContainerCheckInput>
         )}
 
-        {state.documentacao_de_identificacao === 'Sim' && (
+        {state.documentacao_de_identificacao === 'Pendente' && (
           <ContainerCheckInput>
             <ContainerInput>
               <input
                 id="documentacao_de_identificacao_true"
                 type="checkbox"
+                value="Não"
                 {...register('documentacao_de_identificacao')}
                 name="documentacao_de_identificacao"
               />
 
               <LabelCheck htmlFor="documentacao_de_identificacao_true">
-                <CheckCircle size={40} />
-                Apresentar cópia simples do documento de identificação
+                <Check size={32} />
+                <p>Apresentar cópia simples do documento de identificação</p>
+              </LabelCheck>
+            </ContainerInput>
+          </ContainerCheckInput>
+        )}
+
+        {state.requisitos_de_estatutos_fundadores === 'Pendente' && (
+          <ContainerCheckInput>
+            <ContainerInput>
+              <input
+                id="requisitos_de_estatutos_fundadores_true"
+                type="checkbox"
+                {...register('requisitos_de_estatutos_fundadores')}
+                name="requisitos_de_estatutos_fundadores"
+              />
+
+              <LabelCheck htmlFor="requisitos_de_estatutos_fundadores_true">
+                <Check size={32} />
+                <p>
+                  Apresentar os requisitos obrigatórios no Estatuto: relação de
+                  documentos de fundadores;
+                  <span>
+                    ( CNCGJ Art. 945 / Lei 6.015 no Art. 120 / Lei 10.406 Art.
+                    46)
+                  </span>
+                </p>
+              </LabelCheck>
+            </ContainerInput>
+          </ContainerCheckInput>
+        )}
+
+        {state.requisitos_criacao_de_estatuto === 'Pendente' && (
+          <ContainerCheckInput>
+            <ContainerInput>
+              <input
+                id="requisitos_criacao_de_estatuto_true"
+                type="checkbox"
+                {...register('requisitos_criacao_de_estatuto')}
+                name="requisitos_criacao_de_estatuto"
+              />
+
+              <LabelCheck htmlFor="requisitos_criacao_de_estatuto_true">
+                <Check size={32} />
+                <p>
+                  Apresentar os requisitos obrigatórios para criação do
+                  estatuto;
+                  <span>(Lei 10.406/2002 Art. 54)</span>
+                </p>
+              </LabelCheck>
+            </ContainerInput>
+          </ContainerCheckInput>
+        )}
+
+        {state.retificacao_de_redacao === 'Pendente' && (
+          <ContainerCheckInput>
+            <ContainerInput>
+              <input
+                id="retificacao_de_redacao_true"
+                type="checkbox"
+                {...register('retificacao_de_redacao')}
+                name="retificacao_de_redacao"
+              />
+
+              <LabelCheck htmlFor="retificacao_de_redacao_true">
+                <Check size={32} />
+                <p>Retificar redação do documento apresentado;</p>
+              </LabelCheck>
+            </ContainerInput>
+          </ContainerCheckInput>
+        )}
+
+        {state.campo_de_assinatura === 'Pendente' && (
+          <ContainerCheckInput>
+            <ContainerInput>
+              <input
+                id="campo_de_assinatura_true"
+                type="checkbox"
+                {...register('campo_de_assinatura')}
+                name="campo_de_assinatura"
+              />
+
+              <LabelCheck htmlFor="campo_de_assinatura_true">
+                <Check size={32} />
+                <p>Preencher todos os campos de assinatura;</p>
               </LabelCheck>
             </ContainerInput>
           </ContainerCheckInput>

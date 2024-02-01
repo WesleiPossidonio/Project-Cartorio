@@ -3,12 +3,15 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { arrayInputList, ControllerFormInputs } from '../../components'
+import {
+  arrayInputList,
+  ControllerFormInputs,
+  UpdateControllerFormInputs,
+} from '../../components'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { MenuPage } from '../../components/MenuPage'
 import { TextRegular, TitleText } from '../../components/typography'
-import { UpdateControllerFormInputs } from '../../components/UpdateControllerFormInputs'
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
 import { useRequeriment } from '../../hooks/useRequeriment'
 import {
@@ -157,6 +160,8 @@ export function UpdateRequeriment() {
             <ControllerFormInputs
               register={register}
               arrayInputList={arrayInputList}
+              arrayUpdateInputList={state}
+              controllerUsageStatus="Update"
             />
           )}
 

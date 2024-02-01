@@ -235,6 +235,8 @@ export const RequerimentContextProvider = ({
         retificacao_de_redacao,
       } = data
 
+      console.log(informacao_divergente)
+
       const numberProtocol = numberProtocolClient + 1
 
       setNumberProtocolClient(numberProtocol)

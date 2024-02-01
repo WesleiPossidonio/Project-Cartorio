@@ -238,6 +238,7 @@ export const FormCreateRequeriment = () => {
           <ControllerFormInputs
             register={register}
             arrayInputList={arrayInputList}
+            controllerUsageStatus="Created"
           />
 
           <Button type="submit" disabled={isSubmitting} buttonSubmit>

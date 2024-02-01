@@ -20,6 +20,7 @@ export const ContainerControllerInput = styled.section`
 
 export const ContentInput = styled.div`
   width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;

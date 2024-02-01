@@ -2,6 +2,7 @@ import { NotePencil } from 'phosphor-react'
 import { useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 
+import { ListRequerimentProps } from '../../contexts/RequerimentContext'
 import { CreateRequerimentFormInputs } from '../../Pages/CreateRequeriment'
 import { Button } from '../Button'
 import { TextRegular } from '../typography'
@@ -25,43 +26,79 @@ interface StateInputListProps {
 interface ControllerProps {
   register: UseFormRegister<CreateRequerimentFormInputs>
   arrayInputList: StateInputListProps[]
+  arrayUpdateInputList?: ListRequerimentProps
+  controllerUsageStatus: 'Created' | 'Update'
 }
 
-export const ControllerFormInputs = ({
-  register,
-  arrayInputList,
-}: ControllerProps) => {
+export const ControllerFormInputs = (props: ControllerProps) => {
   const [divergentInformation, setDivergentInformation] = useState('')
 
   const handleDivergentInformation = (data: string) => {
     setDivergentInformation(data)
   }
 
+  const unselectedRequestsfilter =
+    props.arrayInputList &&
+    props.arrayInputList.filter(
+      (list) =>
+        props.arrayUpdateInputList &&
+        Object.entries(props.arrayUpdateInputList).some(
+          ([name, value]) => value === 'Recebido' && name === list.name
+        )
+    )
+
   return (
     <ContainerControllerInput>
       <ContentInput>
-        {arrayInputList.map((list, index) => {
-          return (
-            <ContainerCheckInput key={list.id}>
-              <ContainerInput>
-                <input
-                  id={list.id}
-                  type="checkbox"
-                  {...register(list.name as keyof CreateRequerimentFormInputs)}
-                  name={list.name}
-                />
+        {props.controllerUsageStatus === 'Created'
+          ? props.arrayInputList.map((list, index) => {
+              return (
+                <ContainerCheckInput key={list.id}>
+                  <ContainerInput>
+                    <input
+                      id={list.id}
+                      type="checkbox"
+                      {...props.register(
+                        list.name as keyof CreateRequerimentFormInputs
+                      )}
+                      name={list.name}
+                    />
 
-                <LabelCheck htmlFor={list.id}>
-                  <NotePencil size={40} />
-                  <div>
-                    {list.text}
-                    {list.spanText && <span> {list.spanText} </span>}
-                  </div>
-                </LabelCheck>
-              </ContainerInput>
-            </ContainerCheckInput>
-          )
-        })}
+                    <LabelCheck htmlFor={list.id}>
+                      <NotePencil size={40} />
+                      <div>
+                        {list.text}
+                        {list.spanText && <span> {list.spanText} </span>}
+                      </div>
+                    </LabelCheck>
+                  </ContainerInput>
+                </ContainerCheckInput>
+              )
+            })
+          : unselectedRequestsfilter.map((list, index) => {
+              return (
+                <ContainerCheckInput key={list.id}>
+                  <ContainerInput>
+                    <input
+                      id={list.id}
+                      type="checkbox"
+                      {...props.register(
+                        list.name as keyof CreateRequerimentFormInputs
+                      )}
+                      name={list.name}
+                    />
+
+                    <LabelCheck htmlFor={list.id}>
+                      <NotePencil size={40} />
+                      <div>
+                        {list.text}
+                        {list.spanText && <span> {list.spanText} </span>}
+                      </div>
+                    </LabelCheck>
+                  </ContainerInput>
+                </ContainerCheckInput>
+              )
+            })}
 
         <ContainerButtonInfo>
           <TextRegular weight={700}>
@@ -91,7 +128,7 @@ export const ControllerFormInputs = ({
           <TextArea
             id="list"
             placeholder="Digite as Informações Divergentes"
-            {...register('informacao_divergente')}
+            {...props.register('informacao_divergente')}
             name="informacao_divergente"
           />
         )}

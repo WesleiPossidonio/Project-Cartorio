@@ -33,7 +33,8 @@ export const arrayInputList = [
     id: 'declaracao_de_desimpedimento_true',
     name: 'declaracao_de_desimpedimento',
     text: 'Apresentar declaração de desimpedimento;',
-    spanText: '(contratos e averbações de sociedade simples, ME, EPP); (CNCGJ)',
+    spanText:
+      '(contratos e averbações de sociedade simples, ME, EPP); (CNCGJ) (CNCGJ Art. 938)',
   },
   {
     id: 'livro_rasao_true',
