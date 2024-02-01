@@ -36,9 +36,6 @@ export const CreateUserModal = () => {
     reset,
   } = useForm<CreateUserFormInputs>({
     resolver: zodResolver(createUserFormSchema),
-    defaultValues: {
-      admin: 'sim',
-    },
   })
 
   const handleCreateNewUser = async (data: CreateUserFormInputs) => {

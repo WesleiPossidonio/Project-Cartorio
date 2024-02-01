@@ -27,10 +27,11 @@ export const MenuContainer = styled.aside`
 
 interface MenuContainerProps {
   selected: boolean
+  isUserAdmin?: boolean
 }
 export const ContainerButton = styled.button<MenuContainerProps>`
   width: 100%;
-  display: flex;
+  display: ${({ isUserAdmin }) => (isUserAdmin ? 'flex' : 'none')};
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
