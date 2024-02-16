@@ -40,6 +40,13 @@ export function UpdateRequeriment() {
     reset,
   } = useForm<CreateRequerimentFormInputs>({
     resolver: zodResolver(createRequerimentFormSchema),
+    defaultValues: {
+      nome_da_instituicao: state.nome_da_instituicao,
+      cnpj: state.cnpj,
+      nome_do_representante: state.nome_do_representante,
+      telefone_contato: state.telefone_contato,
+      email_do_representante: state.email_do_representante,
+    },
   })
 
   const navigate = useNavigate()
@@ -84,7 +91,6 @@ export function UpdateRequeriment() {
               <Input
                 placeholder="Nome da Instituição"
                 type="text"
-                value={state.nome_da_instituicao}
                 {...register('nome_da_instituicao')}
               />
             </div>
@@ -94,7 +100,6 @@ export function UpdateRequeriment() {
                 placeholder="Nº CNPJ"
                 type="text"
                 id="number-cnpj"
-                value={state.cnpj}
                 {...register('cnpj')}
                 error={errors.cnpj?.message}
               />
@@ -106,7 +111,6 @@ export function UpdateRequeriment() {
                 type="text"
                 id="name-of-representative"
                 {...register('nome_do_representante')}
-                value={state.nome_do_representante}
               />
             </div>
 
@@ -115,7 +119,6 @@ export function UpdateRequeriment() {
                 placeholder="E-mail"
                 type="text"
                 id="email"
-                value={state.email_do_representante}
                 {...register('email_do_representante')}
                 error={errors.email_do_representante?.message}
               />
@@ -126,7 +129,6 @@ export function UpdateRequeriment() {
                 placeholder="Telefone de contato"
                 type="text"
                 id="phone"
-                value={state.telefone_contato}
                 {...register('telefone_contato')}
               />
             </div>
@@ -168,7 +170,7 @@ export function UpdateRequeriment() {
           )}
 
           <Button type="submit" disabled={isSubmitting} buttonSubmit>
-            Enviar Dados
+            Atualizar Dados
           </Button>
         </form>
       </ContentRequeriment>

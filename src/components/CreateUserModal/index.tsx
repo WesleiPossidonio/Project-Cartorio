@@ -95,7 +95,7 @@ export const CreateUserModal = () => {
             control={control}
             name="admin"
             render={({ field }) => {
-              const stringValue = field.value.toString()
+              const stringValue = field.value
               return (
                 <CreateUserType
                   onValueChange={field.onChange}

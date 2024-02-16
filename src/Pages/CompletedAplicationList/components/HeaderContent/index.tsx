@@ -23,7 +23,7 @@ const searchFormSchema = zod.object({
 type SearchFormInputs = zod.infer<typeof searchFormSchema>
 
 export const HeaderContent = () => {
-  const { filteredRequeriment } = useRequeriment()
+  const { filteredRequerimentConcluted } = useRequeriment()
 
   const {
     register,
@@ -41,7 +41,7 @@ export const HeaderContent = () => {
   }
 
   const handleSearchRequeriment = async (data: SearchFormInputs) => {
-    filteredRequeriment(data.query)
+    filteredRequerimentConcluted(data.query)
     reset()
   }
 

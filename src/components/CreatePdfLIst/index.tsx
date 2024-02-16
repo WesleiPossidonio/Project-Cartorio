@@ -151,7 +151,7 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
 
           {data.livro_rasao === 'Pendente' && (
             <Text style={styles.text}>
-              Apresentar livro razão ou contábil anteriormente registrado;
+              [ ] Apresentar livro razão ou contábil anteriormente registrado;
               (CNCGJ Art. 960 § 1º)
             </Text>
           )}

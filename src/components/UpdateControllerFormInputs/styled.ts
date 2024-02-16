@@ -30,16 +30,17 @@ export const ContentInput = styled.div`
   margin-top: 2rem;
 `
 
-export const ContainerCheckInput = styled.div`
+export const ContainerInput = styled.div`
   width: 100%;
+  height: max-content;
 
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  border-radius: 8px;
 
-  margin-top: 1rem;
+  text-align: start;
 
   input {
     visibility: hidden;
@@ -61,23 +62,21 @@ export const ContainerCheckInput = styled.div`
   input:checked#oab_true + label,
   input:checked#documentacao_de_identificacao_true + label,
   input:checked#requisitos_criacao_de_estatuto_true + label,
-  input:checked#requisitos_de_estatutos_fundadores_true + label {
-    background: #265a63;
-    color: #fff;
-
-    /* &:hover {
-      ${(props) => props.theme['purple-light']};
-    } */
+  input:checked#requisitos_de_estatutos_fundadores_true + label,
+  input:checked#retificacao_de_redacao_true + label,
+  input:checked#campo_de_assinatura_true + label {
+    background: ${({ theme }) => theme.colors['base-green']};
+    color: ${({ theme }) => theme.colors['base-hover']};
   }
-`
 
-export const ContainerInput = styled.div`
-  width: 100%;
-  height: max-content;
+  svg {
+    color: ${({ theme }) => theme.colors['base-text']};
+    z-index: 10;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    &:hover {
+      color: ${({ theme }) => theme.colors['base-background']};
+    }
+  }
 `
 
 export const LabelCheck = styled.label`
@@ -91,17 +90,12 @@ export const LabelCheck = styled.label`
 
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 0.5rem;
 
   padding: 1rem;
 
   background: ${({ theme }) => theme.colors['bg-input']};
-
-  &:hover {
-    background: #2b3d63;
-    color: #fff;
-  }
 
   p {
     display: flex;
@@ -110,6 +104,11 @@ export const LabelCheck = styled.label`
 
   span {
     font-size: 0.75rem;
+  }
+
+  &:hover {
+    background: ${({ theme }) => theme.colors['base-blue']};
+    color: ${({ theme }) => theme.colors['base-hover']};
   }
 
   @media (max-width: 768px) {

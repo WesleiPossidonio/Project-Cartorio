@@ -31,7 +31,7 @@ interface MenuContainerProps {
 }
 export const ContainerButton = styled.button<MenuContainerProps>`
   width: 100%;
-  display: ${({ isUserAdmin }) => (isUserAdmin ? 'flex' : 'none')};
+  display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;

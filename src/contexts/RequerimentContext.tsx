@@ -62,6 +62,7 @@ interface RequerimentContextType {
   selectAListRequeriment: ListRequerimentProps[]
   requestListDataPDF: ListRequerimentProps
   setSelectAListRequeriment: (curatedList: ListRequerimentProps[]) => void
+  setDataListRequeriment: (data: ListRequerimentProps[]) => void
   CreateRequeriment: (data: ListRequerimentProps) => Promise<void>
   filteredRequeriment: (query: string) => void
   filteredRequerimentConcluted: (query: string) => void
@@ -119,10 +120,14 @@ export const RequerimentContextProvider = ({
 
   useEffect(() => {
     getListRequeriment()
-  }, [getListRequeriment])
+  }, [getListRequeriment, dataListRequeriment])
 
   const filteredRequeriment = (query: string) => {
-    const filteredRequeriment = dataListRequeriment.filter((data) => {
+    const dropDownList = dataListRequeriment.filter((list) => {
+      return list.estado_do_requerimento === 'Pendente'
+    })
+
+    const filteredRequeriment = dropDownList.filter((data) => {
       return (
         (data.nome_da_instituicao &&
           data.nome_da_instituicao
@@ -138,7 +143,11 @@ export const RequerimentContextProvider = ({
   }
 
   const filteredRequerimentConcluted = (query: string) => {
-    const filteredRequeriment = dataListRequeriment.filter((data) => {
+    const listCompleted = dataListRequeriment.filter((list) => {
+      return list.estado_do_requerimento === 'Concluído'
+    })
+
+    const filteredRequeriment = listCompleted.filter((data) => {
       return (
         (data.nome_da_instituicao &&
           data.nome_da_instituicao
@@ -334,7 +343,7 @@ export const RequerimentContextProvider = ({
         }
 
         try {
-          const createRequermentResponse = await toast.promise(
+          const updateRequermentResponse = await toast.promise(
             api.put(`requeriment/${updatedList.id}`, updatedList),
             {
               pending: 'Verificando seus dados',
@@ -343,7 +352,7 @@ export const RequerimentContextProvider = ({
             }
           )
 
-          const { data } = createRequermentResponse
+          const { data } = updateRequermentResponse
 
           setDataListRequeriment([...dataListRequeriment, data])
         } catch (error) {
@@ -353,7 +362,7 @@ export const RequerimentContextProvider = ({
         const updatedList = { ...data, data_atualizacao: dataString }
 
         try {
-          const createRequermentResponse = await toast.promise(
+          const updateRequermentResponse = await toast.promise(
             api.put(`requeriment/${updatedList.id}`, updatedList),
             {
               pending: 'Verificando seus dados',
@@ -362,7 +371,7 @@ export const RequerimentContextProvider = ({
             }
           )
 
-          const { data } = createRequermentResponse
+          const { data } = updateRequermentResponse
 
           setDataListRequeriment([...dataListRequeriment, data])
         } catch (error) {
@@ -388,6 +397,7 @@ export const RequerimentContextProvider = ({
         updateRequeriment,
         sendMail,
         filteredRequerimentConcluted,
+        setDataListRequeriment,
       }}
     >
       {children}

@@ -105,7 +105,7 @@ export const FormCreateRequeriment = () => {
     )
 
     filteredEntries.map(([key, value]) => {
-      return (booleanData[key] = value ? 'Pendente' : 'Recebido')
+      return (booleanData[key] = value ? 'Pendente' : 'Não Listado')
     })
 
     const {
