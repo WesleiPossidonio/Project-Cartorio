@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -6,23 +7,27 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import {
   arrayInputList,
   ControllerFormInputs,
+  CreatePdfList,
   UpdateControllerFormInputs,
 } from '../../components'
 import { Button } from '../../components/Button'
+import {
+  CreateRequerimentFormInputs,
+  createRequerimentFormSchema,
+} from '../../components/CreateRequerimentModal/Components/CreateRequeriment'
 import { Input } from '../../components/Input'
 import { MenuPage } from '../../components/MenuPage'
 import { TextRegular, TitleText } from '../../components/typography'
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
 import { useRequeriment } from '../../hooks/useRequeriment'
-import {
-  CreateRequerimentFormInputs,
-  createRequerimentFormSchema,
-} from '../CreateRequeriment'
+import { useUser } from '../../hooks/useUser'
 import {
   ContainerAddRequerimento,
   ContainerForm,
   ContainerUpdate,
+  ContentLink,
   ContentRequeriment,
+  HeaderContent,
 } from './styled'
 
 export interface LocationProps {
@@ -32,7 +37,8 @@ export interface LocationProps {
 export function UpdateRequeriment() {
   const { state } = useLocation() as unknown as LocationProps
   const [addDataToListUpdate, setAddDataToListUpdate] = useState('')
-  const { updateRequeriment } = useRequeriment()
+  const { updateRequeriment, sendMail } = useRequeriment()
+  const { userDataLogin } = useUser()
   const {
     register,
     handleSubmit,
@@ -77,12 +83,45 @@ export function UpdateRequeriment() {
     setAddDataToListUpdate(data)
   }
 
+  const handleSendMail = () => {
+    const dataSendMail = state
+    const { name, registration } = userDataLogin
+
+    const ListSendMail = {
+      ...dataSendMail,
+      updateMail: true,
+      name,
+      registration,
+    }
+
+    sendMail(ListSendMail)
+  }
+
   return (
     <ContainerUpdate>
       <MenuPage />
       <ContentRequeriment>
-        <TitleText size="s">Atualizar Exigência</TitleText>
-        <Button onClick={handleNavigateToHome}>Voltar ao Início</Button>
+        <HeaderContent>
+          <div>
+            <TitleText size="s">Atualizar Exigência</TitleText>
+            <TextRegular color="text" onClick={handleNavigateToHome}>
+              Voltar ao Início
+            </TextRegular>
+          </div>
+          <ContentLink>
+            <PDFDownloadLink
+              className="pdfLink"
+              document={<CreatePdfList data={state} dataUser={userDataLogin} />}
+              fileName="Exigência"
+            >
+              {({ loading }) => (loading ? 'Carregando PDF' : 'Imprimir')}
+            </PDFDownloadLink>
+
+            <TextRegular size="m" weight={600} onClick={handleSendMail}>
+              Enviar E-mail
+            </TextRegular>
+          </ContentLink>
+        </HeaderContent>
 
         <form onSubmit={handleSubmit(handleUpdateRequeriment)}>
           <TitleText size="s">Atualizar Lista</TitleText>

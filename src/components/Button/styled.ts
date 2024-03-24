@@ -14,7 +14,7 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
 
   width: ${({ buttonSubmit, selectButton }) =>
     (buttonSubmit && '20rem') || (selectButton && '6rem')};
-  padding: 0.7rem;
+  padding: 0.856rem;
   border: none;
   border-radius: 6px;
 

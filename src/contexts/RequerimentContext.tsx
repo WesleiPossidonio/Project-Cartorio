@@ -85,8 +85,6 @@ export const RequerimentContextProvider = ({
 
   const [requestListDataPDF, setRequestListDataPDF] =
     useState<ListRequerimentProps>({})
-  const [numberProtocolClient, setNumberProtocolClient] =
-    useState<number>(202565)
   const [dataInpuSearch, setDataInpuSearch] = useState('')
   const [filteredDataRequeriment, setFilteredDataRequeriment] =
     useState<ListRequerimentProps[]>(dataListRequeriment)
@@ -97,25 +95,23 @@ export const RequerimentContextProvider = ({
   const [selectAListRequeriment, setSelectAListRequeriment] = useState<
     ListRequerimentProps[]
   >([])
+  const [numberProtocolClient, setNumberProtocolClient] =
+    useState<number>(2024065)
 
   const { userDataLogin } = useUser()
 
   const getListRequeriment = useCallback(async () => {
     const listRequeriment = await api.get('requeriment')
     const { data } = listRequeriment
-
-    const lastList = data[data.length - 1]
-
-    const lastProtocolNumber =
-      lastList !== undefined
-        ? Number(lastList.numero_do_protocolo) + 1
-        : numberProtocolClient
-
-    if (lastProtocolNumber) {
-      setNumberProtocolClient(lastProtocolNumber)
-    }
-
     setDataListRequeriment(data)
+
+    const lastNumberProtocol = data[data.length - 1].numero_do_protocolo + 3
+
+    if (!numberProtocolClient) {
+      setNumberProtocolClient(2024065)
+    } else {
+      setNumberProtocolClient(lastNumberProtocol)
+    }
   }, [numberProtocolClient])
 
   useEffect(() => {
@@ -244,16 +240,6 @@ export const RequerimentContextProvider = ({
         retificacao_de_redacao,
       } = data
 
-      console.log(informacao_divergente)
-
-      const numberProtocol = numberProtocolClient + 1
-
-      setNumberProtocolClient(numberProtocol)
-      await localStorage.setItem(
-        'cartorio:numberProtocol',
-        JSON.stringify(numberProtocol)
-      )
-
       const regex = /(\d{2})(\d{5})(\d{4})/
 
       const formatedNumberPhone =
@@ -297,24 +283,24 @@ export const RequerimentContextProvider = ({
         retificacao_de_redacao,
       }
 
-      setDataListRequeriment((prevState) => [...prevState, newListRequeriment])
-
       try {
-        await toast.promise(api.post('requerimentData', newListRequeriment), {
-          pending: 'Verificando seus dados',
-          success: 'Exigencia Criada com Sucesso!',
-          error: 'Ops! Verifique os Dados Digitados',
-        })
+        const newList = await toast.promise(
+          api.post('requerimentData', newListRequeriment),
+          {
+            pending: 'Verificando seus dados',
+            success: 'Exigencia Criada com Sucesso!',
+            error: 'Ops! Verifique os Dados Digitados',
+          }
+        )
+
+        const { data } = newList
 
         setRequestListDataPDF(newListRequeriment)
 
-        setDataListRequeriment((prevState) => [
-          ...prevState,
-          newListRequeriment,
-        ])
+        setDataListRequeriment((prevState) => [...prevState, data])
 
         sendMail({
-          ...newListRequeriment,
+          ...data,
           updateMail: false,
           name,
           registration,

@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
-import { CreateRequerimentFormInputs } from '../../Pages/CreateRequeriment'
 import { Button } from '../Button'
+import { CreateRequerimentFormInputs } from '../CreateRequerimentModal/Components/CreateRequeriment'
 import { TextRegular } from '../typography'
 import {
   ContainerInput,
@@ -43,7 +43,7 @@ export const ControllerFormInputs = (props: ControllerProps) => {
       (list) =>
         props.arrayUpdateInputList &&
         Object.entries(props.arrayUpdateInputList).some(
-          ([name, value]) => value === 'Recebido' && name === list.name
+          ([name, value]) => value === 'Não Listado' && name === list.name
         )
     )
 
@@ -65,7 +65,7 @@ export const ControllerFormInputs = (props: ControllerProps) => {
                     />
 
                     <LabelCheck htmlFor={list.id}>
-                      <NotePencil size={40} />
+                      <NotePencil size={30} />
                       <div>
                         {list.text}
                         {list.spanText && <span> {list.spanText} </span>}
@@ -89,7 +89,7 @@ export const ControllerFormInputs = (props: ControllerProps) => {
                     />
 
                     <LabelCheck htmlFor={list.id}>
-                      <NotePencil size={40} />
+                      <NotePencil size={30} />
                       <div>
                         {list.text}
                         {list.spanText && <span> {list.spanText} </span>}

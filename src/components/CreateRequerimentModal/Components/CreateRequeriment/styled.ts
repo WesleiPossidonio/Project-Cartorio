@@ -2,14 +2,11 @@ import { styled } from 'styled-components'
 
 export const SectionCreateRequirement = styled.section`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-
-  > p {
-    align-self: flex-start;
-  }
+  overflow-y: auto;
 
   form {
     display: flex;
@@ -17,20 +14,19 @@ export const SectionCreateRequirement = styled.section`
     align-items: center;
     justify-content: flex-start;
 
-    border-radius: 6px;
     padding: 2rem;
-
-    background: #fff;
-    margin: 4rem 0;
-  }
-
-  form h1 {
-    align-self: flex-start;
-    margin: 1.8rem 2.5rem;
-  }
-
-  form button {
     margin-top: 2rem;
+
+    input {
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+        rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+      border-radius: 6px;
+    }
+
+    .PdfContainer {
+      align-self: flex-start;
+      margin-top: 1rem;
+    }
   }
 
   a {
@@ -38,31 +34,8 @@ export const SectionCreateRequirement = styled.section`
   }
 `
 
-export const ContentRequeriment = styled.div`
-  position: fixed;
-  top: 6rem;
-  bottom: 0;
-  right: 0;
-  width: 80%;
-  padding: 3rem;
-  background: #f2f3ee;
-  overflow-y: auto;
-
-  > h1 {
-    margin-bottom: 1rem;
-  }
-
-  @media (max-width: 1023px) {
-    width: 100%;
-  }
-
-  @media (max-width: 600px) {
-    padding: 1.5rem;
-  }
-`
-
 export const ContainerForm = styled.div`
-  width: 90%;
+  width: 100%;
   display: grid;
   grid-template-columns: 40% 40%;
   column-gap: 0.75rem;
@@ -126,20 +99,18 @@ export const ContainerForm = styled.div`
   }
 `
 
-export const ButtonCreateRequeriment = styled.button`
-  margin-top: 4rem;
-  width: 15rem;
-  padding: 1rem;
-  border: none;
-  border-radius: 6px;
-  background: #2b3d63;
-  color: #fff;
-`
-
 export const ButtonHome = styled.button`
-  width: 12rem;
-  padding: 0.92rem;
-  margin-top: 1rem;
+  width: 8rem;
+
+  padding: 0.6rem;
   border: 0;
   border-radius: 6px;
+
+  margin-top: 1rem;
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  background: #2b3d63;
+  color: #fff;
 `

@@ -2,10 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
-import ImageLogin from '../../assets/Image-Logint.svg'
 import { useUser } from '../../hooks/useUser'
 import { FormLogin } from './components/FormLogin'
-import { ContainerInput, ImageMainLogin } from './style'
+import { ContainerInput } from './style'
 
 const confirmOrderLoginValidationSchema = zod.object({
   name: zod.string().min(3, 'Informe o nome do usuário'),
@@ -31,10 +30,6 @@ export const Login = () => {
 
   return (
     <ContainerInput>
-      <div>
-        <ImageMainLogin src={ImageLogin as unknown as string} alt="" />
-      </div>
-
       <form action="#" onSubmit={handleSubmit(handleConfirmOrder)}>
         <FormProvider {...confirmOrderLoginForm}>
           <FormLogin />

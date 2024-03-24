@@ -2,16 +2,9 @@ import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import ImageLogin from '../../../../assets/Image-Logint.svg'
 import LogoCartorio from '../../../../assets/Logo-Cartorio.svg'
 import { Input, TextRegular } from '../../../../components'
-import {
-  Button,
-  ContentInputLogin,
-  ImageLogo,
-  Label,
-  ImageMainLogin,
-} from './style'
+import { Button, ContentInputLogin, ImageLogo, Label } from './style'
 
 interface ErrosType {
   errors: {
@@ -36,7 +29,6 @@ export const FormLogin = () => {
     <ContentInputLogin>
       <div>
         <ImageLogo src={LogoCartorio as unknown as string} />
-        <ImageMainLogin src={ImageLogin as unknown as string} alt="" />
       </div>
 
       <Label htmlFor="name">

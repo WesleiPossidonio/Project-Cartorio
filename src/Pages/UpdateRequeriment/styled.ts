@@ -54,6 +54,42 @@ export const ContentRequeriment = styled.div`
   }
 `
 
+export const HeaderContent = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const ContentLink = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.3rem;
+
+  p {
+    color: ${({ theme }) => theme.colors['base-blue']};
+    cursor: pointer;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors['base-green']};
+    }
+  }
+
+  .pdfLink {
+    font-size: ${({ theme }) => theme.fontSizes['text-regular-m']};
+    font-weight: 600;
+    text-decoration: none;
+    color: ${({ theme }) => theme.colors['base-blue']};
+    cursor: pointer;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors['base-green']};
+    }
+  }
+`
+
 export const ContainerForm = styled.div`
   width: 90%;
   display: grid;

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckCircle, MagnifyingGlass, PlusCircle } from 'phosphor-react'
+import { CheckCircle, MagnifyingGlass } from 'phosphor-react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -29,10 +29,6 @@ export const HeaderContent = () => {
 
   const navigate = useNavigate()
 
-  const handleNavigatePage = () => {
-    navigate('/criar-exigencia')
-  }
-
   const handleNavigatePageListConcluted = () => {
     navigate('/lista-concluida')
   }
@@ -61,12 +57,9 @@ export const HeaderContent = () => {
       </SearchForm>
 
       <ContainerButton>
-        <Button onClick={handleNavigatePage}>
-          <PlusCircle size={30} /> Criar Exigencia
-        </Button>
         <Button onClick={handleNavigatePageListConcluted}>
           <CheckCircle size={30} />
-          Concluídos
+          Exigências Concluídas
         </Button>
       </ContainerButton>
     </HeaderHome>

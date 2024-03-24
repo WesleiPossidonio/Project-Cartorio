@@ -30,6 +30,7 @@ export const ContainerUser = styled.div`
     .mobile {
       display: initial;
     }
+
     > nav {
       display: none;
     }
@@ -51,7 +52,7 @@ export const ContentUser = styled.div`
   justify-content: center;
   gap: 0.5rem;
 
-  @media (max-width: 700px) {
+  @media (max-width: 1023px) {
     display: none;
   }
 `

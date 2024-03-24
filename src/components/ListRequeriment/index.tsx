@@ -8,6 +8,7 @@ import {
 } from '@mui/material'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import { ListChecks } from 'phosphor-react'
 import { ChangeEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -20,8 +21,12 @@ import {
 } from './style'
 
 export const TableRequeriment = () => {
-  const { dataListRequeriment, dataInpuSearch, filteredDataRequeriment } =
-    useRequeriment()
+  const {
+    dataListRequeriment,
+    dataInpuSearch,
+    filteredDataRequeriment,
+    updateRequeriment,
+  } = useRequeriment()
 
   const navigate = useNavigate()
 
@@ -48,9 +53,21 @@ export const TableRequeriment = () => {
       curatedList.map((item, index) => [`objeto${index + 1}`, item])
     )
 
-    navigate('/lista-selecionada', {
+    navigate('/atualizar-lista', {
       state: listSelected.objeto1,
     })
+  }
+
+  const handleCompletedList = (id: number) => {
+    const listSelected = dataListRequeriment.find((list) => {
+      return list.id === id
+    })
+
+    const listConcluted = { ...listSelected, handleListConcluted: true }
+
+    console.log(listConcluted)
+
+    updateRequeriment(listConcluted)
   }
 
   const emptyRows =
@@ -66,7 +83,7 @@ export const TableRequeriment = () => {
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
             <TableHeader2>Estado do Requerimento</TableHeader2>
-            {/* <TableHeader2>Concluir</TableHeader2> */}
+            <TableHeader2>Concluir</TableHeader2>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -82,12 +99,13 @@ export const TableRequeriment = () => {
                   <TableRowContentList
                     key={data.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={() => data.id && handleSelectAList(data.id)}
                   >
                     <TableContentList>
                       {data.numero_do_protocolo}
                     </TableContentList>
-                    <TableContentList>
+                    <TableContentList
+                      onClick={() => data.id && handleSelectAList(data.id)}
+                    >
                       {data.nome_da_instituicao}
                     </TableContentList>
                     <TableContentList>
@@ -103,9 +121,13 @@ export const TableRequeriment = () => {
                     <TableContentList>
                       {data.estado_do_requerimento}
                     </TableContentList>
-                    {/* <TableContentList>
-                      <button>Concluir</button>
-                    </TableContentList> */}
+                    <TableContentList>
+                      <ListChecks
+                        className="Icon"
+                        size={32}
+                        onClick={() => data.id && handleCompletedList(data.id)}
+                      />
+                    </TableContentList>
                   </TableRowContentList>
                 )
               })
@@ -120,12 +142,13 @@ export const TableRequeriment = () => {
                   <TableRowContentList
                     key={data.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={() => data.id && handleSelectAList(data.id)}
                   >
                     <TableContentList>
                       {data.numero_do_protocolo}
                     </TableContentList>
-                    <TableContentList>
+                    <TableContentList
+                      onClick={() => data.id && handleSelectAList(data.id)}
+                    >
                       {data.nome_da_instituicao}
                     </TableContentList>
                     <TableContentList>
@@ -141,9 +164,13 @@ export const TableRequeriment = () => {
                     <TableContentList>
                       {data.estado_do_requerimento}
                     </TableContentList>
-                    {/* <TableCell>
-                    <button>Atualizar</button> <button>Concluir</button>
-                  </TableCell> */}
+                    <TableContentList>
+                      <ListChecks
+                        className="Icon"
+                        size={32}
+                        onClick={() => data.id && handleCompletedList(data.id)}
+                      />
+                    </TableContentList>
                   </TableRowContentList>
                 )
               })}

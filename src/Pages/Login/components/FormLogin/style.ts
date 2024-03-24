@@ -20,24 +20,17 @@ export const ContentInputLogin = styled.div`
 
   p {
     cursor: pointer;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors['base-blue']};
+    }
   }
 `
 
 export const ImageLogo = styled.img`
-  width: min(18rem, 32vw);
+  width: min(15rem, 28vw);
   justify-self: center;
-  margin-bottom: 2rem;
-
-  @media (max-width: 950px) {
-    align-self: flex-start;
-    margin: 0 0 0 3rem;
-  }
-
-  @media (max-width: 598px) {
-    width: 15rem;
-    align-self: center;
-    margin: 0;
-  }
+  margin-bottom: 0.5rem;
 `
 
 export const Label = styled.label`
@@ -53,7 +46,7 @@ export const Button = styled.button`
   height: 3.155625rem;
 
   margin-top: 1rem;
-  margin-bottom: 5rem;
+  margin-bottom: 3rem;
 
   border: 1.00973px solid ${({ theme }) => theme.colors['base-button']};
   border-radius: 0.504863125rem;

@@ -7,11 +7,17 @@ export const ListRequerimentTable = styled(TableContainer)`
   max-height: 450px;
   margin-top: 2rem;
   padding: 0 1rem;
-  background: #fff;
+  background: ${({ theme }) => theme.colors['base-background']};
   border: none;
   border-radius: 6px;
   margin-bottom: 1rem;
   box-shadow: -5px 0px 31px 0px rgba(0, 0, 0, 0.1);
+
+  .Icon {
+    &:hover {
+      color: ${({ theme }) => theme.colors['base-blue']};
+    }
+  }
 `
 
 export const TableHeader2 = muiStyled(TableCell)({

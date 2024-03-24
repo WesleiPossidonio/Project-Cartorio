@@ -4,7 +4,6 @@ import { Routes, Route } from 'react-router-dom'
 import {
   CompletedAplicationList,
   ConfirmEmail,
-  FormCreateRequeriment,
   Home,
   Login,
   SelectedListCompleted,
@@ -23,7 +22,6 @@ export const Router = () => {
 
       <Route path="/" element={<PrivateRoutes />}>
         <Route path="/" element={<Home />} />
-        <Route path="/criar-exigencia" element={<FormCreateRequeriment />} />
         <Route path="/lista-concluida" element={<CompletedAplicationList />} />
         <Route path="/lista-selecionada" element={<CuratedList />} />
         <Route path="/atualizar-lista" element={<UpdateRequeriment />} />

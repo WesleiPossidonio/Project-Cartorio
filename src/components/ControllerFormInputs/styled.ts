@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 
 export const ContainerControllerInput = styled.section`
-  width: 90%;
+  width: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -39,6 +39,9 @@ export const ContainerCheckInput = styled.div`
   gap: 0.5rem;
 
   margin-top: 1rem;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 
   input {
     visibility: hidden;

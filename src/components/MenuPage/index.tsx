@@ -4,51 +4,68 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useUser } from '../../hooks/useUser'
+import { CreateRequerimentModal } from '../CreateRequerimentModal'
 import { CreateUserModal } from '../CreateUserModal'
 import { TextRegular } from '../typography'
 import { ContainerButton, MenuContainer } from './style'
 
 export const MenuPage = () => {
-  const [menuSelected1, setmenuSelectd1] = useState(false)
-  const [menuSelected2, setmenuSelectd2] = useState(false)
+  const [linkMenuSelected, setLinkMenuSelected] = useState('')
 
   const { userDataLogin } = useUser()
 
   const navigate = useNavigate()
 
-  const handleIsSelected = () => {
-    setmenuSelectd1(true)
-    setmenuSelectd2(false)
-
-    navigate('/')
-  }
-
-  const handleIsSelected2 = () => {
-    setmenuSelectd1(false)
-    setmenuSelectd2(true)
+  const handleIsSelected = (data: string) => {
+    if (data === 'Home') {
+      setLinkMenuSelected(data)
+      navigate('/')
+    }
+    if (data === 'addUser') {
+      setLinkMenuSelected(data)
+    }
+    if (data === 'addRequeriment') {
+      setLinkMenuSelected(data)
+    }
   }
 
   return (
     <MenuContainer>
-      <ContainerButton selected={menuSelected1} onClick={handleIsSelected}>
+      <ContainerButton
+        selected={linkMenuSelected === 'Home' && true}
+        onClick={() => handleIsSelected('Home')}
+      >
         <ClipboardText size={32} />
-        <TextRegular size="l">Requerimentos</TextRegular>
+        <TextRegular size="m">Requerimentos</TextRegular>
       </ContainerButton>
       {userDataLogin.admin && (
         <Dialog.Root>
           <Dialog.Trigger asChild>
             <ContainerButton
-              selected={menuSelected2}
-              onClick={handleIsSelected2}
+              selected={linkMenuSelected === 'addUser' && true}
+              onClick={() => handleIsSelected('addUser')}
               isUserAdmin={userDataLogin.admin}
             >
               <PlusCircle size={32} />
-              <TextRegular size="l">Adicionar Usuários</TextRegular>
+              <TextRegular size="m">Adicionar Usuários</TextRegular>
             </ContainerButton>
           </Dialog.Trigger>
           <CreateUserModal />
         </Dialog.Root>
       )}
+
+      <Dialog.Root>
+        <Dialog.Trigger asChild>
+          <ContainerButton
+            selected={linkMenuSelected === 'addRequeriment' && true}
+            onClick={() => handleIsSelected('addRequeriment')}
+          >
+            <PlusCircle size={32} />
+            <TextRegular size="m">Adicionar Exigência</TextRegular>
+          </ContainerButton>
+        </Dialog.Trigger>
+        <CreateRequerimentModal />
+      </Dialog.Root>
     </MenuContainer>
   )
 }

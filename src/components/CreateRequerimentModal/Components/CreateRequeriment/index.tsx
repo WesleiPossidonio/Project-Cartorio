@@ -2,7 +2,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import * as zod from 'zod'
 
 import {
@@ -10,16 +9,14 @@ import {
   ControllerFormInputs,
   CreatePdfList,
   Input,
-  MenuPage,
-  TitleText,
   arrayInputList,
-} from '../../components'
-import { useRequeriment } from '../../hooks/useRequeriment'
-import { useUser } from '../../hooks/useUser'
+} from '../../..'
+import { useRequeriment } from '../../../../hooks/useRequeriment'
+import { useUser } from '../../../../hooks/useUser'
 import {
+  ButtonHome,
   // ButtonCreateRequeriment,
   ContainerForm,
-  ContentRequeriment,
   SectionCreateRequirement,
 } from './styled'
 
@@ -90,13 +87,7 @@ export const FormCreateRequeriment = () => {
 
   const { CreateRequeriment, requestListDataPDF } = useRequeriment()
 
-  const navigate = useNavigate()
-
   const { userDataLogin } = useUser()
-
-  const handleNavigateToHome = () => {
-    navigate('/')
-  }
 
   const handleCreateRequeriment = async (data: CreateRequerimentFormInputs) => {
     const booleanData: Record<string, string> = {}
@@ -173,91 +164,89 @@ export const FormCreateRequeriment = () => {
 
     reset()
   }
-
   return (
     <SectionCreateRequirement>
-      <MenuPage />
-      <ContentRequeriment>
-        <TitleText size="s">Adicionar Exigência</TitleText>
-        <Button onClick={handleNavigateToHome}>Voltar ao Início</Button>
+      <form onSubmit={handleSubmit(handleCreateRequeriment)}>
+        <ContainerForm>
+          <div id="institution-name">
+            <Input
+              placeholder="Nome da Instituição"
+              type="text"
+              {...register('nome_da_instituicao')}
+              error={errors.nome_da_instituicao?.message}
+            />
+          </div>
 
-        <form onSubmit={handleSubmit(handleCreateRequeriment)}>
-          <TitleText size="s">Criar Exigência</TitleText>
-          <ContainerForm>
-            <div id="institution-name">
-              <Input
-                placeholder="Nome da Instituição"
-                type="text"
-                {...register('nome_da_instituicao')}
-                error={errors.nome_da_instituicao?.message}
+          <div id="number-cnpj">
+            <Input
+              placeholder="Nº CNPJ"
+              type="text"
+              id="number-cnpj"
+              {...register('cnpj')}
+              error={errors.cnpj?.message}
+            />
+          </div>
+
+          <div id="name-of-representative">
+            <Input
+              placeholder="Nome do Representante"
+              type="text"
+              id="name-of-representative"
+              {...register('nome_do_representante')}
+            />
+          </div>
+
+          <div id="email">
+            <Input
+              placeholder="E-mail"
+              type="text"
+              id="email"
+              {...register('email_do_representante')}
+              error={errors.email_do_representante?.message}
+            />
+          </div>
+
+          <div id="phone">
+            <Input
+              placeholder="Telefone de contato"
+              type="text"
+              id="phone"
+              {...register('telefone_contato')}
+              error={errors.telefone_contato?.message}
+            />
+          </div>
+        </ContainerForm>
+
+        <ControllerFormInputs
+          register={register}
+          arrayInputList={arrayInputList}
+          controllerUsageStatus="Created"
+        />
+
+        <div className="PdfContainer">
+          <PDFDownloadLink
+            document={
+              <CreatePdfList
+                data={requestListDataPDF}
+                dataUser={userDataLogin}
               />
-            </div>
+            }
+            fileName="exigencia.pdf"
+          >
+            {({ loading }) =>
+              loading ? (
+                <ButtonHome type="button">Carregando PDF</ButtonHome>
+              ) : (
+                <ButtonHome type="button">Imprimir</ButtonHome>
+              )
+            }
+          </PDFDownloadLink>
+        </div>
 
-            <div id="number-cnpj">
-              <Input
-                placeholder="Nº CNPJ"
-                type="text"
-                id="number-cnpj"
-                {...register('cnpj')}
-                error={errors.cnpj?.message}
-              />
-            </div>
-
-            <div id="name-of-representative">
-              <Input
-                placeholder="Nome do Representante"
-                type="text"
-                id="name-of-representative"
-                {...register('nome_do_representante')}
-              />
-            </div>
-
-            <div id="email">
-              <Input
-                placeholder="E-mail"
-                type="text"
-                id="email"
-                {...register('email_do_representante')}
-                error={errors.email_do_representante?.message}
-              />
-            </div>
-
-            <div id="phone">
-              <Input
-                placeholder="Telefone de contato"
-                type="text"
-                id="phone"
-                {...register('telefone_contato')}
-                error={errors.telefone_contato?.message}
-              />
-            </div>
-          </ContainerForm>
-
-          <ControllerFormInputs
-            register={register}
-            arrayInputList={arrayInputList}
-            controllerUsageStatus="Created"
-          />
-
-          <Button type="submit" disabled={isSubmitting} buttonSubmit>
-            Enviar Dados
-          </Button>
-        </form>
-        <PDFDownloadLink
-          document={
-            <CreatePdfList data={requestListDataPDF} dataUser={userDataLogin} />
-          }
-          fileName="exigencia.pdf"
-        >
-          {({ loading }) =>
-            loading ? (
-              <Button>Carregando PDF</Button>
-            ) : (
-              <Button>Imprimir</Button>
-            )
-          }
-        </PDFDownloadLink>
-      </ContentRequeriment>
+        <Button type="submit" disabled={isSubmitting} buttonSubmit>
+          Enviar Dados
+        </Button>
+      </form>
     </SectionCreateRequirement>
   )
 }

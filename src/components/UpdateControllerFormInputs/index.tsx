@@ -6,15 +6,15 @@ import { toast } from 'react-toastify'
 
 import { ListRequerimentProps } from '../../contexts/RequerimentContext'
 import { useRequeriment } from '../../hooks/useRequeriment'
-import { CreateRequerimentFormInputs } from '../../Pages/CreateRequeriment'
 import { LocationProps } from '../../Pages/UpdateRequeriment'
 import api from '../../services/api'
+import { CreateRequerimentFormInputs } from '../CreateRequerimentModal/Components/CreateRequeriment'
 import {
-  ContainerInput,
   ContainerControllerInput,
+  ContainerInput,
   ContentInput,
   LabelCheck,
-} from './styled'
+} from './style'
 
 interface ControllerUpdateProps {
   register: UseFormRegister<CreateRequerimentFormInputs>
@@ -28,6 +28,7 @@ export const UpdateControllerFormInputs = ({
   const [updateList, setUpdateList] = useState<ListRequerimentProps>({
     ...state,
   })
+
   const { dataListRequeriment, setDataListRequeriment } = useRequeriment()
 
   const handleDeleteRequest = async (nameList: string) => {

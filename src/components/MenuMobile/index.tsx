@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useUser } from '../../hooks/useUser'
+import { CreateRequerimentModal } from '../CreateRequerimentModal'
 import { CreateUserModal } from '../CreateUserModal'
 import { TextRegular } from '../typography'
 import {
@@ -76,6 +77,21 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
             </ContainerButton>
           </Dialog.Trigger>
           <CreateUserModal />
+        </Dialog.Root>
+
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <ContainerButton
+              selected={menuSelected2}
+              onClick={handleIsSelected2}
+            >
+              <PlusCircle size={32} />
+              <TextRegular size="l" weight={700}>
+                Adicionar Exigência
+              </TextRegular>
+            </ContainerButton>
+          </Dialog.Trigger>
+          <CreateRequerimentModal />
         </Dialog.Root>
       </nav>
     </Container>
