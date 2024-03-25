@@ -100,23 +100,22 @@ export const RequerimentContextProvider = ({
 
   const { userDataLogin } = useUser()
 
-  const getListRequeriment = useCallback(async () => {
-    const listRequeriment = await api.get('requeriment')
-    const { data } = listRequeriment
-    setDataListRequeriment(data)
-
-    const lastNumberProtocol = data[data.length - 1].numero_do_protocolo + 3
-
-    if (!numberProtocolClient) {
-      setNumberProtocolClient(2024065)
-    } else {
-      setNumberProtocolClient(lastNumberProtocol)
-    }
-  }, [numberProtocolClient])
-
   useEffect(() => {
+    const getListRequeriment = async () => {
+      const listRequeriment = await api.get('requeriment')
+      const { data } = listRequeriment
+      setDataListRequeriment(data)
+
+      const lastNumberProtocol = data[data.length - 1].numero_do_protocolo + 3
+
+      if (!numberProtocolClient) {
+        setNumberProtocolClient(2024065)
+      } else {
+        setNumberProtocolClient(lastNumberProtocol)
+      }
+    }
     getListRequeriment()
-  }, [])
+  }, [numberProtocolClient])
 
   const filteredRequeriment = (query: string) => {
     const dropDownList = dataListRequeriment.filter((list) => {
