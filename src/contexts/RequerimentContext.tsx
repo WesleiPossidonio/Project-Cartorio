@@ -95,8 +95,7 @@ export const RequerimentContextProvider = ({
   const [selectAListRequeriment, setSelectAListRequeriment] = useState<
     ListRequerimentProps[]
   >([])
-  const [numberProtocolClient, setNumberProtocolClient] =
-    useState<number>(2024065)
+  const [numberProtocolClient, setNumberProtocolClient] = useState<number>(0)
 
   const { userDataLogin } = useUser()
 
@@ -108,7 +107,7 @@ export const RequerimentContextProvider = ({
 
       const lastNumberProtocol = data[data.length - 1].numero_do_protocolo + 3
 
-      if (!numberProtocolClient) {
+      if (numberProtocolClient === 0) {
         setNumberProtocolClient(2024065)
       } else {
         setNumberProtocolClient(lastNumberProtocol)
