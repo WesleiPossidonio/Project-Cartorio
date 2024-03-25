@@ -116,7 +116,7 @@ export const RequerimentContextProvider = ({
 
   useEffect(() => {
     getListRequeriment()
-  }, [getListRequeriment, dataListRequeriment])
+  }, [dataListRequeriment, getListRequeriment])
 
   const filteredRequeriment = (query: string) => {
     const dropDownList = dataListRequeriment.filter((list) => {
