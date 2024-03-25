@@ -116,7 +116,11 @@ export const RequerimentContextProvider = ({
 
   useEffect(() => {
     getListRequeriment()
-  }, [dataListRequeriment, getListRequeriment])
+  }, [])
+
+  useEffect(() => {
+    getListRequeriment()
+  }, [dataListRequeriment, numberProtocolClient])
 
   const filteredRequeriment = (query: string) => {
     const dropDownList = dataListRequeriment.filter((list) => {
