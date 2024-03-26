@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     width: 150,
   },
   titleText: {
-    fontSize: 13,
+    fontSize: 10,
     fontWeight: 700,
     marginBottom: 30,
     textAlign: 'center',
@@ -54,11 +54,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   text: {
-    fontSize: 10,
+    fontSize: 8,
     marginBottom: 8,
   },
   textheader2: {
-    fontSize: 13,
+    fontSize: 10,
     fontWeight: 700,
   },
   titleInfo: {
@@ -83,9 +83,12 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
           <Image src={ImageLogo} style={styles.image} />
         </View>
         <View style={styles.header}>
-          <Text style={styles.textheader2}>
-            Data da Recepção: {data.data_da_recepcao}
-          </Text>
+          <View>
+            <Text style={styles.textheader2}>
+              Data da Recepção: {data.data_da_recepcao}
+            </Text>
+          </View>
+
           {data.updatedAt && (
             <Text style={styles.textheader2}>
               Data da Exigência: {data.updatedAt}

@@ -59,6 +59,14 @@ export const HeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  p {
+    cursor: pointer;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors['base-blue']};
+    }
+  }
 `
 
 export const ContentLink = styled.div`

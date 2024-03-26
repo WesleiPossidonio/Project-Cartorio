@@ -12,12 +12,13 @@ export const MenuContainer = styled.aside`
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
+  gap: 0.5rem;
 
   background: #fff;
-  padding: 5.7rem 0 0 1.5rem;
+  padding: 5.7rem 0;
 
   svg {
-    color: #2b3d63;
+    color: ${({ theme }) => theme.colors['base-blue']};
   }
 
   @media (max-width: 1023px) {
@@ -29,6 +30,7 @@ interface MenuContainerProps {
   selected: boolean
   isUserAdmin?: boolean
 }
+
 export const ContainerButton = styled.button<MenuContainerProps>`
   width: 100%;
   display: flex;
@@ -36,13 +38,16 @@ export const ContainerButton = styled.button<MenuContainerProps>`
   justify-content: flex-start;
   gap: 0.5rem;
   padding: 1.5rem;
-  border-radius: 6px 0 0 6px;
+
+  background: ${({ theme, selected }) =>
+    selected ? theme.colors['base-hover'] : theme.colors['base-background']};
 
   border: none;
 
   cursor: pointer;
 
-  background: ${({ selected }) => selected && '#2b3d63'};
+  border-left: ${({ theme, selected }) =>
+    selected && `4px solid ${theme.colors['base-blue']}`};
 
   &:hover {
     background: ${({ theme, selected }) =>
@@ -50,11 +55,11 @@ export const ContainerButton = styled.button<MenuContainerProps>`
   }
 
   svg {
-    color: ${({ selected }) => selected && '#fff'};
+    color: ${({ theme, selected }) => selected && theme.colors['base-blue']};
   }
 
   p {
     text-align: center;
-    color: ${({ selected }) => selected && '#fff'};
+    color: ${({ theme, selected }) => selected && theme.colors['base-title']};
   }
 `
