@@ -101,7 +101,7 @@ export const LabelCheck = styled.label`
 
   padding: 1rem;
 
-  background: ${({ theme }) => theme.colors['bg-input']};
+  background: ${({ theme }) => theme.colors['base-background']};
 
   &:hover {
     background: #2b3d63;

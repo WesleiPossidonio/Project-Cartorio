@@ -17,12 +17,6 @@ export const SectionCreateRequirement = styled.section`
     padding: 2rem;
     margin-top: 2rem;
 
-    input {
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-        rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-      border-radius: 6px;
-    }
-
     .PdfContainer {
       align-self: flex-start;
       margin-top: 1rem;

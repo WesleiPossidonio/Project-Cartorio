@@ -75,6 +75,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
           }
         )
         const { data } = response
+        console.log(data)
         await localStorage.setItem('cartorio:userData1.0', JSON.stringify(data))
 
         setUserDataLogin(data)

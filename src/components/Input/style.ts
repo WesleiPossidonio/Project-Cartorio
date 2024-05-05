@@ -19,7 +19,9 @@ export const InputContaineStyle = styled.div<InputStyleContainerProps>`
   font-size: 0.8835125rem;
   line-height: 1.3125rem;
 
-  background: ${({ theme }) => theme.colors['bg-input']};
+  background: ${({ theme }) => theme.colors['base-background']};
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 
   border-radius: 8.07781px;
   border: 1px solid ${({ theme }) => theme.colors['bg-input']};

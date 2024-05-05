@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'flex-start',
     margin: 30,
-    marginLeft: 15,
     marginBottom: 0,
   },
   image: {
@@ -54,16 +53,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   text: {
-    fontSize: 8,
+    fontSize: 9,
     marginBottom: 8,
   },
   textheader2: {
     fontSize: 10,
     fontWeight: 700,
+    marginBottom: 3,
   },
   titleInfo: {
-    fontSize: 13,
-    fontWeight: 700,
+    fontSize: 10,
+    fontWeight: 500,
   },
   textInfo: {
     fontSize: 10,
@@ -83,13 +83,15 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
           <Image src={ImageLogo} style={styles.image} />
         </View>
         <View style={styles.header}>
-          <View>
-            <Text style={styles.textheader2}>
-              Data da Recepção: {data.data_da_recepcao}
-            </Text>
-          </View>
+          <Text style={styles.titleList}>
+            Nº do Exame: {data.numero_do_protocolo}
+          </Text>
 
-          {data.updatedAt && (
+          <Text style={styles.textheader2}>
+            Data da Recepção: {data.data_da_recepcao}
+          </Text>
+
+          {data.updatedAt === '' && (
             <Text style={styles.textheader2}>
               Data da Exigência: {data.updatedAt}
             </Text>
@@ -98,19 +100,16 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
             Nome da Instituição: {data.nome_da_instituicao}
           </Text>
           <Text style={styles.textheader2}>CNPJ: {data.cnpj}</Text>
-          <Text style={styles.textheader2}>
+          {/* <Text style={styles.textheader2}>
             Nome do Representante: {data.nome_do_representante}
           </Text>
           <Text style={styles.textheader2}>
             Email do Representante: {data.email_do_representante}
-          </Text>
+          </Text> */}
         </View>
 
         <View style={styles.main}>
           <Text style={styles.titleText}>Lista de Exigências Pendentes</Text>
-          <Text style={styles.titleList}>
-            Nº do Exame: {data.numero_do_protocolo}
-          </Text>
 
           {data.lista_e_edital === 'Pendente' && (
             <Text style={styles.text}>
