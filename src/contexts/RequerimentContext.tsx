@@ -10,7 +10,6 @@ import { toast } from 'react-toastify'
 
 import { useUser } from '../hooks/useUser'
 import api from '../services/api'
-
 export interface ListRequerimentProps {
   id?: number
   nome_da_instituicao?: string
@@ -61,6 +60,7 @@ interface RequerimentContextType {
   dataInpuSearch: string
   selectAListRequeriment: ListRequerimentProps[]
   requestListDataPDF: ListRequerimentProps
+  getListRequeriment: () => Promise<void>
   setSelectAListRequeriment: (curatedList: ListRequerimentProps[]) => void
   setDataListRequeriment: (data: ListRequerimentProps[]) => void
   CreateRequeriment: (data: ListRequerimentProps) => Promise<void>
@@ -95,24 +95,26 @@ export const RequerimentContextProvider = ({
   const [selectAListRequeriment, setSelectAListRequeriment] = useState<
     ListRequerimentProps[]
   >([])
-  const [numberProtocolClient, setNumberProtocolClient] = useState<number>(0)
+  const [numberProtocolClient, setNumberProtocolClient] =
+    useState<number>(2024001)
 
   const { userDataLogin } = useUser()
 
-  useEffect(() => {
-    const getListRequeriment = async () => {
-      const listRequeriment = await api.get('requeriment')
-      const { data } = listRequeriment
-      setDataListRequeriment(data)
+  const getListRequeriment = async () => {
+    const listRequeriment = await api.get('requeriment')
+    const { data } = listRequeriment
+    setDataListRequeriment(data)
 
-      const lastNumberProtocol = data[data.length - 1].numero_do_protocolo + 3
+    const lastNumberProtocol = data[data.length - 1].numero_do_protocolo + 3
 
-      if (numberProtocolClient === 0) {
-        setNumberProtocolClient(2024065)
-      } else {
-        setNumberProtocolClient(lastNumberProtocol)
-      }
+    if (numberProtocolClient === undefined) {
+      setNumberProtocolClient(2024065)
+    } else {
+      setNumberProtocolClient(lastNumberProtocol)
     }
+  }
+
+  useEffect(() => {
     getListRequeriment()
   }, [numberProtocolClient])
 
@@ -375,6 +377,7 @@ export const RequerimentContextProvider = ({
         dataInpuSearch,
         requestListDataPDF,
         filteredDataConclutedRequeriment,
+        getListRequeriment,
         CreateRequeriment,
         filteredRequeriment,
         setSelectAListRequeriment,

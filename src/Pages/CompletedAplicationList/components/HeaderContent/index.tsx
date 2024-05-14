@@ -5,11 +5,10 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as zod from 'zod'
 
-import { TitleText } from '../../../../components/typography'
+import { TextRegular, TitleText } from '../../../../components/typography'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import {
   ButtonHeader,
-  ButtonUpContentCreate,
   ContainerButton,
   HeaderHome,
   SearchForm,
@@ -64,9 +63,14 @@ export const HeaderContent = () => {
       </SearchForm>
 
       <ContainerButton>
-        <ButtonUpContentCreate onClick={handleNavigatePage}>
+        <TextRegular
+          size="m"
+          weight={600}
+          color="blue"
+          onClick={handleNavigatePage}
+        >
           Voltar ao Início
-        </ButtonUpContentCreate>
+        </TextRegular>
       </ContainerButton>
     </HeaderHome>
   )

@@ -37,5 +37,11 @@ export const ContainerButton = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+
+  p {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
 `

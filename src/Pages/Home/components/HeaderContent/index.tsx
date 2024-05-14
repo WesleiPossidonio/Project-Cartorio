@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckCircle, MagnifyingGlass } from 'phosphor-react'
+import { MagnifyingGlass } from 'phosphor-react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as zod from 'zod'
 
-import { Button, TitleText } from '../../../../components'
+import { Button, TextRegular, TitleText } from '../../../../components'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { ContainerButton, HeaderHome, SearchForm, SearchInput } from './styled'
 
@@ -57,10 +57,14 @@ export const HeaderContent = () => {
       </SearchForm>
 
       <ContainerButton>
-        <Button onClick={handleNavigatePageListConcluted}>
-          <CheckCircle size={30} />
+        <TextRegular
+          size="m"
+          color="blue"
+          weight={600}
+          onClick={handleNavigatePageListConcluted}
+        >
           Exigências Concluídas
-        </Button>
+        </TextRegular>
       </ContainerButton>
     </HeaderHome>
   )

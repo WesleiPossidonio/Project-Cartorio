@@ -76,15 +76,17 @@ export const ContainerButton = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
-  margin-top: 1rem;
+
+  margin-top: 0.5rem;
+
+  p {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
 `
 
 export const ButtonUpContent = styled(BaseButton)`
   background: #265a63;
-  color: #fff;
-`
-
-export const ButtonUpContentCreate = styled(BaseButton)`
-  background: #2b3d63;
   color: #fff;
 `
