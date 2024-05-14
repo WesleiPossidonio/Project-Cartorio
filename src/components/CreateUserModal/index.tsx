@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
 import { useUser } from '../../hooks/useUser'
+import { Input } from '../Input'
 import { TextRegular } from '../typography'
 import {
   CloseButton,
@@ -17,10 +18,13 @@ import {
 
 const createUserFormSchema = zod.object({
   admin: zod.string(),
-  name: zod.string(),
+  name: zod.string().min(2, 'Por Gentileza digite um nome'),
   email: zod.string().email('Por Favor digite um email válido'),
-  password: zod.string(),
-  registration: zod.string(),
+  password: zod
+    .string()
+    .min(6, 'Limite Minímo de seis digitos')
+    .max(8, 'Limite Máximo de seis digitos'),
+  registration: zod.string().min(3, 'Por gentileza digite o nº da matricula'),
 })
 
 type CreateUserFormInputs = zod.infer<typeof createUserFormSchema>
@@ -32,7 +36,7 @@ export const CreateUserModal = () => {
     control,
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
     reset,
   } = useForm<CreateUserFormInputs>({
     resolver: zodResolver(createUserFormSchema),
@@ -64,31 +68,31 @@ export const CreateUserModal = () => {
           <X size={24} />
         </CloseButton>
         <form onSubmit={handleSubmit(handleCreateNewUser)}>
-          <input
+          <Input
             type="text"
             placeholder="Nome"
-            required
             {...register('name')}
+            error={errors.name?.message}
           />
 
-          <input
+          <Input
             type="text"
             placeholder="Email"
-            required
             {...register('email')}
+            error={errors.email?.message}
           />
-          <input
+          <Input
             type="text"
             placeholder="Nº Matricula"
-            required
             {...register('registration')}
+            error={errors.registration?.message}
           />
 
-          <input
+          <Input
             type="text"
             placeholder="Senha"
-            required
             {...register('password')}
+            error={errors.password?.message}
           />
 
           <Controller

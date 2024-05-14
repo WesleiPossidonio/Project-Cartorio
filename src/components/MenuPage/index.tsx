@@ -1,5 +1,10 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { ClipboardText, PlusCircle } from 'phosphor-react'
+import {
+  ClipboardText,
+  PlusCircle,
+  UserCircle,
+  UserCirclePlus,
+} from 'phosphor-react'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,6 +12,7 @@ import { useUser } from '../../hooks/useUser'
 import { CreateRequerimentModal } from '../CreateRequerimentModal'
 import { CreateUserModal } from '../CreateUserModal'
 import { TextRegular } from '../typography'
+import { UpdateUserModal } from '../UpdateUserDataModal'
 import { ContainerButton, MenuContainer } from './style'
 
 export const MenuPage = () => {
@@ -27,10 +33,26 @@ export const MenuPage = () => {
     if (data === 'addRequeriment') {
       setLinkMenuSelected(data)
     }
+    if (data === 'UpdateDataUser') {
+      setLinkMenuSelected(data)
+    }
   }
 
   return (
     <MenuContainer>
+      <Dialog.Root>
+        <Dialog.Trigger asChild>
+          <ContainerButton
+            selected={linkMenuSelected === 'UpdateDataUser' && true}
+            onClick={() => handleIsSelected('UpdateDataUser')}
+          >
+            <UserCircle size={32} />
+            <TextRegular size="m">Meus Dados</TextRegular>
+          </ContainerButton>
+        </Dialog.Trigger>
+        <UpdateUserModal />
+      </Dialog.Root>
+
       <ContainerButton
         selected={linkMenuSelected === 'Home' && true}
         onClick={() => handleIsSelected('Home')}
@@ -46,7 +68,7 @@ export const MenuPage = () => {
               onClick={() => handleIsSelected('addUser')}
               isUserAdmin={userDataLogin.admin}
             >
-              <PlusCircle size={32} />
+              <UserCirclePlus size={32} />
               <TextRegular size="m">Adicionar Usuários</TextRegular>
             </ContainerButton>
           </Dialog.Trigger>

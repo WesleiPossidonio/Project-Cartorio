@@ -21,6 +21,10 @@ export const MenuContainer = styled.aside`
     color: ${({ theme }) => theme.colors['base-blue']};
   }
 
+  @media (min-width: 1800px) {
+    width: 14%;
+  }
+
   @media (max-width: 1023px) {
     display: none;
   }

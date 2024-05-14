@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { PlusCircle, User, X } from 'phosphor-react'
+import { PlusCircle, User, UserCircle, UserCirclePlus, X } from 'phosphor-react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import { useUser } from '../../hooks/useUser'
 import { CreateRequerimentModal } from '../CreateRequerimentModal'
 import { CreateUserModal } from '../CreateUserModal'
 import { TextRegular } from '../typography'
+import { UpdateUserModal } from '../UpdateUserDataModal'
 import {
   ButtonMobile,
   Container,
@@ -60,17 +61,33 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
           </DataUserName>
         </ContentUser>
 
-        <ButtonMobile href="#">
-          <PlusCircle size={32} />
-          Requerimentos
-        </ButtonMobile>
         <Dialog.Root>
           <Dialog.Trigger asChild>
             <ContainerButton
               selected={menuSelected2}
               onClick={handleIsSelected2}
             >
-              <PlusCircle size={32} />
+              <UserCircle size={32} />
+              <TextRegular size="l" weight={700}>
+                Meus Dados
+              </TextRegular>
+            </ContainerButton>
+          </Dialog.Trigger>
+          <UpdateUserModal />
+        </Dialog.Root>
+
+        <ButtonMobile href="#">
+          <PlusCircle size={32} />
+          Requerimentos
+        </ButtonMobile>
+
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <ContainerButton
+              selected={menuSelected2}
+              onClick={handleIsSelected2}
+            >
+              <UserCirclePlus size={32} />
               <TextRegular size="l" weight={700}>
                 Adicionar Usuários
               </TextRegular>

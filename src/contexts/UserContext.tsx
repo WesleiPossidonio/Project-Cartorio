@@ -8,8 +8,8 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-import api from '../services/api'
 import { useRequeriment } from '../hooks/useRequeriment'
+import api from '../services/api'
 
 interface UserLoginProps {
   name: string
@@ -33,6 +33,14 @@ interface CreaterUser {
   email: string
 }
 
+interface UpdateUser {
+  id: string
+  name: string
+  password: string
+  registration: string
+  email: string
+}
+
 interface ConfirmMailProps {
   email: string
 }
@@ -47,6 +55,7 @@ interface UserContextType {
   handleLoginUser: (data: UserLoginProps) => Promise<void>
   confirmMail: (data: ConfirmMailProps) => Promise<void>
   updatePassword: (data: UpdatePasswordProps) => Promise<void>
+  handleUpdateUser: (data: UpdateUser) => Promise<void>
   userDataLogin: ResponseDataUser
 }
 
@@ -150,6 +159,27 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     [navigate]
   )
 
+  const handleUpdateUser = useCallback(async (data: UpdateUser) => {
+    const { email, id, name, password, registration } = data
+
+    const updatedData = {
+      email,
+      name,
+      password,
+      registration,
+    }
+
+    try {
+      await toast.promise(api.put(`requeriment/${id}`, updatedData), {
+        pending: 'Verificando seus dados',
+        success: 'Senha Atualizada com Sucesso!',
+        error: 'Ops! Verifique os Dados Digitados',
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
   const updatePassword = useCallback(async (data: UpdatePasswordProps) => {
     const confirmEmail = localStorage.getItem('cartorio:UserConfirmEmail')
     const idUser = confirmEmail && JSON.parse(confirmEmail).id
@@ -173,6 +203,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         handleCreateUser,
         confirmMail,
         updatePassword,
+        handleUpdateUser,
       }}
     >
       {children}

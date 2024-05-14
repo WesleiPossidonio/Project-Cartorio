@@ -14,10 +14,9 @@ export const Overlay = styled(Dialog.Overlay)`
 
 export const Content = styled(Dialog.Content)`
   z-index: 12;
-  width: 90%;
-  height: 90vh;
+  min-width: 90%;
   border-radius: 6px;
-  padding: 2.5rem 1.5rem;
+  padding: 2.5rem 3rem;
   background: #f2f3ee;
 
   position: fixed;
@@ -25,6 +24,14 @@ export const Content = styled(Dialog.Content)`
   left: 50%;
 
   transform: translate(-50%, -50%);
+
+  form {
+    margin-top: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
   button[type='submit'] {
     height: 58px;
@@ -79,44 +86,5 @@ export const CreateUserType = styled(RadioGroup.Root)`
   > p {
     align-self: flex-start;
     margin-bottom: 0%.5rem;
-  }
-`
-
-interface CreateButtonTypes {
-  variant: 'true' | 'false'
-}
-
-export const CreateUserTypeButton = styled(RadioGroup.Item)<CreateButtonTypes>`
-  background: #fff;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-  border: 0;
-  font-weight: 600;
-  font-size: 1rem;
-  box-shadow: -5px 0px 31px 0px rgba(0, 0, 0, 0.1);
-
-  color: ${(props) => props.theme['gray-300']};
-
-  svg {
-    color: ${({ variant }) => (variant === 'true' ? '#2b3d63' : 'red')};
-  }
-
-  &[data-state='unchecked']:hover {
-    transition: background-color 2s;
-    background: #2b3d63;
-  }
-
-  &[data-state='checked'] {
-    color: #fff;
-    background: ${({ variant }) => (variant === 'true' ? '#265A63' : 'red')};
-  }
-
-  svg {
-    color: #d6d6d6;
   }
 `

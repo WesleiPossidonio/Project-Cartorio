@@ -3,7 +3,7 @@ import * as RadioGroup from '@radix-ui/react-radio-group'
 import { styled } from 'styled-components'
 
 export const Overlay = styled(Dialog.Overlay)`
-  z-index: 99999;
+  z-index: 10;
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -13,8 +13,8 @@ export const Overlay = styled(Dialog.Overlay)`
 `
 
 export const Content = styled(Dialog.Content)`
-  z-index: 99999;
-  min-width: 32rem;
+  z-index: 12;
+  min-width: 90%;
   border-radius: 6px;
   padding: 2.5rem 3rem;
   background: #f2f3ee;
@@ -31,19 +31,6 @@ export const Content = styled(Dialog.Content)`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  input {
-    border-radius: 6px;
-    border: 0;
-    background: #fff;
-    color: ${({ theme }) => theme.colors['base-text']};
-    padding: 1rem;
-    box-shadow: -5px 0px 31px 0px rgba(0, 0, 0, 0.1);
-
-    &::placeholder {
-      color: ${({ theme }) => theme.colors['base-text']};
-    }
   }
 
   button[type='submit'] {
