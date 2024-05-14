@@ -29,8 +29,8 @@ export const createRequerimentFormSchema = zod.object({
     .nonempty('Por favor, digite o nome do representante'),
   cnpj: zod
     .string()
-    .min(19, 'Por Favor, digite o CNPJ valido')
-    .max(19, 'Por Favor, digite o CNPJ valido'),
+    .min(18, 'Por Favor, digite o CNPJ valido')
+    .max(18, 'Por Favor, digite o CNPJ valido'),
   email_do_representante: zod
     .string()
     .email('Por favor digite um email válido'),
