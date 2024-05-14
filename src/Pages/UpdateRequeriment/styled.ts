@@ -45,6 +45,10 @@ export const ContentRequeriment = styled.div`
     margin-bottom: 1rem;
   }
 
+  @media (min-width: 1800px) {
+    width: 86%;
+  }
+
   @media (max-width: 1023px) {
     width: 100%;
   }
