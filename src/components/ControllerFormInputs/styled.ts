@@ -70,6 +70,9 @@ export const ContainerCheckInput = styled.div`
     background: #265a63;
     color: #fff;
 
+    /* &:hover {
+      ${(props) => props.theme['purple-light']};
+    } */
   }
 `
 

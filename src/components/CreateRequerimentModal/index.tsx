@@ -10,7 +10,7 @@ export const CreateRequerimentModal = () => {
     <Dialog.Portal>
       <Overlay />
       <Content>
-        <Dialog.Title>Criar Requerimento</Dialog.Title>
+        <Dialog.Title>Criar Exigências</Dialog.Title>
         <CloseButton>
           <X size={24} />
         </CloseButton>
