@@ -233,7 +233,7 @@ export const FormCreateRequeriment = () => {
               <CreatePdfList
                 data={requestListDataPDF}
                 dataUser={userDataLogin}
-                infoDivergente={dataInfoDivergente}
+                infoDivergente={dataInfoDivergente !== undefined && dataInfoDivergente}
               />
             }
             fileName="exigencia.pdf"
