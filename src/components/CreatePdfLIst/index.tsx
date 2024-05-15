@@ -14,7 +14,7 @@ import { ResponseDataUser } from '../../contexts/UserContext'
 interface DataProps {
   data: ListRequerimentProps
   dataUser: ResponseDataUser
-  infoDivergente: string
+  infoDivergente?: string
 }
 
 const styles = StyleSheet.create({
