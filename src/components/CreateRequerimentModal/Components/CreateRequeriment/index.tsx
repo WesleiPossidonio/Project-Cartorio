@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
+import { useState } from 'react'
 
 import {
   Button,
@@ -86,6 +87,7 @@ export const FormCreateRequeriment = () => {
   })
 
   const { CreateRequeriment, requestListDataPDF } = useRequeriment()
+  const [dataInfoDivergente, setDataInfoDivergente] = useState('')
 
   const { userDataLogin } = useUser()
 
@@ -107,6 +109,8 @@ export const FormCreateRequeriment = () => {
       email_do_representante,
       informacao_divergente,
     } = data
+
+    setDataInfoDivergente(informacao_divergente)
 
     const {
       declaracao_sindical,
@@ -229,6 +233,7 @@ export const FormCreateRequeriment = () => {
               <CreatePdfList
                 data={requestListDataPDF}
                 dataUser={userDataLogin}
+                infoDivergente={dataInfoDivergente}
               />
             }
             fileName="exigencia.pdf"

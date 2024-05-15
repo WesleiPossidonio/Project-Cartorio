@@ -14,6 +14,7 @@ import { ResponseDataUser } from '../../contexts/UserContext'
 interface DataProps {
   data: ListRequerimentProps
   dataUser: ResponseDataUser
+  infoDivergente: string
 }
 
 const styles = StyleSheet.create({
@@ -236,6 +237,12 @@ export const CreatePdfList = ({ data, dataUser }: DataProps) => {
           {data.campo_de_assinatura === 'Pendente' && (
             <Text style={styles.text}>
               [  ] Preencher todos os campos de assinatura
+            </Text>
+          )}
+
+          {data.informacao_divergente === 'Pendente' && (
+            <Text style={styles.text}>
+              [  ] {infoDivergente}
             </Text>
           )}
         </View>
