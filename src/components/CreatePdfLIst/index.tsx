@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export const CreatePdfList = ({ data, dataUser }: DataProps) => {
+export const CreatePdfList = ({ data, dataUser, infoDivergente }: DataProps) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
