@@ -102,11 +102,7 @@ export const ControllerFormInputs = (props: ControllerProps) => {
 
         <ContainerButtonInfo>
           <TextRegular weight={700}>
-<<<<<<< HEAD
-            Outros
-=======
             Adicionar Exigências Não Listadas?
->>>>>>> 5cf7a9ce928827ae543f7f746972b28fc95772cf
           </TextRegular>
           <div>
             <Button
