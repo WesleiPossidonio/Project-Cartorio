@@ -15,12 +15,11 @@ export const Overlay = styled(Dialog.Overlay)`
 export const Content = styled(Dialog.Content)`
   z-index: 12;
   width: 90%;
-  height: 90vh;
+  height: 68vh;
   border-radius: 6px;
   padding: 2.5rem 1.5rem;
   background: #f2f3ee;
 
-  overflow-y: auto;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -120,13 +119,4 @@ export const CreateUserTypeButton = styled(RadioGroup.Item)<CreateButtonTypes>`
   svg {
     color: #d6d6d6;
   }
-`
-
-export const ContentRequeriment = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2.5rem 1.5rem;
 `

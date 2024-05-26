@@ -15,7 +15,7 @@ export const Overlay = styled(Dialog.Overlay)`
 export const Content = styled(Dialog.Content)`
   z-index: 12;
   width: 90%;
-  height: 90vh;
+  height: 68vh;
   border-radius: 6px;
   padding: 2.5rem 1.5rem;
   background: #f2f3ee;

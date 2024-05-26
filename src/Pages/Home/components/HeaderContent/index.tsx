@@ -1,13 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MagnifyingGlass } from 'phosphor-react'
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import * as zod from 'zod'
 
-import { Button, TextRegular, TitleText } from '../../../../components'
+import { Button, TitleText } from '../../../../components'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
-import { ContainerButton, HeaderHome, SearchForm, SearchInput } from './styled'
+import { HeaderHome, SearchForm, SearchInput } from './styled'
+
+interface HeaderContentProps {
+  formTable: string
+  setFormTable: (data: string) => void
+}
 
 const searchFormSchema = zod.object({
   query: zod.string(),
@@ -15,7 +20,10 @@ const searchFormSchema = zod.object({
 
 type SearchFormInputs = zod.infer<typeof searchFormSchema>
 
-export const HeaderContent = () => {
+export const HeaderContent = ({
+  formTable,
+  setFormTable,
+}: HeaderContentProps) => {
   const { filteredRequeriment } = useRequeriment()
 
   const {
@@ -27,10 +35,8 @@ export const HeaderContent = () => {
     resolver: zodResolver(searchFormSchema),
   })
 
-  const navigate = useNavigate()
-
-  const handleNavigatePageListConcluted = () => {
-    navigate('/lista-concluida')
+  const handleFilteredTable = (event: ChangeEvent<HTMLSelectElement>) => {
+    setFormTable(event.target.value)
   }
 
   const handleSearchRequeriment = async (data: SearchFormInputs) => {
@@ -56,16 +62,12 @@ export const HeaderContent = () => {
         </Button>
       </SearchForm>
 
-      <ContainerButton>
-        <TextRegular
-          size="m"
-          color="blue"
-          weight={600}
-          onClick={handleNavigatePageListConcluted}
-        >
-          Exigências Concluídas
-        </TextRegular>
-      </ContainerButton>
+      <select value={formTable} onChange={handleFilteredTable}>
+        <option value="">Filtro</option>
+        <option value="Listas-Instancias">Instancias</option>
+        <option value="Listas-Exigências">Exigências</option>
+        <option value="Exigências-Concluídas">Exigências Concluídas</option>
+      </select>
     </HeaderHome>
   )
 }

@@ -6,13 +6,16 @@ import {
   TableHead,
   TablePagination,
 } from '@mui/material'
+import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import { ListChecks } from 'phosphor-react'
-import { ChangeEvent, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { ChangeEvent, useEffect, useState } from 'react'
 
+import { AssociationProps } from '../../contexts/RequerimentContext'
 import { useRequeriment } from '../../hooks/useRequeriment'
+import { UpdateAssociationModal } from '../UpdateAssociationModal'
+import { UpdateRequerimentModal } from '../UpdateRequerimentModal'
 import {
   ListRequerimentTable,
   TableHeader2,
@@ -22,20 +25,28 @@ import {
 
 export const TableRequeriment = () => {
   const {
-    dataListRequeriment,
+    dataListAssociation,
     dataInpuSearch,
-    filteredDataRequeriment,
-    updateRequeriment,
+    filteredDataSearchRequeriment,
+    // updateRequeriment,
   } = useRequeriment()
-
-  const navigate = useNavigate()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [pendingListRequeriment, setPendingListRequeriment] = useState<
+    AssociationProps[]
+  >([])
 
-  const pendingList = dataListRequeriment.filter((list) => {
-    return list.estado_do_requerimento === 'Pendente'
-  })
+  useEffect(() => {
+    const pendingListRequeriment = dataListAssociation.filter((list) => {
+      return (
+        list.exigencias !== null &&
+        list.exigencias?.estado_do_requerimento === 'Pendente'
+      )
+    })
+
+    setPendingListRequeriment(pendingListRequeriment)
+  }, [dataListAssociation])
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -46,32 +57,21 @@ export const TableRequeriment = () => {
     setPage(0)
   }
 
-  const handleSelectAList = (id: number) => {
-    const curatedList = pendingList.filter((data) => data.id === id)
+  // const handleCompletedList = (id: number) => {
+  //   const listSelected = dataListAssociation.find((list) => {
+  //     return list.id === id
+  //   })
 
-    const listSelected = Object.fromEntries(
-      curatedList.map((item, index) => [`objeto${index + 1}`, item])
-    )
+  //   const listConcluted = { ...listSelected, handleListConcluted: true }
 
-    navigate('/atualizar-lista', {
-      state: listSelected.objeto1,
-    })
-  }
+  //   console.log(listConcluted)
 
-  const handleCompletedList = (id: number) => {
-    const listSelected = dataListRequeriment.find((list) => {
-      return list.id === id
-    })
-
-    const listConcluted = { ...listSelected, handleListConcluted: true }
-
-    console.log(listConcluted)
-
-    updateRequeriment(listConcluted)
-  }
+  //   updateRequeriment(listConcluted)
+  // }
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, pendingList.length - page * rowsPerPage)
+    rowsPerPage -
+    Math.min(rowsPerPage, pendingListRequeriment.length - page * rowsPerPage)
 
   return (
     <ListRequerimentTable>
@@ -83,17 +83,16 @@ export const TableRequeriment = () => {
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
             <TableHeader2>Estado do Requerimento</TableHeader2>
-            <TableHeader2>Concluir</TableHeader2>
           </TableRow>
         </TableHead>
         <TableBody>
           {dataInpuSearch.length > 0
             ? (rowsPerPage > 0
-                ? filteredDataRequeriment.slice(
+                ? filteredDataSearchRequeriment.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : filteredDataRequeriment
+                : filteredDataSearchRequeriment
               ).map((data) => {
                 return (
                   <TableRowContentList
@@ -103,11 +102,14 @@ export const TableRequeriment = () => {
                     <TableContentList>
                       {data.numero_do_protocolo}
                     </TableContentList>
-                    <TableContentList
-                      onClick={() => data.id && handleSelectAList(data.id)}
-                    >
-                      {data.nome_da_instituicao}
-                    </TableContentList>
+                    <Dialog.Root>
+                      <Dialog.Trigger asChild>
+                        <TableContentList>
+                          {data.nome_da_instituicao}
+                        </TableContentList>
+                      </Dialog.Trigger>
+                      <UpdateAssociationModal AssociationId={data.id} />
+                    </Dialog.Root>
                     <TableContentList>
                       {data.nome_do_representante}
                     </TableContentList>
@@ -119,24 +121,26 @@ export const TableRequeriment = () => {
                         })}
                     </TableContentList>
                     <TableContentList>
-                      {data.estado_do_requerimento}
+                      {data.exigencias?.estado_do_requerimento}
                     </TableContentList>
-                    <TableContentList>
-                      <ListChecks
-                        className="Icon"
-                        size={32}
-                        onClick={() => data.id && handleCompletedList(data.id)}
-                      />
-                    </TableContentList>
+
+                    <Dialog.Root>
+                      <Dialog.Trigger asChild>
+                        <TableContentList>
+                          <ListChecks className="Icon" size={32} />
+                        </TableContentList>
+                      </Dialog.Trigger>
+                      <UpdateRequerimentModal AssociationId={data.id} />
+                    </Dialog.Root>
                   </TableRowContentList>
                 )
               })
             : (rowsPerPage > 0
-                ? pendingList.slice(
+                ? pendingListRequeriment.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : pendingList
+                : pendingListRequeriment
               ).map((data) => {
                 return (
                   <TableRowContentList
@@ -146,11 +150,16 @@ export const TableRequeriment = () => {
                     <TableContentList>
                       {data.numero_do_protocolo}
                     </TableContentList>
-                    <TableContentList
-                      onClick={() => data.id && handleSelectAList(data.id)}
-                    >
-                      {data.nome_da_instituicao}
-                    </TableContentList>
+
+                    <Dialog.Root>
+                      <Dialog.Trigger asChild>
+                        <TableContentList>
+                          {data.nome_da_instituicao}
+                        </TableContentList>
+                      </Dialog.Trigger>
+                      <UpdateAssociationModal AssociationId={data.id} />
+                    </Dialog.Root>
+
                     <TableContentList>
                       {data.nome_do_representante}
                     </TableContentList>
@@ -162,15 +171,16 @@ export const TableRequeriment = () => {
                         })}
                     </TableContentList>
                     <TableContentList>
-                      {data.estado_do_requerimento}
+                      {data.exigencias?.estado_do_requerimento}
                     </TableContentList>
-                    <TableContentList>
-                      <ListChecks
-                        className="Icon"
-                        size={32}
-                        onClick={() => data.id && handleCompletedList(data.id)}
-                      />
-                    </TableContentList>
+                    <Dialog.Root>
+                      <Dialog.Trigger asChild>
+                        <TableContentList>
+                          <ListChecks className="Icon" size={32} />
+                        </TableContentList>
+                      </Dialog.Trigger>
+                      <UpdateRequerimentModal AssociationId={data.id} />
+                    </Dialog.Root>
                   </TableRowContentList>
                 )
               })}
@@ -190,7 +200,9 @@ export const TableRequeriment = () => {
         rowsPerPageOptions={[5, 10, 15]}
         component="div"
         count={
-          pendingList ? pendingList.length : filteredDataRequeriment.length
+          pendingListRequeriment
+            ? pendingListRequeriment.length
+            : filteredDataSearchRequeriment.length
         }
         rowsPerPage={rowsPerPage}
         labelRowsPerPage="Itens por página:"

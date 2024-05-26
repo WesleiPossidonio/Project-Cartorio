@@ -3,18 +3,25 @@ import { X } from 'phosphor-react'
 import React from 'react'
 
 import { FormCreateRequeriment } from './Components/CreateRequeriment'
-import { CloseButton, Content, Overlay } from './style'
+import { CloseButton, Content, ContentRequeriment, Overlay } from './style'
 
-export const CreateRequerimentModal = () => {
+interface RequerimentProps {
+  AssociationId: number
+}
+
+export const CreateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
   return (
     <Dialog.Portal>
       <Overlay />
       <Content>
-        <Dialog.Title>Criar Exigências</Dialog.Title>
+        <Dialog.Title>Adicionar Exigências</Dialog.Title>
         <CloseButton>
           <X size={24} />
         </CloseButton>
-        <FormCreateRequeriment />
+
+        <ContentRequeriment>
+          <FormCreateRequeriment id={AssociationId} />
+        </ContentRequeriment>
       </Content>
     </Dialog.Portal>
   )

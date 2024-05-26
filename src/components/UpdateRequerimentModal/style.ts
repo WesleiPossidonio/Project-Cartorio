@@ -123,10 +123,32 @@ export const CreateUserTypeButton = styled(RadioGroup.Item)<CreateButtonTypes>`
 `
 
 export const ContentRequeriment = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 1rem;
   padding: 2.5rem 1.5rem;
+
+  form {
+    width: 100%;
+  }
+`
+export const ContainerAddRequeriment = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.8rem;
+
+  margin-top: 2rem;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
 `

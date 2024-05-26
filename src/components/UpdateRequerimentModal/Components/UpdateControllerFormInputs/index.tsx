@@ -1,14 +1,12 @@
 import { Trash } from 'phosphor-react'
 import React, { useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
-import { useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-import { ListRequerimentProps } from '../../contexts/RequerimentContext'
-import { useRequeriment } from '../../hooks/useRequeriment'
-import { LocationProps } from '../../Pages/UpdateRequeriment'
-import api from '../../services/api'
-import { CreateRequerimentFormInputs } from '../CreateRequerimentModal/Components/CreateRequeriment'
+import { ListRequerimentProps } from '../../../../contexts/RequerimentContext'
+import { useRequeriment } from '../../../../hooks/useRequeriment'
+import api from '../../../../services/api'
+import { CreateRequerimentFormInputs } from '../../../CreateRequerimentModal/Components/CreateRequeriment'
 import {
   ContainerControllerInput,
   ContainerInput,
@@ -18,38 +16,40 @@ import {
 
 interface ControllerUpdateProps {
   register: UseFormRegister<CreateRequerimentFormInputs>
+  dataRequeriment?: ListRequerimentProps
 }
 
 export const UpdateControllerFormInputs = ({
   register,
+  dataRequeriment,
 }: ControllerUpdateProps) => {
-  const { state } = useLocation() as unknown as LocationProps
-
   const [updateList, setUpdateList] = useState<ListRequerimentProps>({
-    ...state,
+    ...dataRequeriment,
   })
 
   const { dataListRequeriment, setDataListRequeriment } = useRequeriment()
 
   const handleDeleteRequest = async (nameList: string) => {
-    const deleteList = { ...state, [nameList]: 'Não Listado' }
+    const deleteList = { ...dataRequeriment, [nameList]: 'Não Listado' }
 
-    try {
-      const createRequermentResponse = await toast.promise(
-        api.put(`requeriment/${state.id}`, deleteList),
-        {
-          pending: 'Verificando seus dados',
-          success: 'Exigencia Deletada com Sucesso!',
-          error: 'Ops! Verifique os Dados Digitados',
-        }
-      )
+    if (dataRequeriment) {
+      try {
+        const createRequermentResponse = await toast.promise(
+          api.put(`updateRequeriment/${dataRequeriment.id}`, deleteList),
+          {
+            pending: 'Verificando seus dados',
+            success: 'Exigencia Deletada com Sucesso!',
+            error: 'Ops! Verifique os Dados Digitados',
+          }
+        )
 
-      const { data } = createRequermentResponse
+        const { data } = createRequermentResponse
 
-      setDataListRequeriment([...dataListRequeriment, data])
-      setUpdateList(data)
-    } catch (error) {
-      console.log(error)
+        setDataListRequeriment([...dataListRequeriment, data])
+        setUpdateList(data)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 

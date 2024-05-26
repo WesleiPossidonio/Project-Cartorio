@@ -1,7 +1,7 @@
 import { styled } from 'styled-components'
 
 export const ContainerControllerInput = styled.section`
-  width: 90%;
+  width: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: center;

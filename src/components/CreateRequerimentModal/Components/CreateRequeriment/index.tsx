@@ -7,37 +7,14 @@ import * as zod from 'zod'
 import {
   Button,
   ControllerFormInputs,
-  CreatePdfList,
-  Input,
+  CreateRequerimentPdfList,
   arrayInputList,
 } from '../../..'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
-import {
-  ButtonHome,
-  // ButtonCreateRequeriment,
-  ContainerForm,
-  SectionCreateRequirement,
-} from './styled'
+import { ButtonHome, SectionCreateRequirement } from './styled'
 
-export const createRequerimentFormSchema = zod.object({
-  nome_da_instituicao: zod
-    .string()
-    .nonempty('Por favor, digite o nome da instituição'),
-  nome_do_representante: zod
-    .string()
-    .nonempty('Por favor, digite o nome do representante'),
-  cnpj: zod
-    .string()
-    .min(18, 'Por Favor, digite o CNPJ valido')
-    .max(18, 'Por Favor, digite o CNPJ valido'),
-  email_do_representante: zod
-    .string()
-    .email('Por favor digite um email válido'),
-  telefone_contato: zod
-    .string()
-    .min(11, 'Por Favor, digite o numero de telefone corretamente'),
-  // .max(11, 'Por Favor, digite o numero de telefone corretamente'),
+export const CreateRequerimentFormSchema = zod.object({
   declaracao_sindical: zod.boolean().optional(),
   lista_e_edital: zod.boolean().optional().optional(),
   assinatura_do_advogado: zod.boolean().optional(),
@@ -57,31 +34,25 @@ export const createRequerimentFormSchema = zod.object({
   campo_de_assinatura: zod.boolean().optional(),
   retificacao_de_redacao: zod.boolean().optional(),
   existe_exigencias_nao_listadas: zod.boolean().optional(),
-  primeira_exigencia_nao_listada: zod.string().optional(),
-  estado_da_primeira_exigencia_nao_listada: zod.boolean().optional(),
-  segunda_exigencia: zod.string().optional(),
-  estado_da_segunda_exigencia_nao_listada: zod.boolean().optional(),
-  terceira_exigencia_nao_listada: zod.string().optional(),
-  estado_da_terceira_exigencia_nao_listada: zod.boolean().optional(),
-  quarta_exigencia_nao_listada: zod.string().optional(),
-  estado_da_quarta_exigencia_nao_listada: zod.boolean().optional(),
-  quinta_exigencia_nao_listada: zod.string().optional(),
-  estado_da_quinta_exigencia_nao_listada: zod.boolean().optional(),
   informacao_divergente: zod.string().optional(),
 })
 
 export type CreateRequerimentFormInputs = zod.infer<
-  typeof createRequerimentFormSchema
+  typeof CreateRequerimentFormSchema
 >
 
-export const FormCreateRequeriment = () => {
+interface RequerimentProps {
+  id: number
+}
+
+export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting },
     reset,
   } = useForm<CreateRequerimentFormInputs>({
-    resolver: zodResolver(createRequerimentFormSchema),
+    resolver: zodResolver(CreateRequerimentFormSchema),
     shouldUnregister: true,
   })
 
@@ -99,14 +70,7 @@ export const FormCreateRequeriment = () => {
       return (booleanData[key] = value ? 'Pendente' : 'Não Listado')
     })
 
-    const {
-      cnpj,
-      nome_da_instituicao,
-      nome_do_representante,
-      telefone_contato,
-      email_do_representante,
-      informacao_divergente,
-    } = data
+    const { informacao_divergente } = data
 
     const {
       declaracao_sindical,
@@ -130,11 +94,7 @@ export const FormCreateRequeriment = () => {
     } = booleanData
 
     const createRequerimentData = {
-      cnpj,
-      nome_da_instituicao,
-      nome_do_representante,
-      telefone_contato,
-      email_do_representante,
+      id,
       declaracao_sindical,
       lista_e_edital,
       assinatura_do_advogado,
@@ -161,62 +121,11 @@ export const FormCreateRequeriment = () => {
     }
 
     CreateRequeriment(createRequerimentData)
-
     reset()
   }
   return (
     <SectionCreateRequirement>
       <form onSubmit={handleSubmit(handleCreateRequeriment)}>
-        <ContainerForm>
-          <div id="institution-name">
-            <Input
-              placeholder="Nome da Instituição"
-              type="text"
-              {...register('nome_da_instituicao')}
-              error={errors.nome_da_instituicao?.message}
-            />
-          </div>
-
-          <div id="number-cnpj">
-            <Input
-              placeholder="Nº CNPJ"
-              type="text"
-              id="number-cnpj"
-              {...register('cnpj')}
-              error={errors.cnpj?.message}
-            />
-          </div>
-
-          <div id="name-of-representative">
-            <Input
-              placeholder="Nome do Representante"
-              type="text"
-              id="name-of-representative"
-              {...register('nome_do_representante')}
-            />
-          </div>
-
-          <div id="email">
-            <Input
-              placeholder="E-mail"
-              type="text"
-              id="email"
-              {...register('email_do_representante')}
-              error={errors.email_do_representante?.message}
-            />
-          </div>
-
-          <div id="phone">
-            <Input
-              placeholder="Telefone de contato"
-              type="text"
-              id="phone"
-              {...register('telefone_contato')}
-              error={errors.telefone_contato?.message}
-            />
-          </div>
-        </ContainerForm>
-
         <ControllerFormInputs
           register={register}
           arrayInputList={arrayInputList}
@@ -226,7 +135,7 @@ export const FormCreateRequeriment = () => {
         <div className="PdfContainer">
           <PDFDownloadLink
             document={
-              <CreatePdfList
+              <CreateRequerimentPdfList
                 data={requestListDataPDF}
                 dataUser={userDataLogin}
               />

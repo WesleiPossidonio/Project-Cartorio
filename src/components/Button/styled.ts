@@ -13,8 +13,8 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
   gap: 0.5rem;
 
   width: ${({ buttonSubmit, selectButton }) =>
-    (buttonSubmit && '20rem') || (selectButton && '6rem')};
-  padding: 0.856rem;
+    (buttonSubmit && '20rem') || (selectButton && '5.5rem')};
+  padding: 0.756rem;
   border: none;
   border-radius: 6px;
 

@@ -8,7 +8,6 @@ import {
   Login,
   SelectedListCompleted,
   UpdatePaswordLogin,
-  UpdateRequeriment,
 } from '../Pages'
 import { CuratedList } from '../Pages/CuratedList/index.'
 import { PrivateRoutes } from './privateRoutes'
@@ -24,7 +23,7 @@ export const Router = () => {
         <Route path="/" element={<Home />} />
         <Route path="/lista-concluida" element={<CompletedAplicationList />} />
         <Route path="/lista-selecionada" element={<CuratedList />} />
-        <Route path="/atualizar-lista" element={<UpdateRequeriment />} />
+
         <Route
           path="/lista-selecionada-concluida"
           element={<SelectedListCompleted />}

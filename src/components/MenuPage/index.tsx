@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useUser } from '../../hooks/useUser'
-import { CreateRequerimentModal } from '../CreateRequerimentModal'
+import { CreateAssociationModal } from '../CreateAssociationModal'
 import { CreateUserModal } from '../CreateUserModal'
 import { TextRegular } from '../typography'
 import { UpdateUserModal } from '../UpdateUserDataModal'
@@ -83,10 +83,10 @@ export const MenuPage = () => {
             onClick={() => handleIsSelected('addRequeriment')}
           >
             <PlusCircle size={32} />
-            <TextRegular size="m">Adicionar Exigência</TextRegular>
+            <TextRegular size="m">Iniciar Instancia</TextRegular>
           </ContainerButton>
         </Dialog.Trigger>
-        <CreateRequerimentModal />
+        <CreateAssociationModal />
       </Dialog.Root>
     </MenuContainer>
   )

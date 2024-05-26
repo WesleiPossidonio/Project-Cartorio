@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useUser } from '../../hooks/useUser'
-import { CreateRequerimentModal } from '../CreateRequerimentModal'
+import { CreateAssociationModal } from '../CreateAssociationModal'
 import { CreateUserModal } from '../CreateUserModal'
 import { TextRegular } from '../typography'
 import { UpdateUserModal } from '../UpdateUserDataModal'
@@ -108,7 +108,7 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
               </TextRegular>
             </ContainerButton>
           </Dialog.Trigger>
-          <CreateRequerimentModal />
+          <CreateAssociationModal />
         </Dialog.Root>
       </nav>
     </Container>
