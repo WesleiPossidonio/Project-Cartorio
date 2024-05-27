@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
@@ -57,6 +58,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
   })
 
   const { CreateRequeriment, requestListDataPDF } = useRequeriment()
+  const [dataInfoDivergente, setDataInfoDivergente] = useState('')
 
   const { userDataLogin } = useUser()
 
@@ -67,10 +69,13 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
     )
 
     filteredEntries.map(([key, value]) => {
-      return (booleanData[key] = value ? 'Pendente' : 'Não Listado')
+      return (booleanData[key] = value ? 'Pendente' : 'Não-Listado')
     })
 
     const { informacao_divergente } = data
+
+    informacao_divergente !== undefined &&
+      setDataInfoDivergente(informacao_divergente)
 
     const {
       declaracao_sindical,
@@ -138,6 +143,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
               <CreateRequerimentPdfList
                 data={requestListDataPDF}
                 dataUser={userDataLogin}
+                // infoDivergente={dataInfoDivergente}
               />
             }
             fileName="exigencia.pdf"

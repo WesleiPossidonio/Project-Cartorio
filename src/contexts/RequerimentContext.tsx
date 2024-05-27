@@ -149,13 +149,8 @@ export const RequerimentContextProvider = ({
       if (Array.isArray(associationList)) {
         setDataListAssociation(associationList)
 
-        if (numberProtocolClient === undefined) {
-          setNumberProtocolClient(2024065)
-        } else {
-          const lastNumberProtocol =
-            data[data.length - 1].numero_do_protocolo + 3
-          setNumberProtocolClient(lastNumberProtocol)
-        }
+        const lastNumberProtocol = data[data.length - 1].numero_do_protocolo + 3
+        setNumberProtocolClient(lastNumberProtocol)
       } else {
         console.error(
           'Expected associationList to be an array',
@@ -167,7 +162,7 @@ export const RequerimentContextProvider = ({
       console.error('Failed to fetch association list:', error)
       setDataListAssociation([])
     }
-  }, [numberProtocolClient])
+  }, [])
 
   useEffect(() => {
     getAssociationList()
@@ -360,6 +355,7 @@ export const RequerimentContextProvider = ({
         telefone_contato: formatedNumberPhone,
         data_da_recepcao: dataString,
         email_do_representante,
+        estado_do_requerimento: 'helo',
       }
 
       try {
@@ -521,66 +517,51 @@ export const RequerimentContextProvider = ({
 
       const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
 
-      const {
-        handleListConcluted,
-        assinatura_do_advogado,
-        campo_de_assinatura,
-        data_da_recepcao,
-        declaracao_criminal,
-        declaracao_de_desimpedimento,
-        declaracao_sindical,
-        dissolucao_ou_exticao,
-        documentacao_de_identificacao,
-        estado_do_requerimento,
-        fundacoes,
-        id,
-        informacao_divergente,
-        lista_e_edital,
-        livro_rasao,
-        oab,
-        ppe,
-        preechimento_completo,
-        reconhecimento_de_firma,
-        requisitos_criacao_de_estatuto,
-        requisitos_de_estatutos_fundadores,
-        requisitos_estatuto,
-        retificacao_de_redacao,
-      } = data
-
       const dataRequerimentUpdated = {
-        assinatura_do_advogado,
-        campo_de_assinatura,
+        assinatura_do_advogado: data.assinatura_do_advogado,
+        campo_de_assinatura: data.campo_de_assinatura,
         data_atualizacao: dataString,
-        data_da_recepcao,
-        declaracao_criminal,
-        declaracao_de_desimpedimento,
-        declaracao_sindical,
-        dissolucao_ou_exticao,
-        documentacao_de_identificacao,
-        estado_do_requerimento,
-        fundacoes,
-        exigencias_id: id,
-        informacao_divergente,
-        lista_e_edital,
-        livro_rasao,
-        oab,
-        ppe,
-        preechimento_completo,
-        reconhecimento_de_firma,
-        requisitos_criacao_de_estatuto,
-        requisitos_de_estatutos_fundadores,
-        requisitos_estatuto,
-        retificacao_de_redacao,
+        data_da_recepcao: data.data_da_recepcao,
+        declaracao_criminal: data.declaracao_criminal,
+        declaracao_de_desimpedimento: data.declaracao_de_desimpedimento,
+        declaracao_sindical: data.declaracao_sindical,
+        dissolucao_ou_exticao: data.dissolucao_ou_exticao,
+        documentacao_de_identificacao: data.documentacao_de_identificacao,
+        estado_do_requerimento: data.estado_do_requerimento,
+        fundacoes: data.fundacoes,
+        exigencias_id: data.id,
+        informacao_divergente: data.informacao_divergente,
+        lista_e_edital: data.lista_e_edital,
+        livro_rasao: data.livro_rasao,
+        oab: data.oab,
+        ppe: data.ppe,
+        preechimento_completo: data.preechimento_completo,
+        reconhecimento_de_firma: data.reconhecimento_de_firma,
+        requisitos_criacao_de_estatuto: data.requisitos_criacao_de_estatuto,
+        requisitos_de_estatutos_fundadores:
+          data.requisitos_de_estatutos_fundadores,
+        requisitos_estatuto: data.requisitos_estatuto,
+        retificacao_de_redacao: data.retificacao_de_redacao,
       }
 
-      console.log(dataRequerimentUpdated.exigencias_id)
+      const stringValues = Object.values(data).filter(
+        (valor) => typeof valor === 'string'
+      )
+      const fullFilteredList = Object.values(stringValues).every(
+        (valor) => valor === 'Recebido'
+      )
 
-      if (handleListConcluted) {
+      if (fullFilteredList) {
+        console.log(fullFilteredList)
+        const ListConcruted = {
+          ...dataRequerimentUpdated,
+          estado_do_requerimento: 'Concluído',
+        }
         try {
           const updateRequermentResponse = await toast.promise(
             api.put(
               `updateRequeriment/${dataRequerimentUpdated.exigencias_id}`,
-              dataRequerimentUpdated
+              ListConcruted
             ),
             {
               pending: 'Verificando seus dados',
@@ -616,6 +597,28 @@ export const RequerimentContextProvider = ({
           console.log(error)
         }
       }
+
+      // if (data.handleListConcluted) {
+      //   try {
+      //     const updateRequermentResponse = await toast.promise(
+      //       api.put(
+      //         `updateRequeriment/${dataRequerimentUpdated.exigencias_id}`,
+      //         dataRequerimentUpdated
+      //       ),
+      //       {
+      //         pending: 'Verificando seus dados',
+      //         success: 'Exigencia Concluída com Sucesso!',
+      //         error: 'Ops! Verifique os Dados Digitados',
+      //       }
+      //     )
+
+      //     const { data } = updateRequermentResponse
+
+      //     setDataListRequeriment([...dataListRequeriment, data])
+      //   } catch (error) {
+      //     console.log(error)
+      //   }
+      // }
     },
     [dataListRequeriment]
   )

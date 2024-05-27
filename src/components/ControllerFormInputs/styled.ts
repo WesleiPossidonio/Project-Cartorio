@@ -69,6 +69,10 @@ export const ContainerCheckInput = styled.div`
   input:checked#campo_de_assinatura_true + label {
     background: #265a63;
     color: #fff;
+
+    /* &:hover {
+      ${(props) => props.theme['purple-light']};
+    } */
   }
 `
 

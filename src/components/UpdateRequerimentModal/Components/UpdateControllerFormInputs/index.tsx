@@ -30,7 +30,11 @@ export const UpdateControllerFormInputs = ({
   const { dataListRequeriment, setDataListRequeriment } = useRequeriment()
 
   const handleDeleteRequest = async (nameList: string) => {
-    const deleteList = { ...dataRequeriment, [nameList]: 'Não Listado' }
+    const deleteList = {
+      ...dataRequeriment,
+      [nameList]: 'Não Listado',
+      exigencias_id: dataRequeriment?.id,
+    }
 
     if (dataRequeriment) {
       try {
@@ -338,7 +342,6 @@ export const UpdateControllerFormInputs = ({
             <input
               id="documentacao_de_identificacao_true"
               type="checkbox"
-              value="Não"
               {...register('documentacao_de_identificacao')}
               name="documentacao_de_identificacao"
             />

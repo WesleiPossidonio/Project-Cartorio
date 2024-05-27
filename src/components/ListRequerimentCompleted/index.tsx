@@ -32,7 +32,10 @@ export const TableRequerimentCompleted = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const listCompleted = dataListAssociation.filter((data) => {
-    return data.estado_do_requerimento === 'Concluído'
+    return (
+      data.exigencias !== null &&
+      data.exigencias?.estado_do_requerimento === 'Concluído'
+    )
   })
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -69,7 +72,6 @@ export const TableRequerimentCompleted = () => {
             <TableHeader2>Nome do Estabelecimento</TableHeader2>
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
-            <TableHeader2>Estado do Requerimento</TableHeader2>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -103,9 +105,6 @@ export const TableRequerimentCompleted = () => {
                           locale: ptBR,
                         })}
                     </TableContentList>
-                    <TableContentList>
-                      {data.estado_do_requerimento}
-                    </TableContentList>
                   </TableRowContentList>
                 )
               })
@@ -137,9 +136,6 @@ export const TableRequerimentCompleted = () => {
                           addSuffix: true,
                           locale: ptBR,
                         })}
-                    </TableContentList>
-                    <TableContentList>
-                      {data.estado_do_requerimento}
                     </TableContentList>
                   </TableRowContentList>
                 )

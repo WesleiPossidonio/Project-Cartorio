@@ -43,7 +43,7 @@ export const ControllerFormInputs = (props: ControllerProps) => {
       (list) =>
         props.arrayUpdateInputList &&
         Object.entries(props.arrayUpdateInputList).some(
-          ([name, value]) => value === 'Não Listado' && name === list.name
+          ([name, value]) => value === 'Não-Listado' && name === list.name
         )
     )
 

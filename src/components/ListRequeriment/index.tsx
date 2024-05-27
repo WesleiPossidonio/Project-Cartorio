@@ -24,12 +24,8 @@ import {
 } from './style'
 
 export const TableRequeriment = () => {
-  const {
-    dataListAssociation,
-    dataInpuSearch,
-    filteredDataSearchRequeriment,
-    // updateRequeriment,
-  } = useRequeriment()
+  const { dataListAssociation, dataInpuSearch, filteredDataSearchRequeriment } =
+    useRequeriment()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -56,18 +52,6 @@ export const TableRequeriment = () => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
-
-  // const handleCompletedList = (id: number) => {
-  //   const listSelected = dataListAssociation.find((list) => {
-  //     return list.id === id
-  //   })
-
-  //   const listConcluted = { ...listSelected, handleListConcluted: true }
-
-  //   console.log(listConcluted)
-
-  //   updateRequeriment(listConcluted)
-  // }
 
   const emptyRows =
     rowsPerPage -
