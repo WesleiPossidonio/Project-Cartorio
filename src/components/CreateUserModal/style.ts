@@ -114,8 +114,9 @@ export const CreateUserTypeButton = styled(RadioGroup.Item)<CreateButtonTypes>`
   }
 
   &[data-state='unchecked']:hover {
-    transition: background-color 2s;
     background: #2b3d63;
+    color: #fff;
+    transition: background-color 0.8s;
   }
 
   &[data-state='checked'] {

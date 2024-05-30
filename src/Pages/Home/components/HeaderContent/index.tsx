@@ -7,7 +7,7 @@ import * as zod from 'zod'
 
 import { Button, TitleText } from '../../../../components'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
-import { HeaderHome, SearchForm, SearchInput } from './styled'
+import { HeaderHome, SearchForm, SearchInput, Selected } from './styled'
 
 interface HeaderContentProps {
   formTable: string
@@ -62,12 +62,12 @@ export const HeaderContent = ({
         </Button>
       </SearchForm>
 
-      <select value={formTable} onChange={handleFilteredTable}>
+      <Selected value={formTable} onChange={handleFilteredTable}>
         <option value="">Filtro</option>
         <option value="Listas-Instancias">Instancias</option>
         <option value="Listas-Exigências">Exigências</option>
         <option value="Exigências-Concluídas">Exigências Concluídas</option>
-      </select>
+      </Selected>
     </HeaderHome>
   )
 }

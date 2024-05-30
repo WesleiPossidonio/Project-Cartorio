@@ -166,7 +166,7 @@ export const RequerimentContextProvider = ({
 
   useEffect(() => {
     getAssociationList()
-  }, [getAssociationList])
+  }, [getAssociationList, dataListRequeriment])
 
   const filteredRequeriment = (query: string) => {
     const dropDownList = dataListAssociation.filter((list) => {

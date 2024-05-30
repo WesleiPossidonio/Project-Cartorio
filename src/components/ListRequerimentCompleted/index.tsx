@@ -6,12 +6,13 @@ import {
   TableHead,
   TablePagination,
 } from '@mui/material'
+import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import React, { ChangeEvent, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
+import { RequerimentListCompletedModal } from '../RequerimentListCompletedModal'
 import {
   ListRequerimentTable,
   TableHeader2,
@@ -25,8 +26,6 @@ export const TableRequerimentCompleted = () => {
     dataInpuSearch,
     filteredDataConclutedRequeriment,
   } = useRequeriment()
-
-  const navigate = useNavigate()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -45,18 +44,6 @@ export const TableRequerimentCompleted = () => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
-  }
-
-  const handleSelectAList = (id: number) => {
-    const curatedList = listCompleted.filter((data) => data.id === id)
-
-    const listSelected = Object.fromEntries(
-      curatedList.map((item, index) => [`objeto${index + 1}`, item])
-    )
-
-    navigate('/lista-selecionada-concluida', {
-      state: listSelected.objeto1,
-    })
   }
 
   const emptyRows =
@@ -87,14 +74,21 @@ export const TableRequerimentCompleted = () => {
                   <TableRowContentList
                     key={data.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={() => data.id && handleSelectAList(data.id)}
                   >
                     <TableContentList>
                       {data.numero_do_protocolo}
                     </TableContentList>
-                    <TableContentList>
-                      {data.nome_da_instituicao}
-                    </TableContentList>
+                    <Dialog.Root>
+                      <Dialog.Trigger asChild>
+                        <TableContentList>
+                          {data.nome_da_instituicao}
+                        </TableContentList>
+                      </Dialog.Trigger>
+                      <RequerimentListCompletedModal
+                        idRequerimentSelected={data.id}
+                        listCompleted={listCompleted}
+                      />
+                    </Dialog.Root>
                     <TableContentList>
                       {data.nome_do_representante}
                     </TableContentList>
@@ -119,14 +113,21 @@ export const TableRequerimentCompleted = () => {
                   <TableRowContentList
                     key={data.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={() => data.id && handleSelectAList(data.id)}
                   >
                     <TableContentList>
                       {data.numero_do_protocolo}
                     </TableContentList>
-                    <TableContentList>
-                      {data.nome_da_instituicao}
-                    </TableContentList>
+                    <Dialog.Root>
+                      <Dialog.Trigger asChild>
+                        <TableContentList>
+                          {data.nome_da_instituicao}
+                        </TableContentList>
+                      </Dialog.Trigger>
+                      <RequerimentListCompletedModal
+                        idRequerimentSelected={data.id}
+                        listCompleted={listCompleted}
+                      />
+                    </Dialog.Root>
                     <TableContentList>
                       {data.nome_do_representante}
                     </TableContentList>

@@ -79,7 +79,10 @@ const styles = StyleSheet.create({
   },
 })
 
-export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
+export const CreateRequerimentConclutedPdf = ({
+  data,
+  dataUser,
+}: DataProps) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -113,63 +116,63 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
         </View>
         return (
         <View style={styles.main}>
-          <Text style={styles.titleText}>Lista de Exigências Pendentes</Text>
+          <Text style={styles.titleText}>Lista de Exigências Concluída</Text>
 
-          {data?.exigencias?.lista_e_edital === 'Pendente' && (
+          {data?.exigencias?.lista_e_edital === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar lista de presença e edital; (CNCGJ Art. 951)
             </Text>
           )}
-          {data?.exigencias?.declaracao_sindical === 'Pendente' && (
+          {data?.exigencias?.declaracao_sindical === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar declaração emitida pelo Ministério do Trabalho
               referente a unicidade sindical e da base territorial (CNCGJ Art.
               935 § 4º)
             </Text>
           )}
-          {data?.exigencias?.assinatura_do_advogado === 'Pendente' && (
+          {data?.exigencias?.assinatura_do_advogado === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Colher assinatura do advogado no ato apresentado para
               registro; (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)
             </Text>
           )}
 
-          {data?.exigencias?.declaracao_criminal === 'Pendente' && (
+          {data?.exigencias?.declaracao_criminal === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar declaração de desimpedimento e/ou certidão
               criminal; (CNCGJ Art. 932 § 1º)
             </Text>
           )}
 
-          {data?.exigencias?.requisitos_estatuto === 'Pendente' && (
+          {data?.exigencias?.requisitos_estatuto === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar cópia do estatuto registrado no Distrito Federal
               (Obs:para diretórios de partidos políticos); (CNCGJ Art. 945)
             </Text>
           )}
 
-          {data?.exigencias?.declaracao_de_desimpedimento === 'Pendente' && (
+          {data?.exigencias?.declaracao_de_desimpedimento === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar declaração de desimpedimento (contratos e
               averbações de sociedade simples, ME, EPP); (CNCGJ)
             </Text>
           )}
 
-          {data?.exigencias?.livro_rasao === 'Pendente' && (
+          {data?.exigencias?.livro_rasao === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar livro razão ou contábil anteriormente registrado;
               (CNCGJ Art. 960 § 1º)
             </Text>
           )}
 
-          {data?.exigencias?.ppe === 'Pendente' && (
+          {data?.exigencias?.ppe === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar declaração de pessoa politicamente exposta (PPE)
             </Text>
           )}
 
           {data?.exigencias?.requisitos_de_estatutos_fundadores ===
-            'Pendente' && (
+            'Recebido' && (
             <Text style={styles.text}>
               [ ] No caso de dissolução ou extinção deverá conter no documento:
               (liquidação, divisão de cotas de sócios, inexistência de ativo e
@@ -177,7 +180,7 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
             </Text>
           )}
 
-          {data?.exigencias?.dissolucao_ou_exticao === 'Pendente' && (
+          {data?.exigencias?.dissolucao_ou_exticao === 'Recebido' && (
             <Text style={styles.text}>
               [ ] No caso de dissolução ou extinção apresentar o documento:
               (liquidação, divisão de cotas de sócios, inexistência de ativo e
@@ -185,40 +188,40 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
             </Text>
           )}
 
-          {data?.exigencias?.fundacoes === 'Pendente' && (
+          {data?.exigencias?.fundacoes === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Nos atos referentes a fundações, exigir-se-á aprovação prévia
               do Ministério Público; (CNCGJ Art. 941)
             </Text>
           )}
 
-          {data?.exigencias?.reconhecimento_de_firma === 'Pendente' && (
+          {data?.exigencias?.reconhecimento_de_firma === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar reconhecimento de firme no requerimento do DBE
             </Text>
           )}
 
-          {data?.exigencias?.preechimento_completo === 'Pendente' && (
+          {data?.exigencias?.preechimento_completo === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Preencher todos os campos do formulário/requerimento
             </Text>
           )}
 
-          {data?.exigencias?.oab === 'Pendente' && (
+          {data?.exigencias?.oab === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar cópia da OAB do representante jurídico do ato
               apresentado
             </Text>
           )}
 
-          {data?.exigencias?.documentacao_de_identificacao === 'Pendente' && (
+          {data?.exigencias?.documentacao_de_identificacao === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar cópia simples do documento de identificação
             </Text>
           )}
 
           {data?.exigencias?.requisitos_de_estatutos_fundadores ===
-            'Pendente' && (
+            'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
               documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
@@ -226,20 +229,20 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
             </Text>
           )}
 
-          {data?.exigencias?.requisitos_criacao_de_estatuto === 'Pendente' && (
+          {data?.exigencias?.requisitos_criacao_de_estatuto === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar os requisitos obrigatórios para criação do
               estatuto; (Lei 10.406/2002 Art. 54)
             </Text>
           )}
 
-          {data?.exigencias?.retificacao_de_redacao === 'Pendente' && (
+          {data?.exigencias?.retificacao_de_redacao === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Retificar redação do documento apresentado:
             </Text>
           )}
 
-          {data?.exigencias?.campo_de_assinatura === 'Pendente' && (
+          {data?.exigencias?.campo_de_assinatura === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Preencher todos os campos de assinatura
             </Text>
