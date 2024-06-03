@@ -4,9 +4,10 @@ import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
-import { Button, CreateRequerimentPdfList, Input } from '../../..'
+import { Button, Input } from '../../..'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
+import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
 import {
   ButtonHome,
   // ButtonCreateRequeriment,
@@ -130,7 +131,7 @@ export const FormCreateAssociation = () => {
         <div className="PdfContainer">
           <PDFDownloadLink
             document={
-              <CreateRequerimentPdfList
+              <CreateAssociationPdfList
                 data={requestListDataPDF}
                 dataUser={userDataLogin}
               />

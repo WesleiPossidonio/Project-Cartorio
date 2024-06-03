@@ -8,7 +8,7 @@ import { AssociationProps } from '../../../../contexts/RequerimentContext'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
 import { Button } from '../../../Button'
-import { CreateRequerimentPdfList } from '../../../CreateRequerimentPdfLIst'
+import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
 import { Input } from '../../../Input'
 import {
   ButtonHome,
@@ -155,8 +155,8 @@ export const FormUpdateAssociation = ({
         <div className="PdfContainer">
           <PDFDownloadLink
             document={
-              <CreateRequerimentPdfList
-                data={requestListDataPDF}
+              <CreateAssociationPdfList
+                data={requestListDataPDF || dataAssociation}
                 dataUser={userDataLogin}
               />
             }

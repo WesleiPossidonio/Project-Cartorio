@@ -10,6 +10,10 @@ import { ContainerUpdatePassword, ContentUpdatePassword, Form } from './style'
 
 const updatePasswordSchema = zod
   .object({
+    updateNumber: zod
+      .string()
+      .min(5, 'Por Gentileza digite o Numero de Atualização')
+      .max(5, 'Por Gentileza digite o Numero de Atualização Corretamente'),
     password: zod
       .string()
       .min(6, 'A senha deve conter  6 caracteres')
@@ -54,6 +58,14 @@ export const UpdatePaswordLogin = () => {
           Atualizar Senha
         </TitleText>
         <Form onSubmit={handleSubmit(handleUpdatePassowrd)}>
+          <label htmlFor="updateNumber">
+            <Input
+              type="text"
+              placeholder="Digite O Numero de Verificação"
+              {...register('updateNumber')}
+              error={errors.updateNumber?.message}
+            />
+          </label>
           <label htmlFor="password">
             <Input
               type="password"

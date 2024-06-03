@@ -32,7 +32,7 @@ export const UpdateControllerFormInputs = ({
   const handleDeleteRequest = async (nameList: string) => {
     const deleteList = {
       ...dataRequeriment,
-      [nameList]: 'Não Listado',
+      [nameList]: 'Não-Listado',
       exigencias_id: dataRequeriment?.id,
     }
 

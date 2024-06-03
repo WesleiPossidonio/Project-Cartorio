@@ -95,7 +95,7 @@ export const CreateRequerimentConclutedPdf = ({
           </Text>
 
           <Text style={styles.textheader2}>
-            Data da Recepção: {data && data.data_da_recepcao}
+            Data da Recepção: {data && data.createdAt}
           </Text>
 
           {data && data.updatedAt === '' && (
@@ -114,7 +114,7 @@ export const CreateRequerimentConclutedPdf = ({
             Email do Representante: {data && data.email_do_representante}
           </Text>
         </View>
-        return (
+
         <View style={styles.main}>
           <Text style={styles.titleText}>Lista de Exigências Concluída</Text>
 
@@ -248,7 +248,7 @@ export const CreateRequerimentConclutedPdf = ({
             </Text>
           )}
         </View>
-        )
+
         <View style={styles.contentInfoUser}>
           <Text style={styles.line}>
             ______________________________________________

@@ -24,8 +24,11 @@ import {
 } from './style'
 
 export const TableAssociation = () => {
-  const { dataListAssociation, filteredDataSearchRequeriment, dataInpuSearch } =
-    useRequeriment()
+  const {
+    dataListAssociation,
+    filteredDataSearchAssociations,
+    dataInpuSearch,
+  } = useRequeriment()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -37,8 +40,6 @@ export const TableAssociation = () => {
     })
     setPendingList(filteredPendingList)
   }, [dataListAssociation])
-
-  console.log(dataListAssociation)
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -66,11 +67,11 @@ export const TableAssociation = () => {
         <TableBody>
           {dataInpuSearch.length > 0
             ? (rowsPerPage > 0
-                ? filteredDataSearchRequeriment.slice(
+                ? filteredDataSearchAssociations.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : filteredDataSearchRequeriment
+                : filteredDataSearchAssociations
               ).map((data) => {
                 return (
                   <TableRowContentList
@@ -177,7 +178,7 @@ export const TableAssociation = () => {
         count={
           pendingList
             ? pendingList.length
-            : filteredDataSearchRequeriment.length
+            : filteredDataSearchAssociations.length
         }
         rowsPerPage={rowsPerPage}
         labelRowsPerPage="Itens por página:"

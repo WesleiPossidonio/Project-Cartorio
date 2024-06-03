@@ -92,7 +92,7 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
           </Text>
 
           <Text style={styles.textheader2}>
-            Data da Recepção: {data && data.data_da_recepcao}
+            Data da Recepção: {data && data.createdAt}
           </Text>
 
           {data && data.updatedAt === '' && (

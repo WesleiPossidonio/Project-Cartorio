@@ -48,6 +48,7 @@ interface ConfirmMailProps {
 interface UpdatePasswordProps {
   password: string
   confirmPassword: string
+  updateNumber: string
 }
 
 interface UserContextType {
@@ -70,7 +71,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   const [userDataLogin, setUserDataLogin] = useState<ResponseDataUser>(
     {} as ResponseDataUser
   )
-  const { getListRequeriment } = useRequeriment()
+  const { getAssociationList } = useRequeriment()
 
   const handleLoginUser = useCallback(
     async (data: UserLoginProps) => {
@@ -93,12 +94,12 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
           navigate('/')
         }, 1000)
 
-        await getListRequeriment()
+        await getAssociationList()
       } catch (error) {
         console.log(error)
       }
     },
-    [getListRequeriment, navigate]
+    [getAssociationList, navigate]
   )
 
   useEffect(() => {
@@ -183,9 +184,12 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   const updatePassword = useCallback(async (data: UpdatePasswordProps) => {
     const confirmEmail = localStorage.getItem('cartorio:UserConfirmEmail')
     const idUser = confirmEmail && JSON.parse(confirmEmail).id
+    const { password, updateNumber } = data
+
+    const updateData = { password, updateNumber }
 
     try {
-      await toast.promise(api.put(`requeriment/${idUser}`, data.password), {
+      await toast.promise(api.put(`requeriment/${idUser}`, updateData), {
         pending: 'Verificando seus dados',
         success: 'Senha Atualizada com Sucesso!',
         error: 'Ops! Verifique os Dados Digitados',

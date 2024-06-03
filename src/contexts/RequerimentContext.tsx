@@ -87,11 +87,16 @@ interface SendMailProps extends ListRequerimentProps {
   name: string
   registration: string
 }
+interface filteredRequerimentProps {
+  query: string
+  formTable: string
+}
 
 interface RequerimentContextType {
   dataListRequeriment: ListRequerimentProps[]
   filteredDataSearchRequeriment: AssociationProps[]
   filteredDataConclutedRequeriment: AssociationProps[]
+  filteredDataSearchAssociations: AssociationProps[]
   dataInpuSearch: string
   selectAListRequeriment: ListRequerimentProps[]
   requestListDataPDF: AssociationProps | undefined
@@ -100,11 +105,12 @@ interface RequerimentContextType {
   setDataListRequeriment: (data: ListRequerimentProps[]) => void
   CreateRequeriment: (data: ListRequerimentProps) => Promise<void>
   handleCreateAssociation: (data: CreateAssociationProps) => Promise<void>
-  filteredRequeriment: (query: string) => void
+  filteredRequeriment: (data: filteredRequerimentProps) => void
   filteredRequerimentConcluted: (query: string) => void
   updateRequeriment: (data: UpdateListProps) => Promise<void>
   sendMail: (dataSendMail: SendMailProps) => Promise<void>
   handleUpdateAssociation: (data: UpdateAssociationProps) => Promise<void>
+  getAssociationList: () => Promise<void>
 }
 
 interface RequerimentProviderProps {
@@ -128,6 +134,8 @@ export const RequerimentContextProvider = ({
   const [dataInpuSearch, setDataInpuSearch] = useState('')
   const [filteredDataSearchRequeriment, setFilteredDataSearchRequeriment] =
     useState<AssociationProps[]>(dataListAssociation)
+  const [filteredDataSearchAssociations, setFilteredDataSearchAssociations] =
+    useState<AssociationProps[]>(dataListAssociation)
   const [
     filteredDataConclutedRequeriment,
     setFilteredConclutedDataRequeriment,
@@ -136,28 +144,29 @@ export const RequerimentContextProvider = ({
     ListRequerimentProps[]
   >([])
   const [numberProtocolClient, setNumberProtocolClient] =
-    useState<number>(2024001)
+    useState<number>(20240001)
 
   const { userDataLogin } = useUser()
+
+  const currentDate = new Date()
+
+  const currentDateDay = String(currentDate.getDate()).padStart(2, '0')
+  const currentDateMonth = String(currentDate.getMonth() + 1).padStart(2, '0')
+  const currentDateYears = currentDate.getFullYear()
+
+  const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
 
   const getAssociationList = useCallback(async () => {
     try {
       const response = await api.get('associationList')
       const { data } = response
-      const associationList: AssociationProps[] = data
+      const numberProtocol = data[data.length - 1]?.numero_do_protocolo
 
-      if (Array.isArray(associationList)) {
-        setDataListAssociation(associationList)
+      data.length === 0
+        ? setNumberProtocolClient(20240001)
+        : setNumberProtocolClient(numberProtocol)
 
-        const lastNumberProtocol = data[data.length - 1].numero_do_protocolo + 3
-        setNumberProtocolClient(lastNumberProtocol)
-      } else {
-        console.error(
-          'Expected associationList to be an array',
-          associationList
-        )
-        setDataListAssociation([])
-      }
+      setDataListAssociation(data)
     } catch (error) {
       console.error('Failed to fetch association list:', error)
       setDataListAssociation([])
@@ -168,23 +177,47 @@ export const RequerimentContextProvider = ({
     getAssociationList()
   }, [getAssociationList, dataListRequeriment])
 
-  const filteredRequeriment = (query: string) => {
-    const dropDownList = dataListAssociation.filter((list) => {
-      return list.exigencias?.estado_do_requerimento === 'Pendente'
-    })
+  const filteredRequeriment = ({
+    formTable,
+    query,
+  }: filteredRequerimentProps) => {
+    const filterData = (dataList: any[], query: string) => {
+      return dataList.filter((data) => {
+        return (
+          (data.nome_da_instituicao &&
+            data.nome_da_instituicao
+              .toLowerCase()
+              .includes(query.toLowerCase())) ||
+          (data.numero_do_protocolo &&
+            data.numero_do_protocolo.toString().includes(query))
+        )
+      })
+    }
 
-    const filteredRequeriment = dropDownList.filter((data) => {
-      return (
-        (data.nome_da_instituicao &&
-          data.nome_da_instituicao
-            .toLowerCase()
-            .includes(query.toLowerCase())) ||
-        (data.numero_do_protocolo &&
-          data.numero_do_protocolo.toString().includes(query))
+    if (formTable === 'Listas-Instancias') {
+      const dropDownListAssosiations = dataListAssociation.filter(
+        (list) => list.exigencias === null
       )
-    })
+      const filteredAssociations = filterData(dropDownListAssosiations, query)
+      setFilteredDataSearchAssociations(filteredAssociations)
+    } else if (formTable === 'Listas-Exigências') {
+      const dropDownList = dataListAssociation.filter(
+        (list) =>
+          list.exigencias !== null &&
+          list.exigencias?.estado_do_requerimento === 'Pendente'
+      )
+      const filteredRequeriment = filterData(dropDownList, query)
+      setFilteredDataSearchRequeriment(filteredRequeriment)
+    } else if (formTable === 'Listas-Concluídas') {
+      const dropDownList = dataListAssociation.filter(
+        (list) =>
+          list.exigencias !== null &&
+          list.exigencias?.estado_do_requerimento === 'Concluído'
+      )
+      const filteredRequerimentCompleted = filterData(dropDownList, query)
+      setFilteredConclutedDataRequeriment(filteredRequerimentCompleted)
+    }
 
-    setFilteredDataSearchRequeriment(filteredRequeriment)
     setDataInpuSearch(query)
   }
 
@@ -339,23 +372,14 @@ export const RequerimentContextProvider = ({
       const formatedNumberPhone =
         telefone_contato && telefone_contato.replace(regex, '($1) $2-$3')
 
-      const currentDate = new Date()
-
-      const currentDateDay = currentDate.getDate()
-      const currentDateMonth = currentDate.getMonth() + 1
-      const currentDateYears = currentDate.getFullYear()
-
-      const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
-
       const newListAssociation = {
-        numero_do_protocolo: numberProtocolClient,
+        numero_do_protocolo: numberProtocolClient + 1,
         cnpj,
         nome_da_instituicao,
         nome_do_representante,
         telefone_contato: formatedNumberPhone,
         data_da_recepcao: dataString,
         email_do_representante,
-        estado_do_requerimento: 'helo',
       }
 
       try {
@@ -369,7 +393,7 @@ export const RequerimentContextProvider = ({
         )
 
         const { data } = newList
-
+        setNumberProtocolClient(data.numero_do_protocolo)
         setDataListAssociation((prevState) => [...prevState, data])
 
         sendMailAssociation({
@@ -500,6 +524,7 @@ export const RequerimentContextProvider = ({
             name,
             registration,
             itens_da_lista_pendetes: data,
+            data_da_recepcao: filteredAssociation.data_da_recepcao,
           })
       } catch (error) {
         console.log(error)
@@ -642,6 +667,8 @@ export const RequerimentContextProvider = ({
         handleCreateAssociation,
         dataListAssociation,
         handleUpdateAssociation,
+        getAssociationList,
+        filteredDataSearchAssociations,
       }}
     >
       {children}

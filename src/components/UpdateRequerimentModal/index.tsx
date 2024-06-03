@@ -22,13 +22,12 @@ import {
 
 export const UpdateRequerimentFormSchema = zod.object({
   declaracao_sindical: zod.boolean().optional(),
-  lista_e_edital: zod.boolean().optional().optional(),
   assinatura_do_advogado: zod.boolean().optional(),
   declaracao_criminal: zod.boolean().optional(),
+  requisitos_estatuto: zod.boolean().optional(),
   declaracao_de_desimpedimento: zod.boolean().optional(),
   livro_rasao: zod.boolean().optional(),
   ppe: zod.boolean().optional(),
-  requisitos_estatuto: zod.boolean().optional(),
   dissolucao_ou_exticao: zod.boolean().optional(),
   fundacoes: zod.boolean().optional(),
   reconhecimento_de_firma: zod.boolean().optional(),
@@ -37,8 +36,9 @@ export const UpdateRequerimentFormSchema = zod.object({
   documentacao_de_identificacao: zod.boolean().optional(),
   requisitos_de_estatutos_fundadores: zod.boolean().optional(),
   requisitos_criacao_de_estatuto: zod.boolean().optional(),
-  campo_de_assinatura: zod.boolean().optional(),
+  lista_e_edital: zod.boolean().optional().optional(),
   retificacao_de_redacao: zod.boolean().optional(),
+  campo_de_assinatura: zod.boolean().optional(),
   existe_exigencias_nao_listadas: zod.boolean().optional(),
   informacao_divergente: zod.string().optional(),
 })

@@ -40,7 +40,12 @@ export const HeaderContent = ({
   }
 
   const handleSearchRequeriment = async (data: SearchFormInputs) => {
-    filteredRequeriment(data.query)
+    const filteredList = {
+      query: data.query,
+      formTable,
+    }
+
+    filteredRequeriment(filteredList)
     reset()
   }
 

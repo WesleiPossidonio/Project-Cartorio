@@ -14,7 +14,7 @@ export const ContainerUpdatePassword = styled.section`
 
 export const ContentUpdatePassword = styled.div`
   width: 25rem;
-  height: 30rem;
+  height: 36rem;
 
   display: flex;
   flex-direction: column;
