@@ -26,6 +26,7 @@ export const createAssociationFormSchema = zod.object({
     .string()
     .min(18, 'Por Favor, digite o CNPJ valido')
     .max(18, 'Por Favor, digite o CNPJ valido'),
+  sobre_exigencia: zod.string().min(4, 'Digite sobre o serviço'),
   email_do_representante: zod
     .string()
     .email('Por favor digite um email válido'),
@@ -61,6 +62,7 @@ export const FormCreateAssociation = () => {
       nome_do_representante,
       telefone_contato,
       email_do_representante,
+      sobre_exigencia,
     } = data
 
     const dataAssociation = {
@@ -69,6 +71,7 @@ export const FormCreateAssociation = () => {
       nome_do_representante,
       telefone_contato,
       email_do_representante,
+      sobre_exigencia,
     }
 
     handleCreateAssociation(dataAssociation)
@@ -120,10 +123,19 @@ export const FormCreateAssociation = () => {
           <div id="phone">
             <Input
               placeholder="Telefone de contato"
-              type="text"
+              type="tel"
               id="phone"
               {...register('telefone_contato')}
               error={errors.telefone_contato?.message}
+            />
+          </div>
+          <div id="AboutRequeriment">
+            <Input
+              placeholder="Descreva o Serviço"
+              type="text"
+              id="AboutRequeriment"
+              {...register('sobre_exigencia')}
+              error={errors.sobre_exigencia?.message}
             />
           </div>
         </ContainerForm>

@@ -112,8 +112,6 @@ export const ControllerFormInputs = ({
                       list.name as keyof UpdateRequerimentFormInputs
                     )}
                     name={list.name}
-                    checked={selectedItems[list.name] || false}
-                    onChange={handleCheckboxChange}
                   />
                   <LabelCheck htmlFor={list.id}>
                     <NotePencil size={30} />
@@ -134,6 +132,8 @@ export const ControllerFormInputs = ({
                       list.name as keyof UpdateRequerimentFormInputs
                     )}
                     name={list.name}
+                    checked={selectedItems[list.name] || false}
+                    onChange={handleCheckboxChange}
                   />
                   <LabelCheck htmlFor={list.id}>
                     <NotePencil size={30} />

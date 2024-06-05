@@ -93,7 +93,7 @@ export const CreatePdfList = ({
           </Text>
 
           <Text style={styles.textheader2}>
-            Data da Recepção: {data.data_da_recepcao}
+            Data da Recepção: {data.createdAt}
           </Text>
 
           {data.updatedAt === '' && (

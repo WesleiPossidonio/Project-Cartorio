@@ -95,7 +95,7 @@ export const CreateRequerimentConclutedPdf = ({
           </Text>
 
           <Text style={styles.textheader2}>
-            Data da Recepção: {data && data.createdAt}
+            Data da Recepção: {data && data.data_da_recepcao}
           </Text>
 
           {data && data.updatedAt === '' && (

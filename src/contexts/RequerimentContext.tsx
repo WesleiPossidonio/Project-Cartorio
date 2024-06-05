@@ -19,6 +19,7 @@ export interface CreateAssociationProps {
   email_do_representante: string
   telefone_contato: string
   data_da_recepcao?: string
+  sobre_exigencia: string
 }
 
 export interface UpdateAssociationProps {
@@ -148,14 +149,6 @@ export const RequerimentContextProvider = ({
 
   const { userDataLogin } = useUser()
 
-  const currentDate = new Date()
-
-  const currentDateDay = String(currentDate.getDate()).padStart(2, '0')
-  const currentDateMonth = String(currentDate.getMonth() + 1).padStart(2, '0')
-  const currentDateYears = currentDate.getFullYear()
-
-  const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
-
   const getAssociationList = useCallback(async () => {
     try {
       const response = await api.get('associationList')
@@ -208,7 +201,7 @@ export const RequerimentContextProvider = ({
       )
       const filteredRequeriment = filterData(dropDownList, query)
       setFilteredDataSearchRequeriment(filteredRequeriment)
-    } else if (formTable === 'Listas-Concluídas') {
+    } else if (formTable === 'Exigências-Concluídas') {
       const dropDownList = dataListAssociation.filter(
         (list) =>
           list.exigencias !== null &&
@@ -365,6 +358,7 @@ export const RequerimentContextProvider = ({
         nome_da_instituicao,
         nome_do_representante,
         telefone_contato,
+        sobre_exigencia,
       } = data
 
       const regex = /(\d{2})(\d{5})(\d{4})/
@@ -378,8 +372,8 @@ export const RequerimentContextProvider = ({
         nome_da_instituicao,
         nome_do_representante,
         telefone_contato: formatedNumberPhone,
-        data_da_recepcao: dataString,
         email_do_representante,
+        sobre_exigencia,
       }
 
       try {
@@ -401,11 +395,13 @@ export const RequerimentContextProvider = ({
           name,
           registration,
         })
+
+        setRequestListDataPDF(data)
       } catch (error) {
         console.log(error)
       }
     },
-    [numberProtocolClient, userDataLogin, sendMailAssociation]
+    [userDataLogin, numberProtocolClient, sendMailAssociation]
   )
 
   const handleUpdateAssociation = useCallback(
@@ -524,7 +520,7 @@ export const RequerimentContextProvider = ({
             name,
             registration,
             itens_da_lista_pendetes: data,
-            data_da_recepcao: filteredAssociation.data_da_recepcao,
+            data_da_recepcao: filteredAssociation.updatedAt,
           })
       } catch (error) {
         console.log(error)
@@ -541,6 +537,7 @@ export const RequerimentContextProvider = ({
       const currentDateYears = currentDate.getFullYear()
 
       const dataString = `${currentDateDay}/${currentDateMonth}/${currentDateYears}`
+      const { name, registration } = userDataLogin
 
       const dataRequerimentUpdated = {
         assinatura_do_advogado: data.assinatura_do_advogado,
@@ -576,8 +573,11 @@ export const RequerimentContextProvider = ({
         (valor) => valor === 'Recebido'
       )
 
+      const filteredAssociation = dataListAssociation.find(
+        (list) => list.id === data.id
+      )
+
       if (fullFilteredList) {
-        console.log(fullFilteredList)
         const ListConcruted = {
           ...dataRequerimentUpdated,
           estado_do_requerimento: 'Concluído',
@@ -596,7 +596,6 @@ export const RequerimentContextProvider = ({
           )
 
           const { data } = updateRequermentResponse
-
           setDataListRequeriment([...dataListRequeriment, data])
         } catch (error) {
           console.log(error)
@@ -616,36 +615,28 @@ export const RequerimentContextProvider = ({
           )
 
           const { data } = updateRequermentResponse
-
           setDataListRequeriment([...dataListRequeriment, data])
+          filteredAssociation &&
+            sendMailRequeriment({
+              ...filteredAssociation,
+              name,
+              registration,
+              itens_da_lista_pendetes: data,
+              data_da_recepcao: filteredAssociation.updatedAt,
+            })
+
+          console.log(filteredAssociation && filteredAssociation.updatedAt)
         } catch (error) {
           console.log(error)
         }
       }
-
-      // if (data.handleListConcluted) {
-      //   try {
-      //     const updateRequermentResponse = await toast.promise(
-      //       api.put(
-      //         `updateRequeriment/${dataRequerimentUpdated.exigencias_id}`,
-      //         dataRequerimentUpdated
-      //       ),
-      //       {
-      //         pending: 'Verificando seus dados',
-      //         success: 'Exigencia Concluída com Sucesso!',
-      //         error: 'Ops! Verifique os Dados Digitados',
-      //       }
-      //     )
-
-      //     const { data } = updateRequermentResponse
-
-      //     setDataListRequeriment([...dataListRequeriment, data])
-      //   } catch (error) {
-      //     console.log(error)
-      //   }
-      // }
     },
-    [dataListRequeriment]
+    [
+      dataListAssociation,
+      dataListRequeriment,
+      sendMailRequeriment,
+      userDataLogin,
+    ]
   )
 
   return (

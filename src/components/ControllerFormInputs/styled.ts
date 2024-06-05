@@ -31,12 +31,11 @@ export const ContentInput = styled.div`
 
 export const ContainerCheckInput = styled.div`
   width: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 0.5rem;
+  gap: 1.3rem;
 
   margin-top: 1rem;
   border-radius: 6px;

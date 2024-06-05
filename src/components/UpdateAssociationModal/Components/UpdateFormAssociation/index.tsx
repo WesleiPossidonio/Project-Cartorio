@@ -28,6 +28,7 @@ export const UpdateAssociationFormSchema = zod.object({
     .string()
     .min(18, 'Por Favor, digite o CNPJ valido')
     .max(18, 'Por Favor, digite o CNPJ valido'),
+  sobre_exigencia: zod.string().min(4, 'Digite sobre o serviço'),
   email_do_representante: zod
     .string()
     .email('Por favor digite um email válido'),
@@ -148,6 +149,17 @@ export const FormUpdateAssociation = ({
               {...register('telefone_contato')}
               error={errors.telefone_contato?.message}
               defaultValue={dataAssociation && dataAssociation.telefone_contato}
+            />
+          </div>
+
+          <div id="AboutRequeriment">
+            <Input
+              placeholder="Descreva o Serviço"
+              type="text"
+              id="AboutRequeriment"
+              {...register('sobre_exigencia')}
+              error={errors.sobre_exigencia?.message}
+              defaultValue={dataAssociation && dataAssociation.sobre_exigencia}
             />
           </div>
         </ContainerForm>
