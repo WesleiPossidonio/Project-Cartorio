@@ -8,6 +8,7 @@ import {
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { useRequeriment } from '../../hooks/useRequeriment'
 import { useUser } from '../../hooks/useUser'
 import { CreateAssociationModal } from '../CreateAssociationModal'
 import { CreateUserModal } from '../CreateUserModal'
@@ -19,12 +20,14 @@ export const MenuPage = () => {
   const [linkMenuSelected, setLinkMenuSelected] = useState('')
 
   const { userDataLogin } = useUser()
+  const { getAssociationList } = useRequeriment()
 
   const navigate = useNavigate()
 
   const handleIsSelected = (data: string) => {
     if (data === 'Home') {
       setLinkMenuSelected(data)
+      getAssociationList()
       navigate('/')
     }
     if (data === 'addUser') {

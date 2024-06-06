@@ -9,7 +9,7 @@ import {
 import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-import { ListChecks } from 'phosphor-react'
+import { ListChecks, PaperPlaneTilt } from 'phosphor-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 
 import { AssociationProps } from '../../contexts/RequerimentContext'
@@ -24,8 +24,12 @@ import {
 } from './style'
 
 export const TableRequeriment = () => {
-  const { dataListAssociation, dataInpuSearch, filteredDataSearchRequeriment } =
-    useRequeriment()
+  const {
+    dataListAssociation,
+    dataInpuSearch,
+    filteredDataSearchRequeriment,
+    sendMail,
+  } = useRequeriment()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -116,6 +120,10 @@ export const TableRequeriment = () => {
                       </Dialog.Trigger>
                       <UpdateRequerimentModal AssociationId={data.id} />
                     </Dialog.Root>
+
+                    <TableContentList onClick={() => sendMail(data.id)}>
+                      <PaperPlaneTilt size={29} />
+                    </TableContentList>
                   </TableRowContentList>
                 )
               })
@@ -165,6 +173,10 @@ export const TableRequeriment = () => {
                       </Dialog.Trigger>
                       <UpdateRequerimentModal AssociationId={data.id} />
                     </Dialog.Root>
+
+                    <TableContentList onClick={() => sendMail(data.id)}>
+                      <PaperPlaneTilt size={29} />
+                    </TableContentList>
                   </TableRowContentList>
                 )
               })}

@@ -83,11 +83,6 @@ interface UpdateListProps extends ListRequerimentProps {
   handleListConcluted: boolean
 }
 
-interface SendMailProps extends ListRequerimentProps {
-  updateMail: boolean
-  name: string
-  registration: string
-}
 interface filteredRequerimentProps {
   query: string
   formTable: string
@@ -109,7 +104,7 @@ interface RequerimentContextType {
   filteredRequeriment: (data: filteredRequerimentProps) => void
   filteredRequerimentConcluted: (query: string) => void
   updateRequeriment: (data: UpdateListProps) => Promise<void>
-  sendMail: (dataSendMail: SendMailProps) => Promise<void>
+  sendMail: (id: number) => Promise<void>
   handleUpdateAssociation: (data: UpdateAssociationProps) => Promise<void>
   getAssociationList: () => Promise<void>
 }
@@ -235,46 +230,34 @@ export const RequerimentContextProvider = ({
   }
 
   const sendMail = useCallback(
-    async (dataSendMail: SendMailProps) => {
-      const notCompletedApplicationList = Object.entries(dataSendMail).filter(
-        ([key, value]) => {
-          return value ? 'Pendente' : 'Recebido'
-        }
-      )
+    async (id: number) => {
+      const { registration, name } = userDataLogin
 
-      const listNotCompletedFiltered = Object.fromEntries(
-        notCompletedApplicationList
-      )
-
-      const { data_da_recepcao, id, updateMail, registration, name } =
-        dataSendMail
-
-      const filteredAssociation = dataListAssociation.filter((list) => {
+      const filteredAssociation = dataListAssociation.find((list) => {
         return list.id === id
       })
 
-      const listSendEmail = {
-        filteredAssociation,
-        data_da_recepcao,
-        itens_da_lista_pendetes: listNotCompletedFiltered,
-        registration,
-        name,
-      }
-
       try {
-        if (updateMail) {
+        if (filteredAssociation) {
+          const listSendEmail = {
+            ...filteredAssociation,
+            data_da_recepcao: filteredAssociation.createdAt,
+            itens_da_lista_pendetes: filteredAssociation.exigencias,
+            registration,
+            name,
+          }
+
           await toast.promise(api.post('sendMailRequeriments', listSendEmail), {
             pending: 'Verificando seus dados',
             success: 'Email enviado com Sucesso!',
             error: 'Ops! Error no Servidor',
           })
         }
-        await api.post('sendMailRequeriments', listSendEmail)
       } catch (error) {
         console.log(error)
       }
     },
-    [dataListAssociation]
+    [dataListAssociation, userDataLogin]
   )
 
   const sendMailAssociation = useCallback(
