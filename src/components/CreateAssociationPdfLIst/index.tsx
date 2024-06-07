@@ -90,6 +90,9 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
           <Text style={styles.titleList}>
             Nº do Exame: {data && data.numero_do_protocolo}
           </Text>
+          <Text style={styles.textheader2}>
+            Sobre o Serviço: {data && data.sobre_exigencia}
+          </Text>
 
           <Text style={styles.textheader2}>
             Data da Recepção: {data && data.createdAt}
@@ -114,7 +117,9 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
 
         {data?.exigencias !== null && (
           <View style={styles.main}>
-            <Text style={styles.titleText}>Lista de Exigências Concluída</Text>
+            {data?.exigencias !== null && (
+              <Text style={styles.titleText}>Lista de Exigências</Text>
+            )}
 
             {data?.exigencias?.lista_e_edital === 'Pendente' && (
               <Text style={styles.text}>

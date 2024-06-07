@@ -8,7 +8,6 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-import { useRequeriment } from '../hooks/useRequeriment'
 import api from '../services/api'
 
 interface UserLoginProps {
@@ -71,7 +70,6 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   const [userDataLogin, setUserDataLogin] = useState<ResponseDataUser>(
     {} as ResponseDataUser
   )
-  const { getAssociationList } = useRequeriment()
 
   const handleLoginUser = useCallback(
     async (data: UserLoginProps) => {
@@ -93,13 +91,11 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setTimeout(() => {
           navigate('/')
         }, 1000)
-
-        await getAssociationList()
       } catch (error) {
         console.log(error)
       }
     },
-    [getAssociationList, navigate]
+    [navigate]
   )
 
   useEffect(() => {

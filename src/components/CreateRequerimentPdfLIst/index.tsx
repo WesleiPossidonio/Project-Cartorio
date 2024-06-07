@@ -90,6 +90,9 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
           <Text style={styles.titleList}>
             Nº do Exame: {data && data.numero_do_protocolo}
           </Text>
+          <Text style={styles.textheader2}>
+            Sobre o Serviço: {data && data.sobre_exigencia}
+          </Text>
 
           <Text style={styles.textheader2}>
             Data da Recepção: {data && data.createdAt}

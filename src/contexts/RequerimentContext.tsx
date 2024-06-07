@@ -163,7 +163,7 @@ export const RequerimentContextProvider = ({
 
   useEffect(() => {
     getAssociationList()
-  }, [getAssociationList, dataListRequeriment])
+  }, [getAssociationList, dataListRequeriment, userDataLogin])
 
   const filteredRequeriment = ({
     formTable,
