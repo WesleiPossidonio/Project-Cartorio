@@ -69,7 +69,7 @@ export const HeaderContent = ({
 
       <Selected value={formTable} onChange={handleFilteredTable}>
         <option value="">Filtro</option>
-        <option value="Listas-Instancias">Instancias</option>
+        <option value="Listas-Instancias">Exâme</option>
         <option value="Listas-Exigências">Exigências</option>
         <option value="Exigências-Concluídas">Exigências Concluídas</option>
       </Selected>

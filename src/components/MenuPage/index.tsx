@@ -86,7 +86,7 @@ export const MenuPage = () => {
             onClick={() => handleIsSelected('addRequeriment')}
           >
             <PlusCircle size={32} />
-            <TextRegular size="m">Iniciar Instancia</TextRegular>
+            <TextRegular size="m">Iniciar Exâme</TextRegular>
           </ContainerButton>
         </Dialog.Trigger>
         <CreateAssociationModal />

@@ -104,7 +104,7 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
             >
               <PlusCircle size={32} />
               <TextRegular size="l" weight={700}>
-                Adicionar Exigência
+                Iniciar Exâme
               </TextRegular>
             </ContainerButton>
           </Dialog.Trigger>
