@@ -9,6 +9,7 @@ import {
 import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import { PaperPlaneTilt } from 'phosphor-react'
 import React, { ChangeEvent, useState } from 'react'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
@@ -25,6 +26,7 @@ export const TableRequerimentCompleted = () => {
     dataListAssociation,
     dataInpuSearch,
     filteredDataConclutedRequeriment,
+    sendMail,
   } = useRequeriment()
 
   const [page, setPage] = useState(0)
@@ -99,6 +101,10 @@ export const TableRequerimentCompleted = () => {
                           locale: ptBR,
                         })}
                     </TableContentList>
+
+                    <TableContentList onClick={() => sendMail(data.id)}>
+                      <PaperPlaneTilt size={29} />
+                    </TableContentList>
                   </TableRowContentList>
                 )
               })
@@ -137,6 +143,10 @@ export const TableRequerimentCompleted = () => {
                           addSuffix: true,
                           locale: ptBR,
                         })}
+                    </TableContentList>
+
+                    <TableContentList onClick={() => sendMail(data.id)}>
+                      <PaperPlaneTilt size={29} />
                     </TableContentList>
                   </TableRowContentList>
                 )

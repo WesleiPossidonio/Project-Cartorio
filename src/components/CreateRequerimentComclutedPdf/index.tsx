@@ -6,6 +6,8 @@ import {
   View,
   Image,
 } from '@react-pdf/renderer'
+import { format } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 
 import ImageLogo from '../../assets/Logo-Cartorio.jpg'
 import { AssociationProps } from '../../contexts/RequerimentContext'
@@ -98,12 +100,16 @@ export const CreateRequerimentConclutedPdf = ({
           </Text>
 
           <Text style={styles.textheader2}>
-            Data da Recepção: {data && data.data_da_recepcao}
+            Data da Recepção: {data && data.createdAt}
           </Text>
 
           {data && data.updatedAt === '' && (
             <Text style={styles.textheader2}>
-              Data da Exigência: {data && data.updatedAt}
+              Data da Exigência:{' '}
+              {data.createdAt &&
+                format(new Date(data.updatedAt), 'dd/MM/yyyy', {
+                  locale: ptBR,
+                })}
             </Text>
           )}
           <Text style={styles.textheader2}>

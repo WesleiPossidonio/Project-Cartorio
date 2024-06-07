@@ -1,4 +1,6 @@
 /* eslint-disable camelcase */
+import { format } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 import React, {
   ReactNode,
   useCallback,
@@ -238,10 +240,17 @@ export const RequerimentContextProvider = ({
       })
 
       try {
-        if (filteredAssociation) {
+        if (filteredAssociation && filteredAssociation.createdAt) {
+          const date = format(
+            new Date(filteredAssociation.createdAt),
+            'dd/MM/yyyy',
+            {
+              locale: ptBR,
+            }
+          )
           const listSendEmail = {
             ...filteredAssociation,
-            data_da_recepcao: filteredAssociation.createdAt,
+            data_da_recepcao: date,
             itens_da_lista_pendetes: filteredAssociation.exigencias,
             registration,
             name,
@@ -370,6 +379,10 @@ export const RequerimentContextProvider = ({
         )
 
         const { data } = newList
+
+        const date = format(new Date(data.updateAt), 'dd/MM/yyyy', {
+          locale: ptBR,
+        })
         setNumberProtocolClient(data.numero_do_protocolo)
         setDataListAssociation((prevState) => [...prevState, data])
 
@@ -377,6 +390,7 @@ export const RequerimentContextProvider = ({
           ...newListAssociation,
           name,
           registration,
+          data_da_recepcao: date,
         })
 
         setRequestListDataPDF(data)
@@ -497,14 +511,24 @@ export const RequerimentContextProvider = ({
 
         setDataListRequeriment((prevState) => [...prevState, data])
 
-        filteredAssociation &&
-          sendMailRequeriment({
-            ...filteredAssociation,
-            name,
-            registration,
-            itens_da_lista_pendetes: data,
-            data_da_recepcao: filteredAssociation.updatedAt,
-          })
+        if (filteredAssociation?.createdAt) {
+          const date = format(
+            new Date(filteredAssociation?.createdAt),
+            'dd/MM/yyyy',
+            {
+              locale: ptBR,
+            }
+          )
+
+          filteredAssociation &&
+            sendMailRequeriment({
+              ...filteredAssociation,
+              name,
+              registration,
+              itens_da_lista_pendetes: data,
+              data_da_recepcao: date,
+            })
+        }
       } catch (error) {
         console.log(error)
       }
@@ -579,7 +603,19 @@ export const RequerimentContextProvider = ({
           )
 
           const { data } = updateRequermentResponse
+          const date = format(new Date(data.updateAt), 'dd/MM/yyyy', {
+            locale: ptBR,
+          })
           setDataListRequeriment([...dataListRequeriment, data])
+
+          filteredAssociation &&
+            sendMailRequeriment({
+              ...filteredAssociation,
+              name,
+              registration,
+              itens_da_lista_pendetes: data,
+              data_da_recepcao: date,
+            })
         } catch (error) {
           console.log(error)
         }
@@ -598,6 +634,10 @@ export const RequerimentContextProvider = ({
           )
 
           const { data } = updateRequermentResponse
+
+          const date = format(new Date(data.updateAt), 'dd/MM/yyyy', {
+            locale: ptBR,
+          })
           setDataListRequeriment([...dataListRequeriment, data])
           filteredAssociation &&
             sendMailRequeriment({
@@ -605,10 +645,8 @@ export const RequerimentContextProvider = ({
               name,
               registration,
               itens_da_lista_pendetes: data,
-              data_da_recepcao: filteredAssociation.updatedAt,
+              data_da_recepcao: date,
             })
-
-          console.log(filteredAssociation && filteredAssociation.updatedAt)
         } catch (error) {
           console.log(error)
         }

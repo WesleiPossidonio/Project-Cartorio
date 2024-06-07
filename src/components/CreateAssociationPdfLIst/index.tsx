@@ -6,6 +6,8 @@ import {
   View,
   Image,
 } from '@react-pdf/renderer'
+import { format } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 
 import ImageLogo from '../../assets/Logo-Cartorio.jpg'
 import { AssociationProps } from '../../contexts/RequerimentContext'
@@ -95,7 +97,12 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
           </Text>
 
           <Text style={styles.textheader2}>
-            Data da Recepção: {data && data.createdAt}
+            Data da Recepção:{' '}
+            {data &&
+              data.createdAt &&
+              format(new Date(data.createdAt), 'dd/MM/yyyy', {
+                locale: ptBR,
+              })}
           </Text>
 
           {data && data.updatedAt === '' && (
