@@ -31,6 +31,7 @@ export const ContentText = styled.div`
 `
 
 export const ContainerRequeriments = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
