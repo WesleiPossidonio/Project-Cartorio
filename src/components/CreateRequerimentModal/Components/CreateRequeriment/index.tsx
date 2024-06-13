@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
@@ -58,10 +59,15 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
 
   const { CreateRequeriment, requestListDataPDF, dataListAssociation } =
     useRequeriment()
+  const [requerimentSelected, setRequerimentSelected] = useState('Pendente')
 
   const RequerimentSelected = dataListAssociation.find((list) => list.id === id)
 
   const { userDataLogin } = useUser()
+
+  const handleSelectedRequeriment = (data: string) => {
+    setRequerimentSelected(data)
+  }
 
   const handleCreateRequeriment = async (data: CreateRequerimentFormInputs) => {
     const booleanData: Record<string, string> = {}
@@ -69,9 +75,14 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       ([key, value]) => typeof value === 'boolean'
     )
 
-    filteredEntries.map(([key, value]) => {
-      return (booleanData[key] = value ? 'Pendente' : 'Não-Listado')
-    })
+    ;(requerimentSelected === 'Pendente' &&
+      filteredEntries.map(([key, value]) => {
+        return (booleanData[key] = value ? 'Pendente' : 'Não-Listado')
+      })) ||
+      (requerimentSelected === 'Concluído' &&
+        filteredEntries.map(([key, value]) => {
+          return (booleanData[key] = value ? 'Recebido' : 'Não-Listado')
+        }))
 
     const { informacao_divergente } = data
 
@@ -120,7 +131,8 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
         informacao_divergente !== undefined
           ? informacao_divergente
           : 'Não há informações divergente',
-      estado_do_requerimento: 'Pendente',
+      estado_do_requerimento:
+        requerimentSelected === 'Pendente' ? 'Pendente' : 'Concluído',
     }
 
     CreateRequeriment(createRequerimentData)
@@ -133,6 +145,8 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
           register={register}
           arrayInputList={arrayInputList}
           controllerUsageStatus="Created"
+          handleSelectedRequeriment={handleSelectedRequeriment}
+          requerimentSelected={requerimentSelected}
         />
 
         <div className="PdfContainer">

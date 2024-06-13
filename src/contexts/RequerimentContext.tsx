@@ -22,6 +22,7 @@ export interface CreateAssociationProps {
   telefone_contato: string
   data_da_recepcao?: string
   sobre_exigencia: string
+  cpf: string
 }
 
 export interface UpdateAssociationProps {
@@ -281,7 +282,10 @@ export const RequerimentContextProvider = ({
         telefone_contato,
         registration,
         name,
+        cpf,
       } = dataSendMail
+
+      console.log('fui chamado')
 
       const listSendEmailAssociation = {
         numero_do_protocolo,
@@ -293,6 +297,7 @@ export const RequerimentContextProvider = ({
         telefone_contato,
         registration,
         name,
+        cpf,
       }
 
       try {
@@ -317,12 +322,14 @@ export const RequerimentContextProvider = ({
         telefone_contato,
         data_da_recepcao,
         numero_do_protocolo,
+        cpf,
       } = dataSendMail
 
       const listSendEmailAssociation = {
         itens_da_lista_pendetes,
         numero_do_protocolo,
         cnpj,
+        cpf,
         email_do_representante,
         nome_da_instituicao,
         nome_do_representante,
@@ -351,6 +358,7 @@ export const RequerimentContextProvider = ({
         nome_do_representante,
         telefone_contato,
         sobre_exigencia,
+        cpf,
       } = data
 
       const regex = /(\d{2})(\d{5})(\d{4})/
@@ -366,6 +374,7 @@ export const RequerimentContextProvider = ({
         telefone_contato: formatedNumberPhone,
         email_do_representante,
         sobre_exigencia,
+        cpf,
       }
 
       try {
@@ -383,17 +392,18 @@ export const RequerimentContextProvider = ({
         const date = format(new Date(data.updateAt), 'dd/MM/yyyy', {
           locale: ptBR,
         })
+
         setNumberProtocolClient(data.numero_do_protocolo)
         setDataListAssociation((prevState) => [...prevState, data])
 
+        setRequestListDataPDF(data)
         sendMailAssociation({
           ...newListAssociation,
           name,
           registration,
           data_da_recepcao: date,
+          sobre_exigencia,
         })
-
-        setRequestListDataPDF(data)
       } catch (error) {
         console.log(error)
       }
@@ -464,6 +474,7 @@ export const RequerimentContextProvider = ({
         informacao_divergente,
         campo_de_assinatura,
         retificacao_de_redacao,
+        estado_do_requerimento,
       } = data
 
       const filteredAssociation = dataListAssociation.find(
@@ -491,7 +502,7 @@ export const RequerimentContextProvider = ({
         campo_de_assinatura,
         retificacao_de_redacao,
         exigencias_id: id,
-        estado_do_requerimento: 'Pendente',
+        estado_do_requerimento,
       }
 
       try {

@@ -31,6 +31,8 @@ interface ControllerProps {
   arrayInputList: StateInputListProps[]
   arrayUpdateInputList?: ListRequerimentProps
   controllerUsageStatus: 'Created' | 'Update'
+  handleSelectedRequeriment?: (data: string) => void
+  requerimentSelected?: string
 }
 
 export const ControllerFormInputs = ({
@@ -38,8 +40,11 @@ export const ControllerFormInputs = ({
   controllerUsageStatus,
   register,
   arrayUpdateInputList,
+  handleSelectedRequeriment,
+  requerimentSelected,
 }: ControllerProps) => {
   const [divergentInformation, setDivergentInformation] = useState('')
+
   const [selectedItems, setSelectedItems] = useState<{
     [key: string]: boolean
   }>({})
@@ -100,7 +105,45 @@ export const ControllerFormInputs = ({
 
   return (
     <ContainerControllerInput>
+      <ContainerButtonInfo>
+        <TextRegular size="m" weight={700}>
+          A exigência foi Concluída?
+        </TextRegular>
+        <div>
+          <Button
+            selected={requerimentSelected === 'Concluído'}
+            selectButton
+            type="button"
+            onClick={() =>
+              handleSelectedRequeriment &&
+              handleSelectedRequeriment('Concluído')
+            }
+          >
+            Sim
+          </Button>
+          <Button
+            selected={requerimentSelected === 'Pendente'}
+            selectButton
+            type="button"
+            onClick={() =>
+              handleSelectedRequeriment && handleSelectedRequeriment('Pendente')
+            }
+          >
+            Não
+          </Button>
+        </div>
+      </ContainerButtonInfo>
+
       <ContentInput>
+        {requerimentSelected === 'Pendente' ? (
+          <TextRegular size="l" weight={700}>
+            Selecione os Doculentos Pendentes
+          </TextRegular>
+        ) : (
+          <TextRegular size="l" weight={700}>
+            Selecione os Documentos Concluídos
+          </TextRegular>
+        )}
         <ContainerCheckInput>
           {controllerUsageStatus === 'Created'
             ? arrayInputList.map((list) => (

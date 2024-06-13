@@ -1,3 +1,4 @@
+import * as RadioGroup from '@radix-ui/react-radio-group'
 import { styled } from 'styled-components'
 
 export const SectionCreateRequirement = styled.section`
@@ -41,6 +42,15 @@ export const ContainerForm = styled.div`
   #institution-name {
     grid-column: span 2;
     max-width: 50%;
+  }
+
+  #radio-input {
+    grid-column: span 2;
+    max-width: 50%;
+
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
   }
 
   #number-cnpj {
@@ -108,4 +118,30 @@ export const ButtonHome = styled.button`
 
   background: #2b3d63;
   color: #fff;
+`
+export const RadioItem = styled(RadioGroup.Root)``
+
+export const RadioBiutton = styled(RadioGroup.Item)`
+  background-color: #f2f2f2;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+`
+
+export const RadioIndicator = styled(RadioGroup.Indicator)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: ${({ theme }) => theme.colors['base-blue']};
+  }
 `

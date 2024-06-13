@@ -8,6 +8,7 @@ export const SectionCreateRequirement = styled.section`
   justify-content: center;
 
   form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

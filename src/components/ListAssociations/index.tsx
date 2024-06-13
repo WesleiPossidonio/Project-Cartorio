@@ -61,7 +61,7 @@ export const TableAssociation = () => {
             <TableHeader2>Nº de Protocolo</TableHeader2>
             <TableHeader2>Nome do Estabelecimento</TableHeader2>
             <TableHeader2>Nome do Representante</TableHeader2>
-            <TableHeader2>Data da Instancia</TableHeader2>
+            <TableHeader2>Data do Exâme</TableHeader2>
           </TableRow>
         </TableHead>
         <TableBody>

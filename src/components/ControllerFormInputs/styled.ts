@@ -3,6 +3,7 @@ import { styled } from 'styled-components'
 export const ContainerControllerInput = styled.section`
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 4rem;
@@ -20,13 +21,6 @@ export const ContainerControllerInput = styled.section`
 
 export const ContentInput = styled.div`
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 1rem;
-
-  margin-top: 2rem;
 `
 
 export const ContainerCheckInput = styled.div`
@@ -37,7 +31,7 @@ export const ContainerCheckInput = styled.div`
   justify-content: flex-start;
   gap: 1.3rem;
 
-  margin-top: 1rem;
+  margin-top: 1.2rem;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
     rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
@@ -129,8 +123,6 @@ export const LabelCheck = styled.label`
   }
 `
 export const ContainerButtonInfo = styled.div`
-  width: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;

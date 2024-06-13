@@ -1,7 +1,8 @@
 /* eslint-disable camelcase */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
-import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 import * as zod from 'zod'
 
 import { Button, Input } from '../../..'
@@ -10,8 +11,10 @@ import { useUser } from '../../../../hooks/useUser'
 import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
 import {
   ButtonHome,
-  // ButtonCreateRequeriment,
   ContainerForm,
+  RadioBiutton,
+  RadioIndicator,
+  RadioItem,
   SectionCreateRequirement,
 } from './styled'
 
@@ -25,7 +28,13 @@ export const createAssociationFormSchema = zod.object({
   cnpj: zod
     .string()
     .min(18, 'Por Favor, digite o CNPJ valido')
-    .max(18, 'Por Favor, digite o CNPJ valido'),
+    .max(18, 'Por Favor, digite o CNPJ valido')
+    .optional(),
+  cpf: zod
+    .string()
+    .min(11, 'Por Favor, digite o CPF valido')
+    .max(11, 'Por Favor, digite o CPF valido')
+    .optional(),
   sobre_exigencia: zod.string().min(4, 'Digite sobre o serviço'),
   email_do_representante: zod
     .string()
@@ -33,7 +42,7 @@ export const createAssociationFormSchema = zod.object({
   telefone_contato: zod
     .string()
     .min(11, 'Por Favor, digite o numero de telefone corretamente'),
-  // .max(11, 'Por Favor, digite o numero de telefone corretamente'),
+  isCnpj: zod.string().nonempty(),
 })
 
 export type CreateAssociationFormInputs = zod.infer<
@@ -42,6 +51,7 @@ export type CreateAssociationFormInputs = zod.infer<
 
 export const FormCreateAssociation = () => {
   const {
+    control,
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
@@ -51,11 +61,15 @@ export const FormCreateAssociation = () => {
     shouldUnregister: true,
   })
 
+  const [selectedOption, setSelectedOption] = useState('')
+
   const { requestListDataPDF, handleCreateAssociation } = useRequeriment()
 
   const { userDataLogin } = useUser()
 
   const handleAddAssociation = async (data: CreateAssociationFormInputs) => {
+    console.log('Submitting form data:', data) // Log the form data to check if it's being called
+
     const {
       cnpj,
       nome_da_instituicao,
@@ -63,21 +77,24 @@ export const FormCreateAssociation = () => {
       telefone_contato,
       email_do_representante,
       sobre_exigencia,
+      cpf,
+      isCnpj,
     } = data
 
     const dataAssociation = {
-      cnpj,
+      cnpj: cnpj && isCnpj === 'cnpj' ? cnpj : 'Não Selecionado',
       nome_da_instituicao,
       nome_do_representante,
       telefone_contato,
       email_do_representante,
       sobre_exigencia,
+      cpf: cpf && isCnpj === 'cpf' ? cpf : 'não selecionado',
     }
 
-    handleCreateAssociation(dataAssociation)
-
+    await handleCreateAssociation(dataAssociation)
     reset()
   }
+
   return (
     <SectionCreateRequirement>
       <form onSubmit={handleSubmit(handleAddAssociation)}>
@@ -91,15 +108,54 @@ export const FormCreateAssociation = () => {
             />
           </div>
 
-          <div id="number-cnpj">
-            <Input
-              placeholder="Nº CNPJ"
-              type="text"
-              id="number-cnpj"
-              {...register('cnpj')}
-              error={errors.cnpj?.message}
-            />
-          </div>
+          <Controller
+            name="isCnpj"
+            control={control}
+            render={({ field }) => {
+              const stringValue = field.value
+              setSelectedOption(field.value)
+              return (
+                <RadioItem
+                  id="radio-input"
+                  onValueChange={field.onChange}
+                  value={stringValue}
+                >
+                  <RadioBiutton value="cnpj">
+                    <RadioIndicator />
+                  </RadioBiutton>
+                  <label htmlFor="cnpj">CNPJ</label>
+
+                  <RadioBiutton value="cpf">
+                    <RadioIndicator />
+                  </RadioBiutton>
+                  <label htmlFor="cpf">CPF</label>
+                </RadioItem>
+              )
+            }}
+          />
+
+          {selectedOption === 'cnpj' && (
+            <div id="number-cnpj">
+              <Input
+                placeholder="Digite nº CNPJ"
+                type="text"
+                id="number-cnpj"
+                {...register('cnpj')}
+                error={errors.cnpj?.message}
+              />
+            </div>
+          )}
+          {selectedOption === 'cpf' && (
+            <div id="number-cnpj">
+              <Input
+                placeholder="Digite nº CPF"
+                type="text"
+                id="number-cnpj"
+                {...register('cpf')}
+                error={errors.cpf?.message}
+              />
+            </div>
+          )}
 
           <div id="name-of-representative">
             <Input
@@ -107,6 +163,7 @@ export const FormCreateAssociation = () => {
               type="text"
               id="name-of-representative"
               {...register('nome_do_representante')}
+              error={errors.nome_do_representante?.message}
             />
           </div>
 
