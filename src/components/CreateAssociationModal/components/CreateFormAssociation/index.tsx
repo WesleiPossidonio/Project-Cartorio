@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form'
 import * as zod from 'zod'
 
 import { Button, Input } from '../../..'
+import { AssociationProps } from '../../../../contexts/RequerimentContext'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
 import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
@@ -62,14 +63,13 @@ export const FormCreateAssociation = () => {
   })
 
   const [selectedOption, setSelectedOption] = useState('')
+  const [dataAssociation, setDataAssociatio] = useState<AssociationProps>()
 
   const { requestListDataPDF, handleCreateAssociation } = useRequeriment()
 
   const { userDataLogin } = useUser()
 
   const handleAddAssociation = async (data: CreateAssociationFormInputs) => {
-    console.log('Submitting form data:', data) // Log the form data to check if it's being called
-
     const {
       cnpj,
       nome_da_instituicao,
@@ -92,6 +92,7 @@ export const FormCreateAssociation = () => {
     }
 
     await handleCreateAssociation(dataAssociation)
+    setDataAssociatio(dataAssociation)
     reset()
   }
 
@@ -201,7 +202,7 @@ export const FormCreateAssociation = () => {
           <PDFDownloadLink
             document={
               <CreateAssociationPdfList
-                data={requestListDataPDF}
+                data={dataAssociation}
                 dataUser={userDataLogin}
               />
             }

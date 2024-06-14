@@ -10,7 +10,7 @@ export const CreateAssociationModal = () => {
     <Dialog.Portal>
       <Overlay />
       <Content>
-        <Dialog.Title>Iniciar Instancia</Dialog.Title>
+        <Dialog.Title>Iniciar Exâme</Dialog.Title>
         <CloseButton>
           <X size={24} />
         </CloseButton>

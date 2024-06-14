@@ -70,7 +70,7 @@ export interface ListRequerimentProps {
 }
 
 export interface AssociationProps extends CreateAssociationProps {
-  id: number
+  id?: number
   updatedAt?: string
   createdAt?: string
   exigencias?: ListRequerimentProps
@@ -408,7 +408,6 @@ export const RequerimentContextProvider = ({
         setNumberProtocolClient(data.numero_do_protocolo)
         setDataListAssociation((prevState) => [...prevState, data])
 
-        setRequestListDataPDF(data)
         sendMailAssociation({
           ...newListAssociation,
           name,
