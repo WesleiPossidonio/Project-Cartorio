@@ -32,7 +32,7 @@ export const UpdateAssociationFormSchema = zod.object({
     .nonempty('Por favor, digite o nome do representante'),
   cnpj: zod
     .string()
-    .min(18, 'Por Favor, digite o CNPJ valido')
+    .min(5, 'Por Favor, digite o CNPJ valido')
     .max(18, 'Por Favor, digite o CNPJ valido')
     .optional(),
   cpf: zod
