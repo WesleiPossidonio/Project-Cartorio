@@ -257,11 +257,23 @@ export const RequerimentContextProvider = ({
             name,
           }
 
-          await toast.promise(api.post('sendMailRequeriments', listSendEmail), {
-            pending: 'Verificando seus dados',
-            success: 'Email enviado com Sucesso!',
-            error: 'Ops! Error no Servidor',
-          })
+          filteredAssociation.exigencias === null
+            ? await toast.promise(
+                api.post('sendMailAssociation', listSendEmail),
+                {
+                  pending: 'Verificando seus dados',
+                  success: 'Email enviado com Sucesso!',
+                  error: 'Ops! Error no Servidor',
+                }
+              )
+            : await toast.promise(
+                api.post('sendMailRequeriments', listSendEmail),
+                {
+                  pending: 'Verificando seus dados',
+                  success: 'Email enviado com Sucesso!',
+                  error: 'Ops! Error no Servidor',
+                }
+              )
         }
       } catch (error) {
         console.log(error)

@@ -47,6 +47,14 @@ export const ContainerForm = styled.div`
   #name-of-representative {
     grid-column: span 1;
   }
+  #radio-input {
+    grid-column: span 2;
+    max-width: 50%;
+
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
 
   #email {
     grid-column: span 1;

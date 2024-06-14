@@ -71,6 +71,8 @@ export const TableRequeriment = () => {
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
             <TableHeader2>Estado do Requerimento</TableHeader2>
+            <TableHeader2>{''}</TableHeader2>
+            <TableHeader2>{''}</TableHeader2>
           </TableRow>
         </TableHead>
         <TableBody>

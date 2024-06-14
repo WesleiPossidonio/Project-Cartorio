@@ -61,6 +61,7 @@ export const TableRequerimentCompleted = () => {
             <TableHeader2>Nome do Estabelecimento</TableHeader2>
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
+            <TableHeader2>{''}</TableHeader2>
           </TableRow>
         </TableHead>
         <TableBody>

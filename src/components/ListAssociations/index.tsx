@@ -9,7 +9,7 @@ import {
 import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-import { FilePlus } from 'phosphor-react'
+import { FilePlus, PaperPlaneTilt } from 'phosphor-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 
 import { UpdateAssociationProps } from '../../contexts/RequerimentContext'
@@ -28,6 +28,7 @@ export const TableAssociation = () => {
     dataListAssociation,
     filteredDataSearchAssociations,
     dataInpuSearch,
+    sendMail,
   } = useRequeriment()
 
   const [page, setPage] = useState(0)
@@ -62,6 +63,8 @@ export const TableAssociation = () => {
             <TableHeader2>Nome do Estabelecimento</TableHeader2>
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Exâme</TableHeader2>
+            <TableHeader2>{''}</TableHeader2>
+            <TableHeader2>{''}</TableHeader2>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -94,6 +97,7 @@ export const TableAssociation = () => {
                     <TableContentList>
                       {data.nome_do_representante}
                     </TableContentList>
+
                     <TableContentList>
                       {data.createdAt &&
                         formatDistanceToNow(new Date(data.createdAt), {
@@ -110,6 +114,10 @@ export const TableAssociation = () => {
                       </Dialog.Trigger>
                       <CreateRequerimentModal AssociationId={data.id} />
                     </Dialog.Root>
+
+                    <TableContentList onClick={() => sendMail(data.id)}>
+                      <PaperPlaneTilt size={29} />
+                    </TableContentList>
                   </TableRowContentList>
                 )
               })
@@ -157,6 +165,10 @@ export const TableAssociation = () => {
                       </Dialog.Trigger>
                       <CreateRequerimentModal AssociationId={data.id} />
                     </Dialog.Root>
+
+                    <TableContentList onClick={() => sendMail(data.id)}>
+                      <PaperPlaneTilt size={29} />
+                    </TableContentList>
                   </TableRowContentList>
                 )
               })}
