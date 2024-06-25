@@ -88,7 +88,7 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
       return (booleanData[key] = value ? 'Recebido' : 'Pendente')
     })
 
-    const updatedData = { ...booleanData, id: AssociationId }
+    const updatedData = { ...booleanData, id: dataRequerimentSelected?.id }
 
     updateRequeriment({ ...updatedData, handleListConcluted: false })
 
