@@ -167,7 +167,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
 
     try {
-      await toast.promise(api.put(`requeriment/${id}`, updatedData), {
+      await toast.promise(api.put(`users/${id}`, updatedData), {
         pending: 'Verificando seus dados',
         success: 'Senha Atualizada com Sucesso!',
         error: 'Ops! Verifique os Dados Digitados',

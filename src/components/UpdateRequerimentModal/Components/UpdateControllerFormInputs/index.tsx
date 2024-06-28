@@ -23,11 +23,11 @@ export const UpdateControllerFormInputs = ({
   register,
   dataRequeriment,
 }: ControllerUpdateProps) => {
+  const { dataListRequeriment, setDataListRequeriment } = useRequeriment()
+
   const [updateList, setUpdateList] = useState<ListRequerimentProps>({
     ...dataRequeriment,
   })
-
-  const { dataListRequeriment, setDataListRequeriment } = useRequeriment()
 
   const handleDeleteRequest = async (nameList: string) => {
     const deleteList = {

@@ -70,7 +70,7 @@ export interface ListRequerimentProps {
 }
 
 export interface AssociationProps extends CreateAssociationProps {
-  id?: number
+  id: number
   updatedAt?: string
   createdAt?: string
   exigencias?: ListRequerimentProps
