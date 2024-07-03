@@ -40,7 +40,7 @@ export const ListRequerimentCompleted = ({
             <TextRegular weight={700} size="m">
               Nº CNPJ:
             </TextRegular>
-            <TextRegular>{RequerimentCompleted?.cnpj}</TextRegular>
+            <TextRegular>{RequerimentCompleted?.cnpj_cpf}</TextRegular>
           </ContentText>
           <ContentText>
             <TextRegular weight={700} size="m">

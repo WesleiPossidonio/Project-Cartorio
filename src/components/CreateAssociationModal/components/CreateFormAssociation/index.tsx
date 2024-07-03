@@ -1,23 +1,15 @@
 /* eslint-disable camelcase */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
-import { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import * as zod from 'zod'
 
 import { Button, Input } from '../../..'
-import { AssociationProps } from '../../../../contexts/RequerimentContext'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
 import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
-import {
-  ButtonHome,
-  ContainerForm,
-  RadioBiutton,
-  RadioIndicator,
-  RadioItem,
-  SectionCreateRequirement,
-} from './styled'
+import { formatCpfCnpj } from '../../../formatCpfCnpj'
+import { ButtonHome, ContainerForm, SectionCreateRequirement } from './styled'
 
 export const createAssociationFormSchema = zod.object({
   nome_da_instituicao: zod
@@ -26,16 +18,22 @@ export const createAssociationFormSchema = zod.object({
   nome_do_representante: zod
     .string()
     .nonempty('Por favor, digite o nome do representante'),
-  cnpj: zod
-    .string()
-    .min(18, 'Por Favor, digite o CNPJ valido')
-    .max(18, 'Por Favor, digite o CNPJ valido')
-    .optional(),
-  cpf: zod
-    .string()
-    .min(11, 'Por Favor, digite o CPF valido')
-    .max(11, 'Por Favor, digite o CPF valido')
-    .optional(),
+  cnpj_cpf: zod
+    .string({
+      required_error: 'CPF/CNPJ é obrigatório.',
+    })
+    .refine((doc) => {
+      const replacedDoc = doc.replace(/\D/g, '')
+      return replacedDoc.length >= 11
+    }, 'CPF/CNPJ deve conter no mínimo 11 caracteres.')
+    .refine((doc) => {
+      const replacedDoc = doc.replace(/\D/g, '')
+      return replacedDoc.length <= 14
+    }, 'CPF/CNPJ deve conter no máximo 14 caracteres.')
+    .refine((doc) => {
+      const replacedDoc = doc.replace(/\D/g, '')
+      return !!Number(replacedDoc)
+    }, 'CPF/CNPJ deve conter apenas números.'),
   sobre_exigencia: zod.string().min(4, 'Digite sobre o serviço'),
   email_do_representante: zod
     .string()
@@ -43,7 +41,6 @@ export const createAssociationFormSchema = zod.object({
   telefone_contato: zod
     .string()
     .min(11, 'Por Favor, digite o numero de telefone corretamente'),
-  isCnpj: zod.string().nonempty(),
 })
 
 export type CreateAssociationFormInputs = zod.infer<
@@ -60,10 +57,10 @@ export const FormCreateAssociation = () => {
   } = useForm<CreateAssociationFormInputs>({
     resolver: zodResolver(createAssociationFormSchema),
     shouldUnregister: true,
+    defaultValues: {
+      cnpj_cpf: '',
+    },
   })
-
-  const [selectedOption, setSelectedOption] = useState('')
-  const [dataAssociation, setDataAssociatio] = useState<AssociationProps>()
 
   const { requestListDataPDF, handleCreateAssociation } = useRequeriment()
 
@@ -71,28 +68,24 @@ export const FormCreateAssociation = () => {
 
   const handleAddAssociation = async (data: CreateAssociationFormInputs) => {
     const {
-      cnpj,
+      cnpj_cpf,
       nome_da_instituicao,
       nome_do_representante,
       telefone_contato,
       email_do_representante,
       sobre_exigencia,
-      cpf,
-      isCnpj,
     } = data
 
     const dataAssociation = {
-      cnpj: cnpj && isCnpj === 'cnpj' ? cnpj : 'Não Selecionado',
+      cnpj_cpf,
       nome_da_instituicao,
       nome_do_representante,
       telefone_contato,
       email_do_representante,
       sobre_exigencia,
-      cpf: cpf && isCnpj === 'cpf' ? cpf : 'não selecionado',
     }
 
     await handleCreateAssociation(dataAssociation)
-    setDataAssociatio(dataAssociation)
     reset()
   }
 
@@ -110,53 +103,24 @@ export const FormCreateAssociation = () => {
           </div>
 
           <Controller
-            name="isCnpj"
+            name="cnpj_cpf"
             control={control}
-            render={({ field }) => {
-              const stringValue = field.value
-              setSelectedOption(field.value)
+            render={({ field: { onChange, ...props } }) => {
               return (
-                <RadioItem
-                  id="radio-input"
-                  onValueChange={field.onChange}
-                  value={stringValue}
-                >
-                  <RadioBiutton value="cnpj">
-                    <RadioIndicator />
-                  </RadioBiutton>
-                  <label htmlFor="cnpj">CNPJ</label>
-
-                  <RadioBiutton value="cpf">
-                    <RadioIndicator />
-                  </RadioBiutton>
-                  <label htmlFor="cpf">CPF</label>
-                </RadioItem>
+                <Input
+                  onChange={(e) => {
+                    const { value } = e.target
+                    e.target.value = formatCpfCnpj(value)
+                    onChange(e)
+                  }}
+                  placeholder="CPF/CNPJ"
+                  {...props}
+                  id="number-cnpj"
+                  error={errors.cnpj_cpf?.message}
+                />
               )
             }}
           />
-
-          {selectedOption === 'cnpj' && (
-            <div id="number-cnpj">
-              <Input
-                placeholder="Digite nº CNPJ"
-                type="text"
-                id="number-cnpj"
-                {...register('cnpj')}
-                error={errors.cnpj?.message}
-              />
-            </div>
-          )}
-          {selectedOption === 'cpf' && (
-            <div id="number-cnpj">
-              <Input
-                placeholder="Digite nº CPF"
-                type="text"
-                id="number-cnpj"
-                {...register('cpf')}
-                error={errors.cpf?.message}
-              />
-            </div>
-          )}
 
           <div id="name-of-representative">
             <Input
@@ -202,11 +166,11 @@ export const FormCreateAssociation = () => {
           <PDFDownloadLink
             document={
               <CreateAssociationPdfList
-                data={dataAssociation}
+                data={requestListDataPDF}
                 dataUser={userDataLogin}
               />
             }
-            fileName={`exigencia${requestListDataPDF?.numero_do_protocolo}.pdf`}
+            fileName={`exigencia${requestListDataPDF?.nome_da_instituicao}.pdf`}
           >
             {({ loading }) =>
               loading ? (

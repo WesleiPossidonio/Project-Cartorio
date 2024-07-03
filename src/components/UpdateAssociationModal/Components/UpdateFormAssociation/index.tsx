@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
-import { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import * as zod from 'zod'
 
@@ -9,19 +8,10 @@ import { AssociationProps } from '../../../../contexts/RequerimentContext'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
 import { Button } from '../../../Button'
-import {
-  RadioBiutton,
-  RadioIndicator,
-  RadioItem,
-} from '../../../CreateAssociationModal/components/CreateFormAssociation/styled'
 import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
+import { formatCpfCnpj } from '../../../formatCpfCnpj'
 import { Input } from '../../../Input'
-import {
-  ButtonHome,
-  // ButtonCreateRequeriment,
-  ContainerForm,
-  SectionCreateRequirement,
-} from './styled'
+import { ButtonHome, ContainerForm, SectionCreateRequirement } from './styled'
 
 export const UpdateAssociationFormSchema = zod.object({
   nome_da_instituicao: zod
@@ -30,16 +20,22 @@ export const UpdateAssociationFormSchema = zod.object({
   nome_do_representante: zod
     .string()
     .nonempty('Por favor, digite o nome do representante'),
-  cnpj: zod
-    .string()
-    .min(5, 'Por Favor, digite o CNPJ valido')
-    .max(18, 'Por Favor, digite o CNPJ valido')
-    .optional(),
-  cpf: zod
-    .string()
-    .min(11, 'Por Favor, digite o CPF valido')
-    .max(11, 'Por Favor, digite o CPF valido')
-    .optional(),
+  cnpj_cpf: zod
+    .string({
+      required_error: 'CPF/CNPJ é obrigatório.',
+    })
+    .refine((doc) => {
+      const replacedDoc = doc.replace(/\D/g, '')
+      return replacedDoc.length >= 11
+    }, 'CPF/CNPJ deve conter no mínimo 11 caracteres.')
+    .refine((doc) => {
+      const replacedDoc = doc.replace(/\D/g, '')
+      return replacedDoc.length <= 14
+    }, 'CPF/CNPJ deve conter no máximo 14 caracteres.')
+    .refine((doc) => {
+      const replacedDoc = doc.replace(/\D/g, '')
+      return !!Number(replacedDoc)
+    }, 'CPF/CNPJ deve conter apenas números.'),
   sobre_exigencia: zod.string().min(4, 'Digite sobre o serviço'),
   email_do_representante: zod
     .string()
@@ -48,7 +44,6 @@ export const UpdateAssociationFormSchema = zod.object({
     .string()
     .min(11, 'Por Favor, digite o numero de telefone corretamente')
     .max(11, 'Por Favor, digite o numero de telefone corretamente'),
-  isCnpj: zod.string().nonempty(),
 })
 
 export type UpdateAssociationFormInputs = zod.infer<
@@ -72,7 +67,6 @@ export const FormUpdateAssociation = ({
     resolver: zodResolver(UpdateAssociationFormSchema),
     shouldUnregister: true,
   })
-  const [selectedOption, setSelectedOption] = useState('')
 
   const { requestListDataPDF, handleUpdateAssociation } = useRequeriment()
 
@@ -80,13 +74,11 @@ export const FormUpdateAssociation = ({
 
   const handleAddAssociation = async (data: UpdateAssociationFormInputs) => {
     const {
-      cnpj,
       nome_da_instituicao,
       nome_do_representante,
       telefone_contato,
       email_do_representante,
-      cpf,
-      isCnpj,
+      cnpj_cpf,
     } = data
 
     const idAssociation = dataAssociation && dataAssociation.id
@@ -94,8 +86,7 @@ export const FormUpdateAssociation = ({
     if (idAssociation) {
       const updatedDataAssociation = {
         id: idAssociation,
-        cnpj: cnpj && isCnpj === 'cnpj' ? cnpj : 'Não Selecionado',
-        cpf: cpf && isCnpj === 'cpf' ? cpf : 'não selecionado',
+        cnpj_cpf,
         nome_da_instituicao,
         nome_do_representante,
         telefone_contato,
@@ -124,55 +115,25 @@ export const FormUpdateAssociation = ({
           </div>
 
           <Controller
-            name="isCnpj"
+            name="cnpj_cpf"
             control={control}
-            render={({ field }) => {
-              const stringValue = field.value
-              setSelectedOption(field.value)
+            render={({ field: { onChange, ...props } }) => {
               return (
-                <RadioItem
-                  id="radio-input"
-                  onValueChange={field.onChange}
-                  value={stringValue}
-                >
-                  <RadioBiutton value="cnpj">
-                    <RadioIndicator />
-                  </RadioBiutton>
-                  <label htmlFor="cnpj">CNPJ</label>
-
-                  <RadioBiutton value="cpf">
-                    <RadioIndicator />
-                  </RadioBiutton>
-                  <label htmlFor="cpf">CPF</label>
-                </RadioItem>
+                <Input
+                  onChange={(e) => {
+                    const { value } = e.target
+                    e.target.value = formatCpfCnpj(value)
+                    onChange(e)
+                  }}
+                  placeholder="CPF/CNPJ"
+                  {...props}
+                  id="number-cnpj"
+                  defaultValue={dataAssociation && dataAssociation.cnpj_cpf}
+                  error={errors.cnpj_cpf?.message}
+                />
               )
             }}
           />
-
-          {selectedOption === 'cnpj' && (
-            <div id="number-cnpj">
-              <Input
-                placeholder="Digite nº CNPJ"
-                type="text"
-                id="number-cnpj"
-                defaultValue={dataAssociation && dataAssociation.cnpj}
-                {...register('cnpj')}
-                error={errors.cnpj?.message}
-              />
-            </div>
-          )}
-          {selectedOption === 'cpf' && (
-            <div id="number-cnpj">
-              <Input
-                placeholder="Digite nº CPF"
-                type="text"
-                id="number-cnpj"
-                defaultValue={dataAssociation && dataAssociation.cpf}
-                {...register('cpf')}
-                error={errors.cpf?.message}
-              />
-            </div>
-          )}
 
           <div id="name-of-representative">
             <Input

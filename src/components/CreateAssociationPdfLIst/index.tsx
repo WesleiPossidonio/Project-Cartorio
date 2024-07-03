@@ -98,8 +98,7 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
 
           <Text style={styles.textheader2}>
             Data da Recepção:{' '}
-            {data &&
-              data.createdAt &&
+            {data?.createdAt &&
               format(new Date(data.createdAt), 'dd/MM/yyyy', {
                 locale: ptBR,
               })}
@@ -107,17 +106,20 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
 
           {data && data.updatedAt === '' && (
             <Text style={styles.textheader2}>
-              Data da Exigência: {data && data.updatedAt}
+              Data da Exigência:{' '}
+              {data?.createdAt &&
+                format(new Date(data.updatedAt), 'dd/MM/yyyy', {
+                  locale: ptBR,
+                })}
             </Text>
           )}
           <Text style={styles.textheader2}>
             Nome da Instituição: {data && data.nome_da_instituicao}
           </Text>
-          {data?.cnpj !== 'Não Selecionado' ? (
-            <Text style={styles.textheader2}>CNPJ: {data && data.cnpj}</Text>
-          ) : (
-            <Text style={styles.textheader2}>CPF: {data && data.cpf}</Text>
-          )}
+
+          <Text style={styles.textheader2}>
+            CNPJ ou CPF: {data && data.cnpj_cpf}
+          </Text>
 
           <Text style={styles.textheader2}>
             Nome do Representante: {data && data.nome_do_representante}

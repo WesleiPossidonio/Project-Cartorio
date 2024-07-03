@@ -125,36 +125,26 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
   }, [])
 
-  const confirmMail = useCallback(
-    async (data: ConfirmMailProps) => {
-      const { email } = data
+  const confirmMail = useCallback(async (data: ConfirmMailProps) => {
+    const { email } = data
 
-      try {
-        const response = await toast.promise(
-          api.post('confirmMail', { email }),
-          {
-            pending: 'Verificando seus dados',
-            success: 'Email Encontrado! verifique seu email.',
-            error: 'E-mail não encontrado digite novamente 🤯',
-          }
-        )
-        const { data } = response
-        await localStorage.setItem(
-          'cartorio:UserConfirmEmail',
-          JSON.stringify(data)
-        )
+    try {
+      const response = await toast.promise(api.post('confirmMail', { email }), {
+        pending: 'Verificando seus dados',
+        success: 'Email Encontrado! verifique seu email.',
+        error: 'E-mail não encontrado digite novamente 🤯',
+      })
+      const { data } = response
+      await localStorage.setItem(
+        'cartorio:UserConfirmEmail',
+        JSON.stringify(data)
+      )
 
-        setUserDataLogin(data)
-
-        setTimeout(() => {
-          navigate('/')
-        }, 1000)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    [navigate]
-  )
+      setUserDataLogin(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
 
   const handleUpdateUser = useCallback(async (data: UpdateUser) => {
     const { email, id, name, password, registration } = data
@@ -185,7 +175,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const updateData = { password, updateNumber }
 
     try {
-      await toast.promise(api.put(`requeriment/${idUser}`, updateData), {
+      await toast.promise(api.patch(`requeriment/${idUser}`, updateData), {
         pending: 'Verificando seus dados',
         success: 'Senha Atualizada com Sucesso!',
         error: 'Ops! Verifique os Dados Digitados',

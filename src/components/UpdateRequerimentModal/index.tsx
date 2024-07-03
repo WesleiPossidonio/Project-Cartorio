@@ -68,7 +68,7 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
 
   useEffect(() => {
     const filteredRequerimentSelected = dataListAssociation.find(
-      (list) => list.id === AssociationId
+      (list) => list.exigencias?.id === AssociationId
     )
 
     setDataRequerimentSelected(

@@ -5,14 +5,10 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
-import {
-  Button,
-  ControllerFormInputs,
-  CreateRequerimentPdfList,
-  arrayInputList,
-} from '../../..'
+import { Button, ControllerFormInputs, arrayInputList } from '../../..'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
+import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
 import { ButtonHome, SectionCreateRequirement } from './styled'
 
 export const CreateRequerimentFormSchema = zod.object({
@@ -62,6 +58,8 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
   const [requerimentSelected, setRequerimentSelected] = useState('Pendente')
 
   const RequerimentSelected = dataListAssociation.find((list) => list.id === id)
+
+  console.log(RequerimentSelected)
 
   const { userDataLogin } = useUser()
 
@@ -152,10 +150,9 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
         <div className="PdfContainer">
           <PDFDownloadLink
             document={
-              <CreateRequerimentPdfList
+              <CreateAssociationPdfList
                 data={requestListDataPDF || RequerimentSelected}
                 dataUser={userDataLogin}
-                // infoDivergente={dataInfoDivergente}
               />
             }
             fileName={`exigencia${

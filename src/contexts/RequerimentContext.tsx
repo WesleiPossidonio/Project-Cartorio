@@ -17,12 +17,11 @@ export interface CreateAssociationProps {
   nome_da_instituicao: string
   numero_do_protocolo?: number
   nome_do_representante: string
-  cnpj: string
+  cnpj_cpf: string
   email_do_representante: string
   telefone_contato: string
   data_da_recepcao?: string
   sobre_exigencia: string
-  cpf: string
 }
 
 export interface UpdateAssociationProps {
@@ -31,7 +30,7 @@ export interface UpdateAssociationProps {
   estado_do_requerimento?: string
   numero_do_protocolo?: number
   nome_do_representante: string
-  cnpj: string
+  cnpj_cpf: string
   email_do_representante: string
   telefone_contato: string
   createdAt?: string
@@ -285,7 +284,7 @@ export const RequerimentContextProvider = ({
   const sendMailAssociation = useCallback(
     async (dataSendMail: SendMailAssociationProps) => {
       const {
-        cnpj,
+        cnpj_cpf,
         email_do_representante,
         nome_da_instituicao,
         nome_do_representante,
@@ -294,14 +293,13 @@ export const RequerimentContextProvider = ({
         telefone_contato,
         registration,
         name,
-        cpf,
       } = dataSendMail
 
       console.log('fui chamado')
 
       const listSendEmailAssociation = {
         numero_do_protocolo,
-        cnpj,
+        cnpj_cpf,
         email_do_representante,
         nome_da_instituicao,
         nome_do_representante,
@@ -309,7 +307,6 @@ export const RequerimentContextProvider = ({
         telefone_contato,
         registration,
         name,
-        cpf,
       }
 
       try {
@@ -324,7 +321,7 @@ export const RequerimentContextProvider = ({
   const sendMailRequeriment = useCallback(
     async (dataSendMail: SendMaiRequerimentProps) => {
       const {
-        cnpj,
+        cnpj_cpf,
         itens_da_lista_pendetes,
         name,
         registration,
@@ -334,14 +331,12 @@ export const RequerimentContextProvider = ({
         telefone_contato,
         data_da_recepcao,
         numero_do_protocolo,
-        cpf,
       } = dataSendMail
 
       const listSendEmailAssociation = {
         itens_da_lista_pendetes,
         numero_do_protocolo,
-        cnpj,
-        cpf,
+        cnpj_cpf,
         email_do_representante,
         nome_da_instituicao,
         nome_do_representante,
@@ -364,13 +359,12 @@ export const RequerimentContextProvider = ({
     async (data: CreateAssociationProps) => {
       const { name, registration } = userDataLogin
       const {
-        cnpj,
+        cnpj_cpf,
         email_do_representante,
         nome_da_instituicao,
         nome_do_representante,
         telefone_contato,
         sobre_exigencia,
-        cpf,
       } = data
 
       const regex = /(\d{2})(\d{5})(\d{4})/
@@ -380,13 +374,12 @@ export const RequerimentContextProvider = ({
 
       const newListAssociation = {
         numero_do_protocolo: numberProtocolClient + 1,
-        cnpj,
+        cnpj_cpf,
         nome_da_instituicao,
         nome_do_representante,
         telefone_contato: formatedNumberPhone,
         email_do_representante,
         sobre_exigencia,
-        cpf,
       }
 
       try {
@@ -407,9 +400,10 @@ export const RequerimentContextProvider = ({
 
         setNumberProtocolClient(data.numero_do_protocolo)
         setDataListAssociation((prevState) => [...prevState, data])
+        setRequestListDataPDF(data)
 
         sendMailAssociation({
-          ...newListAssociation,
+          ...data,
           name,
           registration,
           data_da_recepcao: date,
@@ -428,7 +422,7 @@ export const RequerimentContextProvider = ({
         id,
         email_do_representante,
         nome_da_instituicao,
-        cnpj,
+        cnpj_cpf,
         nome_do_representante,
         telefone_contato,
       } = data
@@ -436,7 +430,7 @@ export const RequerimentContextProvider = ({
       const updatedData = {
         email_do_representante,
         nome_da_instituicao,
-        cnpj,
+        cnpj_cpf,
         nome_do_representante,
         telefone_contato,
       }

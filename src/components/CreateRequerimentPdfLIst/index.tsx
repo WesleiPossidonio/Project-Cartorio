@@ -6,6 +6,8 @@ import {
   View,
   Image,
 } from '@react-pdf/renderer'
+import { format } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 
 import ImageLogo from '../../assets/Logo-Cartorio.jpg'
 import { AssociationProps } from '../../contexts/RequerimentContext'
@@ -95,18 +97,28 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
           </Text>
 
           <Text style={styles.textheader2}>
-            Data da Recepção: {data && data.createdAt}
+            Data da Recepção:{' '}
+            {data?.createdAt &&
+              format(new Date(data.createdAt), 'dd/MM/yyyy', {
+                locale: ptBR,
+              })}
           </Text>
 
           {data && data.updatedAt === '' && (
             <Text style={styles.textheader2}>
-              Data da Exigência: {data && data.updatedAt}
+              Data da Exigência:{' '}
+              {data?.createdAt &&
+                format(new Date(data.updatedAt), 'dd/MM/yyyy', {
+                  locale: ptBR,
+                })}
             </Text>
           )}
           <Text style={styles.textheader2}>
             Nome da Instituição: {data && data.nome_da_instituicao}
           </Text>
-          <Text style={styles.textheader2}>CNPJ: {data && data.cnpj}</Text>
+          <Text style={styles.textheader2}>
+            CNPJ ou CPF: {data && data.cnpj_cpf}
+          </Text>
           <Text style={styles.textheader2}>
             Nome do Representante: {data && data.nome_do_representante}
           </Text>

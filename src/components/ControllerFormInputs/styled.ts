@@ -127,6 +127,7 @@ export const ContainerButtonInfo = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  margin-top: 0.5rem;
 
   div {
     display: flex;

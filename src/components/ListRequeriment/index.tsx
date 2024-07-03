@@ -77,7 +77,7 @@ export const TableRequeriment = () => {
         </TableHead>
         <TableBody>
           {dataInpuSearch.length > 0
-            ? (rowsPerPage > 0
+            ? (rowsPerPage >= 0
                 ? filteredDataSearchRequeriment.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
@@ -129,7 +129,7 @@ export const TableRequeriment = () => {
                   </TableRowContentList>
                 )
               })
-            : (rowsPerPage > 0
+            : (rowsPerPage >= 0
                 ? pendingListRequeriment.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
