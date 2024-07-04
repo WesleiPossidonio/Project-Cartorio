@@ -111,11 +111,9 @@ export const CreatePdfList = ({
             Nome da Instituição: {data.nome_da_instituicao}
           </Text>
 
-          {data?.cnpj !== 'Não Selecionado' ? (
-            <Text style={styles.textheader2}>CNPJ: {data && data.cnpj}</Text>
-          ) : (
-            <Text style={styles.textheader2}>CPF: {data && data.cpf}</Text>
-          )}
+          <Text style={styles.textheader2}>
+            CNPJ ou CPF: {data && data.cnpj_cpf}
+          </Text>
 
           <Text style={styles.textheader2}>
             Nome do Representante: {data.nome_do_representante}
