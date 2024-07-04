@@ -59,8 +59,6 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
 
   const RequerimentSelected = dataListAssociation.find((list) => list.id === id)
 
-  console.log(RequerimentSelected)
-
   const { userDataLogin } = useUser()
 
   const handleSelectedRequeriment = (data: string) => {
@@ -73,14 +71,13 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       ([key, value]) => typeof value === 'boolean'
     )
 
-    ;(requerimentSelected === 'Pendente' &&
-      filteredEntries.map(([key, value]) => {
-        return (booleanData[key] = value ? 'Pendente' : 'Não-Listado')
-      })) ||
-      (requerimentSelected === 'Concluído' &&
-        filteredEntries.map(([key, value]) => {
+    requerimentSelected === 'Pendente'
+      ? filteredEntries.map(([key, value]) => {
+          return (booleanData[key] = value ? 'Pendente' : 'Não-Listado')
+        })
+      : filteredEntries.map(([key, value]) => {
           return (booleanData[key] = value ? 'Recebido' : 'Não-Listado')
-        }))
+        })
 
     const { informacao_divergente } = data
 
