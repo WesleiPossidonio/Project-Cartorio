@@ -123,3 +123,11 @@ export const LabelCheck = styled.label`
     }
   }
 `
+
+export const ContainerIcons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 22px;
+`

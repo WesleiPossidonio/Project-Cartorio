@@ -164,9 +164,11 @@ export const TableRequeriment = () => {
                           locale: ptBR,
                         })}
                     </TableContentList>
+
                     <TableContentList>
                       {data.exigencias?.estado_do_requerimento}
                     </TableContentList>
+
                     <Dialog.Root>
                       <Dialog.Trigger asChild>
                         <TableContentList>

@@ -1,14 +1,16 @@
-import { Trash } from 'phosphor-react'
+import { CheckSquareOffset, Warning } from 'phosphor-react'
 import React, { useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import { ListRequerimentProps } from '../../../../contexts/RequerimentContext'
-import { useRequeriment } from '../../../../hooks/useRequeriment'
 import api from '../../../../services/api'
 import { CreateRequerimentFormInputs } from '../../../CreateRequerimentModal/Components/CreateRequeriment'
+import { TextAreaObservations } from '../../../ControllerFormInputs/styled'
+import { useRequeriment } from '../../../../hooks/useRequeriment'
+import { ListRequerimentProps } from '../../../../contexts/RequerimentContext'
 import {
   ContainerControllerInput,
+  ContainerIcons,
   ContainerInput,
   ContentInput,
   LabelCheck,
@@ -25,6 +27,9 @@ export const UpdateControllerFormInputs = ({
 }: ControllerUpdateProps) => {
   const { dataListRequeriment, setDataListRequeriment } = useRequeriment()
 
+  const [openInputsObservations, setOpenInputsObservations] = useState<{
+    [key: string]: boolean
+  }>({})
   const [updateList, setUpdateList] = useState<ListRequerimentProps>({
     ...dataRequeriment,
   })
@@ -32,13 +37,13 @@ export const UpdateControllerFormInputs = ({
   const handleDeleteRequest = async (nameList: string) => {
     const deleteList = {
       ...dataRequeriment,
-      [nameList]: 'Não-Listado',
+      [nameList]: 'Não Listado',
       exigencias_id: dataRequeriment?.id,
     }
 
     if (dataRequeriment) {
       try {
-        const createRequermentResponse = await toast.promise(
+        const updateRequermentResponse = await toast.promise(
           api.put(`updateRequeriment/${dataRequeriment.id}`, deleteList),
           {
             pending: 'Verificando seus dados',
@@ -47,7 +52,7 @@ export const UpdateControllerFormInputs = ({
           }
         )
 
-        const { data } = createRequermentResponse
+        const { data } = updateRequermentResponse
 
         setDataListRequeriment([...dataListRequeriment, data])
         setUpdateList(data)
@@ -55,6 +60,13 @@ export const UpdateControllerFormInputs = ({
         console.log(error)
       }
     }
+  }
+
+  const toggleObservationInput = (fieldName: string) => {
+    setOpenInputsObservations((prevState) => ({
+      ...prevState,
+      [fieldName]: !prevState[fieldName], // Alterna entre abrir e fechar
+    }))
   }
 
   return (
@@ -69,17 +81,42 @@ export const UpdateControllerFormInputs = ({
               name="lista_e_edital"
             />
 
+            <input
+              type="checkbox"
+              {...register('observations_lista_e_edital')}
+              name="observations_lista_e_edital"
+              defaultValue={updateList.observations_lista_e_edital}
+            />
+
             <LabelCheck htmlFor="lista_e_edital_true">
               <p>
                 Apresentar lista de presença e edital;
                 <span> (CNCGJ Art. 951) </span>
               </p>
-              <Trash
-                onClick={() => handleDeleteRequest('lista_e_edital')}
-                size={35}
-              />
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('lista_e_edital')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_lista_e_edital !== 'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() => toggleObservationInput('lista_e_edital')}
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.lista_e_edital && (
+          <TextAreaObservations
+            {...register('observations_lista_e_edital')}
+            defaultValue={updateList.observations_lista_e_edital}
+          />
         )}
 
         {updateList.declaracao_sindical === 'Pendente' && (
@@ -97,12 +134,30 @@ export const UpdateControllerFormInputs = ({
                 referente a unicidade sindical e da base territorial;{' '}
                 <span> (CNCGJ Art. 935 § 4º) </span>
               </p>
-              <Trash
-                onClick={() => handleDeleteRequest('declaracao_sindical')}
-                size={35}
-              />
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('declaracao_sindical')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_declaracao_sindical !==
+                    'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.observations_declaracao_sindical && (
+          <TextAreaObservations
+            {...register('observations_declaracao_sindical')}
+            defaultValue={updateList.observations_declaracao_sindical}
+          />
         )}
 
         {updateList.assinatura_do_advogado === 'Pendente' && (
@@ -119,12 +174,33 @@ export const UpdateControllerFormInputs = ({
                 Colher assinatura do advogado no ato apresentado para registro;
                 <span> (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)</span>
               </p>
-              <Trash
-                onClick={() => handleDeleteRequest('assinatura_do_advogado')}
-                size={35}
-              />
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('assinatura_do_advogado')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_assinatura_do_advogado !==
+                    'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() =>
+                    toggleObservationInput('assinatura_do_advogado')
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.assinatura_do_advogado && (
+          <TextAreaObservations
+            {...register('observations_assinatura_do_advogado')}
+            defaultValue={updateList.observations_assinatura_do_advogado}
+          />
         )}
 
         {updateList.declaracao_criminal === 'Pendente' && (
@@ -141,12 +217,31 @@ export const UpdateControllerFormInputs = ({
                 Apresentar declaração de desimpedimento e/ou certidão criminal;
                 <span> (CNCGJ Art. 932 § 1º) </span>
               </p>
-              <Trash
-                onClick={() => handleDeleteRequest('declaracao_criminal')}
-                size={35}
-              />
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('declaracao_criminal')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_declaracao_criminal !==
+                    'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() => toggleObservationInput('declaracao_criminal')}
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.declaracao_criminal && (
+          <TextAreaObservations
+            {...register('observations_declaracao_criminal')}
+            defaultValue={updateList.observations_declaracao_criminal}
+          />
         )}
 
         {updateList.requisitos_estatuto === 'Pendente' && (
@@ -164,12 +259,31 @@ export const UpdateControllerFormInputs = ({
                   (Obs:para diretórios de partidos políticos); (CNCGJ Art. 945)
                 </span>
               </p>
-              <Trash
-                onClick={() => handleDeleteRequest('requisitos_estatuto')}
-                size={35}
-              />
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('requisitos_estatuto')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_requisitos_estatuto !==
+                    'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() => toggleObservationInput('requisitos_estatuto')}
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.requisitos_estatuto && (
+          <TextAreaObservations
+            {...register('observations_requisitos_estatuto')}
+            defaultValue={updateList.observations_requisitos_estatuto}
+          />
         )}
 
         {updateList.declaracao_de_desimpedimento === 'Pendente' && (
@@ -188,15 +302,38 @@ export const UpdateControllerFormInputs = ({
                   Art. 938)
                 </span>
               </p>
-              <Trash
-                onClick={() =>
-                  handleDeleteRequest('declaracao_de_desimpedimento')
-                }
-                size={35}
-              />
+
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() =>
+                    handleDeleteRequest('declaracao_de_desimpedimento')
+                  }
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_declaracao_de_desimpedimento !==
+                    'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() =>
+                    toggleObservationInput('declaracao_de_desimpedimento')
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
         )}
+
+        {openInputsObservations.declaracao_de_desimpedimento && (
+          <TextAreaObservations
+            {...register('observations_declaracao_de_desimpedimento')}
+            defaultValue={updateList.observations_declaracao_de_desimpedimento}
+          />
+        )}
+
         {updateList.livro_rasao === 'Pendente' && (
           <ContainerInput>
             <input
@@ -205,17 +342,37 @@ export const UpdateControllerFormInputs = ({
               {...register('livro_rasao')}
               name="livro_rasao"
             />
+
             <LabelCheck htmlFor="livro_rasao_true">
               <p>
                 Apresentar livro razão ou contábil anteriormente registrado;
                 <span>(CNCGJ Art. 960 § 1º)</span>
               </p>
-              <Trash
-                onClick={() => handleDeleteRequest('livro_rasao')}
-                size={35}
-              />
+
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('livro_rasao')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_livro_rasao !== 'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() => toggleObservationInput('livro_rasao')}
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.livro_rasao && (
+          <TextAreaObservations
+            {...register('observations_livro_rasao')}
+            defaultValue={updateList.observations_livro_rasao}
+          />
         )}
 
         {updateList.ppe === 'Pendente' && (
@@ -231,10 +388,32 @@ export const UpdateControllerFormInputs = ({
                 Apresentar declaração de pessoa politicamente exposta (PPE)
                 <span>(Provimento CNJ 88/2019)</span>
               </p>
-              <Trash onClick={() => handleDeleteRequest('ppe')} size={35} />
+              <ContainerIcons>
+                <CheckSquareOffset
+                  size={35}
+                  onClick={() => handleDeleteRequest('ppe')}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_ppe !== 'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() => toggleObservationInput('ppe')}
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
         )}
+
+        {openInputsObservations.ppe && (
+          <TextAreaObservations
+            {...register('observations_ppe')}
+            defaultValue={updateList.observations_ppe}
+          />
+        )}
+
         {updateList.dissolucao_ou_exticao === 'Pendente' && (
           <ContainerInput>
             <input
@@ -251,12 +430,34 @@ export const UpdateControllerFormInputs = ({
                   e passivo, guarda dos livros etc.) (CNCGJ Art. 953)
                 </span>
               </p>
-              <Trash
-                onClick={() => handleDeleteRequest('dissolucao_ou_exticao')}
-                size={35}
-              />
+
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('dissolucao_ou_exticao')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_dissolucao_ou_exticao !==
+                    'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() =>
+                    toggleObservationInput('dissolucao_ou_exticao')
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.dissolucao_ou_exticao && (
+          <TextAreaObservations
+            {...register('observations_dissolucao_ou_exticao')}
+            defaultValue={updateList.observations_dissolucao_ou_exticao}
+          />
         )}
 
         {updateList.fundacoes === 'Pendente' && (
@@ -274,12 +475,31 @@ export const UpdateControllerFormInputs = ({
                 Ministério Público;
                 <span>(CNCGJ Art. 941)</span>
               </p>
-              <Trash
-                onClick={() => handleDeleteRequest('fundacoes')}
-                size={35}
-              />
+
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('fundacoes')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_fundacoes !== 'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() => toggleObservationInput('fundacoes')}
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.fundacoes && (
+          <TextAreaObservations
+            {...register('observations_fundacoes')}
+            defaultValue={updateList.observations_fundacoes}
+          />
         )}
 
         {updateList.reconhecimento_de_firma === 'Pendente' && (
@@ -292,12 +512,33 @@ export const UpdateControllerFormInputs = ({
             />
             <LabelCheck htmlFor="reconhecimento_de_firma_true">
               <p>presentar reconhecimento de firme no requerimento do DBE</p>
-              <Trash
-                onClick={() => handleDeleteRequest('reconhecimento_de_firma')}
-                size={35}
-              />
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('reconhecimento_de_firma')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_reconhecimento_de_firma !==
+                    undefined
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() =>
+                    toggleObservationInput('reconhecimento_de_firma')
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.reconhecimento_de_firma && (
+          <TextAreaObservations
+            {...register('observations_reconhecimento_de_firma')}
+            defaultValue={updateList.observations_reconhecimento_de_firma}
+          />
         )}
 
         {updateList.preechimento_completo === 'Pendente' && (
@@ -311,13 +552,33 @@ export const UpdateControllerFormInputs = ({
 
             <LabelCheck htmlFor="preechimento_completo_true">
               <p>Preencher todos os campos do formulário/requerimento</p>
-              <Trash
-                onClick={() => handleDeleteRequest('preechimento_completo')}
-                size={35}
-              />{' '}
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('preechimento_completo')}
+                  size={35}
+                />{' '}
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_ppe !== 'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() =>
+                    toggleObservationInput('preechimento_completo')
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
         )}
+
+        {/* {openInputsObservations.preechimento_completo && (
+          <TextAreaObservations
+            {...register('observations_preechimento_completo')}
+            defaultValue={updateList.observations_preechimento_completo}
+          />
+        )} */}
 
         {updateList.oab === 'Pendente' && (
           <ContainerInput>
@@ -332,9 +593,31 @@ export const UpdateControllerFormInputs = ({
                 Apresentar cópia da OAB do representante jurídico do ato
                 apresentado
               </p>
-              <Trash onClick={() => handleDeleteRequest('oab')} size={35} />{' '}
+
+              <ContainerIcons>
+                <CheckSquareOffset
+                  size={35}
+                  onClick={() => handleDeleteRequest('oab')}
+                />{' '}
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_oab !== 'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                  onClick={() => toggleObservationInput('oab')}
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.oab && (
+          <TextAreaObservations
+            {...register('observations_oab')}
+            defaultValue={updateList.observations_oab}
+          />
         )}
 
         {updateList.documentacao_de_identificacao === 'Pendente' && (
@@ -347,15 +630,35 @@ export const UpdateControllerFormInputs = ({
             />
 
             <LabelCheck htmlFor="documentacao_de_identificacao_true">
+              <ContainerIcons></ContainerIcons>
               <p>Apresentar cópia simples do documento de identificação</p>
-              <Trash
+              <CheckSquareOffset
                 onClick={() =>
                   handleDeleteRequest('documentacao_de_identificacao')
                 }
                 size={35}
               />
+              <Warning
+                size={32}
+                color={
+                  updateList.observations_documentacao_de_identificacao !==
+                  'Sem observações'
+                    ? '#FF0000'
+                    : '#000'
+                }
+                onClick={() =>
+                  toggleObservationInput('documentacao_de_identificacao')
+                }
+              />
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.documentacao_de_identificacao && (
+          <TextAreaObservations
+            {...register('observations_documentacao_de_identificacao')}
+            defaultValue={updateList.observations_documentacao_de_identificacao}
+          />
         )}
 
         {updateList.requisitos_de_estatutos_fundadores === 'Pendente' && (
@@ -375,14 +678,35 @@ export const UpdateControllerFormInputs = ({
                   ( CNCGJ Art. 945 / Lei 6.015 no Art. 120 / Lei 10.406 Art. 46)
                 </span>
               </p>
-              <Trash
-                onClick={() =>
-                  handleDeleteRequest('requisitos_de_estatutos_fundadores')
-                }
-                size={35}
-              />
+
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() =>
+                    handleDeleteRequest('requisitos_de_estatutos_fundadores')
+                  }
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_requisitos_de_estatutos_fundadores !==
+                    undefined
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.requisitos_de_estatutos_fundadores && (
+          <TextAreaObservations
+            {...register('observations_requisitos_de_estatutos_fundadores')}
+            defaultValue={
+              updateList.observations_requisitos_de_estatutos_fundadores
+            }
+          />
         )}
 
         {updateList.requisitos_criacao_de_estatuto === 'Pendente' && (
@@ -399,14 +723,35 @@ export const UpdateControllerFormInputs = ({
                 Apresentar os requisitos obrigatórios para criação do estatuto;
                 <span>(Lei 10.406/2002 Art. 54)</span>
               </p>
-              <Trash
-                onClick={() =>
-                  handleDeleteRequest('requisitos_criacao_de_estatuto')
-                }
-                size={35}
-              />
+
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() =>
+                    handleDeleteRequest('requisitos_criacao_de_estatuto')
+                  }
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_requisitos_criacao_de_estatuto !==
+                    undefined
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.requisitos_criacao_de_estatuto && (
+          <TextAreaObservations
+            {...register('observations_requisitos_criacao_de_estatuto')}
+            defaultValue={
+              updateList.observations_requisitos_criacao_de_estatuto
+            }
+          />
         )}
 
         {updateList.retificacao_de_redacao === 'Pendente' && (
@@ -420,12 +765,31 @@ export const UpdateControllerFormInputs = ({
 
             <LabelCheck htmlFor="retificacao_de_redacao_true">
               <p>Retificar redação do documento apresentado;</p>
-              <Trash
-                onClick={() => handleDeleteRequest('retificacao_de_redacao')}
-                size={35}
-              />
+
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('retificacao_de_redacao')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_retificacao_de_redacao !==
+                    'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
+        )}
+
+        {openInputsObservations.retificacao_de_redacao && (
+          <TextAreaObservations
+            {...register('observations_retificacao_de_redacao')}
+            defaultValue={updateList.observations_retificacao_de_redacao}
+          />
         )}
 
         {updateList.campo_de_assinatura === 'Pendente' && (
@@ -439,13 +803,31 @@ export const UpdateControllerFormInputs = ({
 
             <LabelCheck htmlFor="campo_de_assinatura_true">
               <p>Preencher todos os campos de assinatura;</p>
-              <Trash
-                onClick={() => handleDeleteRequest('campo_de_assinatura')}
-                size={35}
-              />
+              <ContainerIcons>
+                <CheckSquareOffset
+                  onClick={() => handleDeleteRequest('campo_de_assinatura')}
+                  size={35}
+                />
+                <Warning
+                  size={32}
+                  color={
+                    updateList.observations_campo_de_assinatura !==
+                    'Sem observações'
+                      ? '#FF0000'
+                      : '#000'
+                  }
+                />
+              </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
         )}
+
+        {/* {openInputsObservations.campo_de_assinatura && (
+          <TextAreaObservations
+            {...register('observations_campo_de_assinatura ')}
+            defaultValue={updateList.observations_campo_de_assinatura}
+          />
+        )} */}
       </ContentInput>
     </ContainerControllerInput>
   )

@@ -66,6 +66,23 @@ export interface ListRequerimentProps {
   requisitos_criacao_de_estatuto?: string
   data_atualizacao?: string
   estado_do_requerimento?: string
+  observations_lista_e_edital?: string
+  observations_assinatura_do_advogado?: string
+  observations_declaracao_criminal?: string
+  observations_declaracao_sindical?: string
+  observations_declaracao_de_desimpedimento?: string
+  observations_livro_rasao?: string
+  observations_requisitos_estatuto?: string
+  observations_ppe?: string
+  observations_requisitos_criacao_de_estatuto?: string
+  observations_dissolucao_ou_exticao?: string
+  observations_fundacoes?: string
+  observations_reconhecimento_de_firma?: string
+  observations_oab?: string
+  observations_documentacao_de_identificacao?: string
+  observations_requisitos_de_estatutos_fundadores?: string
+  observations_campo_de_assinatura?: string
+  observations_retificacao_de_redacao?: string
 }
 
 export interface AssociationProps extends CreateAssociationProps {
@@ -394,9 +411,11 @@ export const RequerimentContextProvider = ({
 
         const { data } = newList
 
-        const date = format(new Date(data.updateAt), 'dd/MM/yyyy', {
+        const date = format(new Date(data.createdAt), 'dd/MM/yyyy', {
           locale: ptBR,
         })
+
+        console.log(data)
 
         setNumberProtocolClient(data.numero_do_protocolo)
         setDataListAssociation((prevState) => [...prevState, data])
@@ -480,6 +499,23 @@ export const RequerimentContextProvider = ({
         campo_de_assinatura,
         retificacao_de_redacao,
         estado_do_requerimento,
+        observations_declaracao_sindical,
+        observations_lista_e_edital,
+        observations_assinatura_do_advogado,
+        observations_declaracao_criminal,
+        observations_declaracao_de_desimpedimento,
+        observations_livro_rasao,
+        observations_requisitos_estatuto,
+        observations_ppe,
+        observations_requisitos_criacao_de_estatuto,
+        observations_dissolucao_ou_exticao,
+        observations_fundacoes,
+        observations_reconhecimento_de_firma,
+        observations_oab,
+        observations_documentacao_de_identificacao,
+        observations_requisitos_de_estatutos_fundadores,
+        observations_campo_de_assinatura,
+        observations_retificacao_de_redacao,
       } = data
 
       const filteredAssociation = dataListAssociation.find(
@@ -508,6 +544,23 @@ export const RequerimentContextProvider = ({
         retificacao_de_redacao,
         exigencias_id: id,
         estado_do_requerimento,
+        observations_declaracao_sindical,
+        observations_lista_e_edital,
+        observations_assinatura_do_advogado,
+        observations_declaracao_criminal,
+        observations_declaracao_de_desimpedimento,
+        observations_livro_rasao,
+        observations_requisitos_estatuto,
+        observations_ppe,
+        observations_requisitos_criacao_de_estatuto,
+        observations_dissolucao_ou_exticao,
+        observations_fundacoes,
+        observations_reconhecimento_de_firma,
+        observations_oab,
+        observations_documentacao_de_identificacao,
+        observations_requisitos_de_estatutos_fundadores,
+        observations_campo_de_assinatura,
+        observations_retificacao_de_redacao,
       }
 
       try {

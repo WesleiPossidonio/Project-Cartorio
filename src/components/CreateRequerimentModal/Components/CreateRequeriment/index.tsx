@@ -32,6 +32,23 @@ export const CreateRequerimentFormSchema = zod.object({
   retificacao_de_redacao: zod.boolean().optional(),
   existe_exigencias_nao_listadas: zod.boolean().optional(),
   informacao_divergente: zod.string().optional(),
+  observations_declaracao_sindical: zod.string().optional(),
+  observations_lista_e_edital: zod.string().optional(),
+  observations_assinatura_do_advogado: zod.string().optional(),
+  observations_declaracao_criminal: zod.string().optional(),
+  observations_declaracao_de_desimpedimento: zod.string().optional(),
+  observations_livro_rasao: zod.string().optional(),
+  observations_requisitos_estatuto: zod.string().optional(),
+  observations_ppe: zod.string().optional(),
+  observations_requisitos_criacao_de_estatuto: zod.string().optional(),
+  observations_dissolucao_ou_exticao: zod.string().optional(),
+  observations_fundacoes: zod.string().optional(),
+  observations_reconhecimento_de_firma: zod.string().optional(),
+  observations_oab: zod.string().optional(),
+  observations_documentacao_de_identificacao: zod.string().optional(),
+  observations_requisitos_de_estatutos_fundadores: zod.string().optional(),
+  observations_campo_de_assinatura: zod.string().optional(),
+  observations_retificacao_de_redacao: zod.string().optional(),
 })
 
 export type CreateRequerimentFormInputs = zod.infer<
@@ -68,18 +85,40 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
   const handleCreateRequeriment = async (data: CreateRequerimentFormInputs) => {
     const booleanData: Record<string, string> = {}
     const filteredEntries = Object.entries(data).filter(
-      ([key, value]) => typeof value === 'boolean'
+      ([, value]) => typeof value === 'boolean'
     )
 
-    requerimentSelected === 'Pendente'
-      ? filteredEntries.map(([key, value]) => {
-          return (booleanData[key] = value ? 'Pendente' : 'Não-Listado')
-        })
-      : filteredEntries.map(([key, value]) => {
-          return (booleanData[key] = value ? 'Recebido' : 'Não-Listado')
-        })
+    filteredEntries.forEach(([key, value]) => {
+      booleanData[key] =
+        requerimentSelected === 'Pendente'
+          ? value
+            ? 'Pendente'
+            : 'Não-Listado'
+          : value
+          ? 'Recebido'
+          : 'Não-Listado'
+    })
 
-    const { informacao_divergente } = data
+    const {
+      informacao_divergente,
+      observations_declaracao_sindical,
+      observations_lista_e_edital,
+      observations_assinatura_do_advogado,
+      observations_declaracao_criminal,
+      observations_declaracao_de_desimpedimento,
+      observations_livro_rasao,
+      observations_requisitos_estatuto,
+      observations_ppe,
+      observations_requisitos_criacao_de_estatuto,
+      observations_dissolucao_ou_exticao,
+      observations_fundacoes,
+      observations_reconhecimento_de_firma,
+      observations_oab,
+      observations_documentacao_de_identificacao,
+      observations_requisitos_de_estatutos_fundadores,
+      observations_campo_de_assinatura,
+      observations_retificacao_de_redacao,
+    } = data
 
     const {
       declaracao_sindical,
@@ -128,6 +167,23 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
           : 'Não há informações divergente',
       estado_do_requerimento:
         requerimentSelected === 'Pendente' ? 'Pendente' : 'Concluído',
+      observations_declaracao_sindical,
+      observations_lista_e_edital,
+      observations_assinatura_do_advogado,
+      observations_declaracao_criminal,
+      observations_declaracao_de_desimpedimento,
+      observations_livro_rasao,
+      observations_requisitos_estatuto,
+      observations_ppe,
+      observations_requisitos_criacao_de_estatuto,
+      observations_dissolucao_ou_exticao,
+      observations_fundacoes,
+      observations_reconhecimento_de_firma,
+      observations_oab,
+      observations_documentacao_de_identificacao,
+      observations_requisitos_de_estatutos_fundadores,
+      observations_campo_de_assinatura,
+      observations_retificacao_de_redacao,
     }
 
     CreateRequeriment(createRequerimentData)

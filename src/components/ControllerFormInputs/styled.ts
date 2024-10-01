@@ -33,8 +33,6 @@ export const ContainerCheckInput = styled.div`
 
   margin-top: 1.2rem;
   border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 
   input {
     visibility: hidden;
@@ -74,12 +72,21 @@ export const ContainerInput = styled.div`
   height: max-content;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+
+  > div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `
 
 export const LabelCheck = styled.label`
-  width: 100%;
+  width: 90%;
   font-size: 0.875rem;
   font-weight: 700;
 
@@ -90,16 +97,11 @@ export const LabelCheck = styled.label`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.5rem;
+  gap: 0.8rem;
 
   padding: 1rem;
 
   background: ${({ theme }) => theme.colors['base-background']};
-
-  &:hover {
-    background: #2b3d63;
-    color: #fff;
-  }
 
   p {
     display: flex;
@@ -108,6 +110,11 @@ export const LabelCheck = styled.label`
 
   span {
     font-size: 0.75rem;
+  }
+
+  &:hover {
+    background: #2b3d63;
+    color: #fff;
   }
 
   @media (max-width: 768px) {
@@ -122,12 +129,66 @@ export const LabelCheck = styled.label`
     }
   }
 `
+
+export const ContainerInfo = styled.div`
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  input {
+    visibility: hidden;
+    appearance: none;
+  }
+
+  input:checked#observations_lista_e_edital + label,
+  input:checked#observations_declaracao_sindical + label,
+  input:checked#observations_assinatura_do_advogado + label,
+  input:checked#observations_declaracao_criminal + label,
+  input:checked#observations_requisitos_estatuto + label,
+  input:checked#observations_declaracao_de_desimpedimento + label,
+  input:checked#observations_livro_rasao + label,
+  input:checked#observations_ppe + label,
+  input:checked#observations_dissolucao_ou_exticao + label,
+  input:checked#observations_fundacoes + label,
+  input:checked#observations_reconhecimento_de_firma + label,
+  input:checked#observations_preechimento_completo + label,
+  input:checked#observations_oab + label,
+  input:checked#observations_documentacao_de_identificacao + label,
+  input:checked#observations_requisitos_criacao_de_estatuto + label,
+  input:checked#observations_requisitos_de_estatutos_fundadores + label,
+  input:checked#observations_retificacao_de_redacao + label,
+  input:checked#observations_requisitos_criacao_de_estatuto + label,
+  input:checked#observations_campo_de_assinatura + label {
+    background: ${({ theme }) => theme.colors['base-error']};
+    color: #fff;
+  }
+`
+
+export const ContentInfo = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5;
+
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 1rem;
+  background: ${({ theme }) => theme.colors['base-background']};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors['base-blue']};
+    color: #fff;
+  }
+`
+
 export const ContainerButtonInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
 
   div {
     display: flex;
@@ -156,4 +217,10 @@ export const TextArea = styled.textarea`
   @media (max-width: 1200px) {
     width: 100%;
   }
+`
+export const TextAreaObservations = styled(TextArea)`
+  width: 85%;
+  height: 6rem;
+  margin-left: 0.5rem;
+  margin-top: 0.2rem;
 `
