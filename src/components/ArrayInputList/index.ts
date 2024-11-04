@@ -54,7 +54,7 @@ export const arrayInputList = [
     name: 'ppe',
     text: 'Apresentar declaração de pessoa politicamente exposta (PPE)',
     spanText: '(Provimento CNJ 88/2019)',
-    onservation: 'observations_ppe',
+    observation: 'observations_ppe',
   },
   {
     id: 'dissolucao_ou_exticao_true',
@@ -92,7 +92,7 @@ export const arrayInputList = [
     id: 'documentacao_de_identificacao_true',
     name: 'documentacao_de_identificacao',
     text: 'Apresentar cópia simples do documento de identificação',
-    onservation: 'observations_documentacao_de_identificacao',
+    observation: 'observations_documentacao_de_identificacao',
   },
   {
     id: 'requisitos_de_estatutos_fundadores_true',

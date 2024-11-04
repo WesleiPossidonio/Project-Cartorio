@@ -312,8 +312,6 @@ export const RequerimentContextProvider = ({
         name,
       } = dataSendMail
 
-      console.log('fui chamado')
-
       const listSendEmailAssociation = {
         numero_do_protocolo,
         cnpj_cpf,
@@ -415,12 +413,8 @@ export const RequerimentContextProvider = ({
           locale: ptBR,
         })
 
-        console.log(data)
-
         setNumberProtocolClient(data.numero_do_protocolo)
-        setDataListAssociation((prevState) => [...prevState, data])
         setRequestListDataPDF(data)
-
         sendMailAssociation({
           ...data,
           name,
@@ -428,6 +422,7 @@ export const RequerimentContextProvider = ({
           data_da_recepcao: date,
           sobre_exigencia,
         })
+        setDataListAssociation((prevState) => [...prevState, data])
       } catch (error) {
         console.log(error)
       }

@@ -32,8 +32,9 @@ interface StateInputListProps {
 }
 
 type SelectedItemsProps = {
-  checked: boolean
+  id: string
   name: string
+  checked: boolean
 }
 
 interface ControllerProps {
@@ -59,21 +60,21 @@ export const ControllerFormInputs = ({
 
   const { setDataListRequeriment, dataListRequeriment } = useRequeriment()
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    itemId: string
+  ) => {
     const { name, checked } = event.target
 
     setSelectedItems((prevSelectedItems) => {
-      // Verifica se o item já está na lista
-      const itemIndex = prevSelectedItems.findIndex(
-        (item) => item.name === name
-      )
+      const existingItem = prevSelectedItems.find((item) => item.id === itemId)
 
-      if (itemIndex === -1) {
-        // Item não está na lista, adicione-o
-        return [...prevSelectedItems, { name, checked }]
+      if (!existingItem) {
+        return [...prevSelectedItems, { id: itemId, name, checked }]
       }
+
       return prevSelectedItems.map((item) =>
-        item.name === name ? { ...item, checked } : item
+        item.id === itemId ? { ...item, checked } : item
       )
     })
   }
@@ -186,61 +187,68 @@ export const ControllerFormInputs = ({
                         {list.spanText && <span> {list.spanText} </span>}
                       </div>
                     </LabelCheck>
-                    {list.observation ? (
+                    {list.observation && (
                       <ContainerInfo>
                         <input
                           type="checkbox"
                           id={list.observation}
-                          onChange={handleChange}
+                          onChange={(e) => handleChange(e, list.id)}
                           name={list.observation}
                         />
                         <ContentInfo htmlFor={list.observation}>
                           <Info size={32} id="info" />
                         </ContentInfo>
                       </ContainerInfo>
-                    ) : (
-                      <ContainerInfo> </ContainerInfo>
                     )}
                   </div>
-
-                  {selectedItems.map(
-                    (item) =>
-                      item.name === list.observation &&
-                      item.checked && (
-                        <TextAreaObservations
-                          placeholder="Escreva a observação do documento"
-                          key={item.name}
-                          {...register(
-                            list.observation as keyof CreateRequerimentFormInputs
-                          )}
-                        ></TextAreaObservations>
-                      )
+                  {selectedItems.map((item) =>
+                    item.checked &&
+                    item.id === list.id &&
+                    item.name === list.observation ? (
+                      <TextAreaObservations
+                        key={list.id}
+                        placeholder="Escreva a observação do documento"
+                        {...register(
+                          list.observation as keyof CreateRequerimentFormInputs
+                        )}
+                      ></TextAreaObservations>
+                    ) : null
                   )}
                 </ContainerInput>
               ))
             : unselectedRequestsFilter.map((list) => (
                 <ContainerInput key={list.id}>
-                  <input
-                    onClick={() => handleAddingForgotteData(list.name)}
-                    id={list.id}
-                    type="checkbox"
-                    {...register(
-                      list.name as keyof UpdateRequerimentFormInputs
+                  <div>
+                    <input
+                      onClick={() => handleAddingForgotteData(list.name)}
+                      id={list.id}
+                      type="checkbox"
+                      {...register(
+                        list.name as keyof UpdateRequerimentFormInputs
+                      )}
+                      name={list.name}
+                    />
+                    <LabelCheck htmlFor={list.id}>
+                      <NotePencil size={30} />
+                      <div>
+                        {list.text}
+                        {list.spanText && <span> {list.spanText} </span>}
+                      </div>
+                    </LabelCheck>
+                    {list.observation && (
+                      <ContainerInfo>
+                        <input
+                          type="checkbox"
+                          id={list.observation}
+                          onChange={(e) => handleChange(e, list.id)}
+                          name={list.observation}
+                        />
+                        <ContentInfo htmlFor={list.observation}>
+                          <Info size={32} id="info" />
+                        </ContentInfo>
+                      </ContainerInfo>
                     )}
-                    name={list.name}
-                  />
-                  <LabelCheck htmlFor={list.id}>
-                    <NotePencil size={30} />
-                    <div>
-                      {list.text}
-                      {list.spanText && <span> {list.spanText} </span>}
-                    </div>
-                  </LabelCheck>
-                  {/* Renderiza o texto condicionalmente
-                  {selectedItems.map(
-                    (item) =>
-                      item.checked && <p key={item.name}>Checkbox marcado!</p>
-                  )} */}
+                  </div>
                 </ContainerInput>
               ))}
         </ContainerCheckInput>

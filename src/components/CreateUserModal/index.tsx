@@ -55,7 +55,6 @@ export const CreateUserModal = () => {
       registration,
     })
 
-    console.log(isAdmin, admin, email, name, password)
     reset()
   }
 

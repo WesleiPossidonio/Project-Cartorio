@@ -21,8 +21,6 @@ export const ListRequerimentCompleted = ({
 }: ListRequerimentCompletedProps) => {
   const { userDataLogin } = useUser()
 
-  console.log(RequerimentCompleted)
-
   return (
     <div>
       <ContainerModal>

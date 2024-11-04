@@ -1,13 +1,13 @@
-import { CheckSquareOffset, Warning } from 'phosphor-react'
+import { Trash, Warning } from 'phosphor-react'
 import React, { useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import api from '../../../../services/api'
-import { CreateRequerimentFormInputs } from '../../../CreateRequerimentModal/Components/CreateRequeriment'
-import { TextAreaObservations } from '../../../ControllerFormInputs/styled'
-import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { ListRequerimentProps } from '../../../../contexts/RequerimentContext'
+import { useRequeriment } from '../../../../hooks/useRequeriment'
+import api from '../../../../services/api'
+import { TextAreaObservations } from '../../../ControllerFormInputs/styled'
+import { CreateRequerimentFormInputs } from '../../../CreateRequerimentModal/Components/CreateRequeriment'
 import {
   ContainerControllerInput,
   ContainerIcons,
@@ -63,10 +63,13 @@ export const UpdateControllerFormInputs = ({
   }
 
   const toggleObservationInput = (fieldName: string) => {
-    setOpenInputsObservations((prevState) => ({
-      ...prevState,
-      [fieldName]: !prevState[fieldName], // Alterna entre abrir e fechar
-    }))
+    setOpenInputsObservations((prevState) => {
+      const newState = {
+        ...prevState,
+        [fieldName]: !prevState[fieldName],
+      }
+      return newState
+    })
   }
 
   return (
@@ -94,7 +97,7 @@ export const UpdateControllerFormInputs = ({
                 <span> (CNCGJ Art. 951) </span>
               </p>
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('lista_e_edital')}
                   size={35}
                 />
@@ -135,7 +138,7 @@ export const UpdateControllerFormInputs = ({
                 <span> (CNCGJ Art. 935 § 4º) </span>
               </p>
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('declaracao_sindical')}
                   size={35}
                 />
@@ -147,13 +150,14 @@ export const UpdateControllerFormInputs = ({
                       ? '#FF0000'
                       : '#000'
                   }
+                  onClick={() => toggleObservationInput('declaracao_sindical')}
                 />
               </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
         )}
 
-        {openInputsObservations.observations_declaracao_sindical && (
+        {openInputsObservations.declaracao_sindical && (
           <TextAreaObservations
             {...register('observations_declaracao_sindical')}
             defaultValue={updateList.observations_declaracao_sindical}
@@ -175,7 +179,7 @@ export const UpdateControllerFormInputs = ({
                 <span> (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)</span>
               </p>
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('assinatura_do_advogado')}
                   size={35}
                 />
@@ -218,7 +222,7 @@ export const UpdateControllerFormInputs = ({
                 <span> (CNCGJ Art. 932 § 1º) </span>
               </p>
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('declaracao_criminal')}
                   size={35}
                 />
@@ -260,7 +264,7 @@ export const UpdateControllerFormInputs = ({
                 </span>
               </p>
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('requisitos_estatuto')}
                   size={35}
                 />
@@ -304,7 +308,7 @@ export const UpdateControllerFormInputs = ({
               </p>
 
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() =>
                     handleDeleteRequest('declaracao_de_desimpedimento')
                   }
@@ -350,7 +354,7 @@ export const UpdateControllerFormInputs = ({
               </p>
 
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('livro_rasao')}
                   size={35}
                 />
@@ -389,10 +393,7 @@ export const UpdateControllerFormInputs = ({
                 <span>(Provimento CNJ 88/2019)</span>
               </p>
               <ContainerIcons>
-                <CheckSquareOffset
-                  size={35}
-                  onClick={() => handleDeleteRequest('ppe')}
-                />
+                <Trash size={35} onClick={() => handleDeleteRequest('ppe')} />
                 <Warning
                   size={32}
                   color={
@@ -432,7 +433,7 @@ export const UpdateControllerFormInputs = ({
               </p>
 
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('dissolucao_ou_exticao')}
                   size={35}
                 />
@@ -477,7 +478,7 @@ export const UpdateControllerFormInputs = ({
               </p>
 
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('fundacoes')}
                   size={35}
                 />
@@ -513,7 +514,7 @@ export const UpdateControllerFormInputs = ({
             <LabelCheck htmlFor="reconhecimento_de_firma_true">
               <p>presentar reconhecimento de firme no requerimento do DBE</p>
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('reconhecimento_de_firma')}
                   size={35}
                 />
@@ -553,7 +554,7 @@ export const UpdateControllerFormInputs = ({
             <LabelCheck htmlFor="preechimento_completo_true">
               <p>Preencher todos os campos do formulário/requerimento</p>
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('preechimento_completo')}
                   size={35}
                 />{' '}
@@ -595,10 +596,7 @@ export const UpdateControllerFormInputs = ({
               </p>
 
               <ContainerIcons>
-                <CheckSquareOffset
-                  size={35}
-                  onClick={() => handleDeleteRequest('oab')}
-                />{' '}
+                <Trash size={35} onClick={() => handleDeleteRequest('oab')} />{' '}
                 <Warning
                   size={32}
                   color={
@@ -632,7 +630,7 @@ export const UpdateControllerFormInputs = ({
             <LabelCheck htmlFor="documentacao_de_identificacao_true">
               <ContainerIcons></ContainerIcons>
               <p>Apresentar cópia simples do documento de identificação</p>
-              <CheckSquareOffset
+              <Trash
                 onClick={() =>
                   handleDeleteRequest('documentacao_de_identificacao')
                 }
@@ -680,7 +678,7 @@ export const UpdateControllerFormInputs = ({
               </p>
 
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() =>
                     handleDeleteRequest('requisitos_de_estatutos_fundadores')
                   }
@@ -725,7 +723,7 @@ export const UpdateControllerFormInputs = ({
               </p>
 
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() =>
                     handleDeleteRequest('requisitos_criacao_de_estatuto')
                   }
@@ -767,7 +765,7 @@ export const UpdateControllerFormInputs = ({
               <p>Retificar redação do documento apresentado;</p>
 
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('retificacao_de_redacao')}
                   size={35}
                 />
@@ -804,7 +802,7 @@ export const UpdateControllerFormInputs = ({
             <LabelCheck htmlFor="campo_de_assinatura_true">
               <p>Preencher todos os campos de assinatura;</p>
               <ContainerIcons>
-                <CheckSquareOffset
+                <Trash
                   onClick={() => handleDeleteRequest('campo_de_assinatura')}
                   size={35}
                 />
