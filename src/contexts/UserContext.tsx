@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import api from '../services/api'
+import { decodeToken } from '../utils/DecodeToken'
 
 interface UserLoginProps {
   name: string
@@ -168,20 +169,26 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   }, [])
 
   const updatePassword = useCallback(async (data: UpdatePasswordProps) => {
-    const confirmEmail = localStorage.getItem('cartorio:UserConfirmEmail')
-    const idUser = confirmEmail && JSON.parse(confirmEmail).id
+    const confirmEmailId = localStorage.getItem('cartorio:UserConfirmEmail')
+    const idUser = decodeToken(confirmEmailId)
+
     const { password, updateNumber } = data
 
-    const updateData = { password, updateNumber }
+    if (idUser) {
+      const updateData = { password, updateNumber }
 
-    try {
-      await toast.promise(api.patch(`requeriment/${idUser}`, updateData), {
-        pending: 'Verificando seus dados',
-        success: 'Senha Atualizada com Sucesso!',
-        error: 'Ops! Verifique os Dados Digitados',
-      })
-    } catch (error) {
-      console.log(error)
+      try {
+        await toast.promise(
+          api.patch(`updatePassword/${idUser.id}`, updateData),
+          {
+            pending: 'Verificando seus dados',
+            success: 'Senha Atualizada com Sucesso!',
+            error: 'Ops! Verifique os Dados Digitados',
+          }
+        )
+      } catch (error) {
+        console.log(error)
+      }
     }
   }, [])
 

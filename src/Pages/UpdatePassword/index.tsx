@@ -17,12 +17,10 @@ const updatePasswordSchema = zod
     password: zod
       .string()
       .min(6, 'A senha deve conter  6 caracteres')
-      .max(6, 'A senha deve conter 6 caracteres')
       .nonempty('Por favor, digite sua nova senha'),
     confirmPassword: zod
       .string()
       .min(6, 'A senha deve conter  6 caracteres')
-      .max(6, 'A senha deve conter 6 caracteres')
       .nonempty('Por favor, confirme sua senha'),
   })
   .refine((data) => data.password === data.confirmPassword, {
