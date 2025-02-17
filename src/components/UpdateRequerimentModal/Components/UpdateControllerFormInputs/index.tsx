@@ -84,13 +84,6 @@ export const UpdateControllerFormInputs = ({
               name="lista_e_edital"
             />
 
-            <input
-              type="checkbox"
-              {...register('observations_lista_e_edital')}
-              name="observations_lista_e_edital"
-              defaultValue={updateList.observations_lista_e_edital}
-            />
-
             <LabelCheck htmlFor="lista_e_edital_true">
               <p>
                 Apresentar lista de presença e edital;
@@ -146,7 +139,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_declaracao_sindical !==
-                    'Sem observações'
+                      'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
@@ -187,7 +180,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_assinatura_do_advogado !==
-                    'Sem observações'
+                      'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
@@ -230,7 +223,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_declaracao_criminal !==
-                    'Sem observações'
+                      'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
@@ -272,7 +265,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_requisitos_estatuto !==
-                    'Sem observações'
+                      'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
@@ -318,7 +311,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_declaracao_de_desimpedimento !==
-                    'Sem observações'
+                      'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
@@ -441,7 +434,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_dissolucao_ou_exticao !==
-                    'Sem observações'
+                      'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
@@ -522,7 +515,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_reconhecimento_de_firma !==
-                    undefined
+                      undefined
                       ? '#FF0000'
                       : '#000'
                   }
@@ -640,7 +633,7 @@ export const UpdateControllerFormInputs = ({
                 size={32}
                 color={
                   updateList.observations_documentacao_de_identificacao !==
-                  'Sem observações'
+                    'Sem observações'
                     ? '#FF0000'
                     : '#000'
                 }
@@ -688,7 +681,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_requisitos_de_estatutos_fundadores !==
-                    undefined
+                      undefined
                       ? '#FF0000'
                       : '#000'
                   }
@@ -733,7 +726,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_requisitos_criacao_de_estatuto !==
-                    undefined
+                      undefined
                       ? '#FF0000'
                       : '#000'
                   }
@@ -773,7 +766,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_retificacao_de_redacao !==
-                    'Sem observações'
+                      'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
@@ -810,7 +803,7 @@ export const UpdateControllerFormInputs = ({
                   size={32}
                   color={
                     updateList.observations_campo_de_assinatura !==
-                    'Sem observações'
+                      'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
