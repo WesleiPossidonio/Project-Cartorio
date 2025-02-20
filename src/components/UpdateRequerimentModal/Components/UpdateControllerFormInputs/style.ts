@@ -139,5 +139,17 @@ export const ContainerInformacaoDivergente = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 0.5rem;
+  gap: 1rem;
+
+  margin-top: 1rem;
+`
+export const SelectedStateInfoDivergente = styled.select`
+width: 13rem;
+padding: 0.5rem;
+border: 0;
+border-radius: 8px;
+
+font-weight: 600;
+
+background-color: #fff;
 `

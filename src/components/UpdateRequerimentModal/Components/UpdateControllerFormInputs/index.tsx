@@ -16,6 +16,7 @@ import {
   ContainerInput,
   ContentInput,
   LabelCheck,
+  SelectedStateInfoDivergente,
 } from './style'
 
 interface ControllerUpdateProps {
@@ -853,13 +854,18 @@ export const UpdateControllerFormInputs = ({
           </ContainerInput>
         )}
 
-        {dataRequeriment !== undefined && dataRequeriment.informacao_divergente?.info === 'Pendente' && (
+        {dataRequeriment !== undefined && dataRequeriment.informacao_divergente?.state === 'Pendente' && (
           <ContainerInformacaoDivergente>
-            <TitleText size="s">Informação Não Listada</TitleText>
+            <TitleText size="sm">Informação Não Listada</TitleText>
             <TextAreaObservations
               {...register('informacao_divergente.info')}
               defaultValue={updateList.informacao_divergente?.info}
             />
+
+            <SelectedStateInfoDivergente {...register('informacao_divergente.state')}>
+              <option value="Pendente">Pendente</option>
+              <option value="Concluído">Concluído</option>
+            </SelectedStateInfoDivergente>
           </ContainerInformacaoDivergente>
         )}
       </ContentInput>

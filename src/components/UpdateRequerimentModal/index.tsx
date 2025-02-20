@@ -84,11 +84,13 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
       ([, value]) => typeof value === 'boolean'
     )
 
+    const { informacao_divergente } = data
+
     filteredEntries.map(([key, value]) => {
       return (booleanData[key] = value ? 'Recebido' : 'Pendente')
     })
 
-    const updatedData = { ...booleanData, id: dataRequerimentSelected?.id }
+    const updatedData = { ...booleanData, id: dataRequerimentSelected?.id, informacao_divergente }
 
     updateRequeriment({ ...updatedData, handleListConcluted: false })
 
