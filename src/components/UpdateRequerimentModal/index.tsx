@@ -40,7 +40,7 @@ export const UpdateRequerimentFormSchema = zod.object({
   retificacao_de_redacao: zod.boolean().optional(),
   campo_de_assinatura: zod.boolean().optional(),
   existe_exigencias_nao_listadas: zod.boolean().optional(),
-  informacao_divergente: zod.string().optional(),
+  informacao_divergente: zod.object({ info: zod.string(), state: zod.string() }).optional(),
 })
 
 export type UpdateRequerimentFormInputs = zod.infer<
@@ -73,7 +73,7 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
 
     setDataRequerimentSelected(
       filteredRequerimentSelected?.exigencias &&
-        filteredRequerimentSelected.exigencias
+      filteredRequerimentSelected.exigencias
     )
   }, [AssociationId, dataListAssociation])
 
@@ -81,7 +81,7 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
     const booleanData: Record<string, string> = {}
 
     const filteredEntries = Object.entries(data).filter(
-      ([key, value]) => typeof value === 'boolean'
+      ([, value]) => typeof value === 'boolean'
     )
 
     filteredEntries.map(([key, value]) => {

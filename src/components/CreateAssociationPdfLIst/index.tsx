@@ -266,9 +266,9 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
               </Text>
             )}
 
-            {data?.exigencias?.informacao_divergente !== null && (
+            {data?.exigencias?.informacao_divergente?.state === 'Pendente' && (
               <Text style={styles.text}>
-                [ ] {data?.exigencias?.informacao_divergente}
+                [ ] {data?.exigencias?.informacao_divergente?.info}
               </Text>
             )}
           </View>
