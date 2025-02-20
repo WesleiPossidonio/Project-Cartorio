@@ -124,7 +124,9 @@ export const CreatePdfList = ({
         </View>
 
         <View style={styles.main}>
-          <Text style={styles.titleText}>Lista de Exigências Pendentes</Text>
+          {data.exigencias !== undefined && (
+            <Text style={styles.titleText}>Lista de Exigências Pendentes</Text>
+          )}
 
           {data.exigencias?.lista_e_edital === 'Pendente' && (
             <Text style={styles.text}>
@@ -181,12 +183,12 @@ export const CreatePdfList = ({
 
           {data.exigencias?.requisitos_de_estatutos_fundadores ===
             'Pendente' && (
-            <Text style={styles.text}>
-              [ ] No caso de dissolução ou extinção deverá conter no documento:
-              (liquidação, divisão de cotas de sócios, inexistência de ativo e
-              passivo, guarda dos livros etc.) (CNCGJ Art. 953)
-            </Text>
-          )}
+              <Text style={styles.text}>
+                [ ] No caso de dissolução ou extinção deverá conter no documento:
+                (liquidação, divisão de cotas de sócios, inexistência de ativo e
+                passivo, guarda dos livros etc.) (CNCGJ Art. 953)
+              </Text>
+            )}
 
           {data.exigencias?.dissolucao_ou_exticao === 'Pendente' && (
             <Text style={styles.text}>
@@ -230,12 +232,12 @@ export const CreatePdfList = ({
 
           {data.exigencias?.requisitos_de_estatutos_fundadores ===
             'Pendente' && (
-            <Text style={styles.text}>
-              [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
-              documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
-              / Lei 10.406 Art. 46)
-            </Text>
-          )}
+              <Text style={styles.text}>
+                [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
+                documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
+                / Lei 10.406 Art. 46)
+              </Text>
+            )}
 
           {data.exigencias?.requisitos_criacao_de_estatuto === 'Pendente' && (
             <Text style={styles.text}>
@@ -256,8 +258,10 @@ export const CreatePdfList = ({
             </Text>
           )}
 
-          {data.exigencias?.informacao_divergente === 'Pendente' && (
-            <Text style={styles.text}>[ ] {infoDivergente}</Text>
+          {data?.exigencias?.informacao_divergente !== null && (
+            <Text style={styles.text}>
+              [ ] {data?.exigencias?.informacao_divergente}
+            </Text>
           )}
         </View>
 

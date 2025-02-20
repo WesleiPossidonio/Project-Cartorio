@@ -8,9 +8,11 @@ import { useRequeriment } from '../../../../hooks/useRequeriment'
 import api from '../../../../services/api'
 import { TextAreaObservations } from '../../../ControllerFormInputs/styled'
 import { CreateRequerimentFormInputs } from '../../../CreateRequerimentModal/Components/CreateRequeriment'
+import { TitleText } from '../../../typography'
 import {
   ContainerControllerInput,
   ContainerIcons,
+  ContainerInformacaoDivergente,
   ContainerInput,
   ContentInput,
   LabelCheck,
@@ -199,6 +201,44 @@ export const UpdateControllerFormInputs = ({
             defaultValue={updateList.observations_assinatura_do_advogado}
           />
         )}
+
+        {
+          updateList.requerimento_eletronico_rcpj === 'Pendente' && (
+            <ContainerInput>
+              <input
+                id="requerimento_eletronico_rcpj_true"
+                type="checkbox"
+                {...register('requerimento_eletronico_rcpj')}
+                name="requerimento_eletronico_rcpj"
+              />
+
+              <LabelCheck htmlFor="requerimento_eletronico_rcpj_true">
+                <p>
+                  Colher assinatura do advogado no ato apresentado para registro;
+                  <span> (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)</span>
+                </p>
+                <ContainerIcons>
+                  <Trash
+                    onClick={() => handleDeleteRequest('requerimento_eletronico_rcpj')}
+                    size={35}
+                  />
+                  <Warning
+                    size={32}
+                    color={
+                      updateList.observations_requerimento_eletronico_rcpj !==
+                        'Sem observações'
+                        ? '#FF0000'
+                        : '#000'
+                    }
+                    onClick={() =>
+                      toggleObservationInput('requerimento_eletronico_rcpj')
+                    }
+                  />
+                </ContainerIcons>
+              </LabelCheck>
+            </ContainerInput>
+          )
+        }
 
         {updateList.declaracao_criminal === 'Pendente' && (
           <ContainerInput>
@@ -813,12 +853,15 @@ export const UpdateControllerFormInputs = ({
           </ContainerInput>
         )}
 
-        {/* {openInputsObservations.campo_de_assinatura && (
-          <TextAreaObservations
-            {...register('observations_campo_de_assinatura ')}
-            defaultValue={updateList.observations_campo_de_assinatura}
-          />
-        )} */}
+        {dataRequeriment !== undefined && dataRequeriment.informacao_divergente?.info === 'Pendente' && (
+          <ContainerInformacaoDivergente>
+            <TitleText size="s">Informação Não Listada</TitleText>
+            <TextAreaObservations
+              {...register('informacao_divergente.info')}
+              defaultValue={updateList.informacao_divergente?.info}
+            />
+          </ContainerInformacaoDivergente>
+        )}
       </ContentInput>
     </ContainerControllerInput>
   )

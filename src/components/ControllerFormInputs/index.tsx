@@ -21,6 +21,8 @@ import {
   ContentInfo,
   ContainerInfo,
   TextAreaObservations,
+  DivergenteInfoContainer,
+  SelectedStateInfoDivergente,
 } from './styled'
 
 interface StateInputListProps {
@@ -170,87 +172,87 @@ export const ControllerFormInputs = ({
         <ContainerCheckInput>
           {controllerUsageStatus === 'Created'
             ? arrayInputList.map((list) => (
-                <ContainerInput key={list.id}>
-                  <div>
-                    <input
-                      id={list.id}
-                      type="checkbox"
-                      {...register(
-                        list.name as keyof CreateRequerimentFormInputs
-                      )}
-                      name={list.name}
-                    />
-                    <LabelCheck htmlFor={list.id}>
-                      <NotePencil size={30} />
-                      <div>
-                        {list.text}
-                        {list.spanText && <span> {list.spanText} </span>}
-                      </div>
-                    </LabelCheck>
-                    {list.observation && (
-                      <ContainerInfo>
-                        <input
-                          type="checkbox"
-                          id={list.observation}
-                          onChange={(e) => handleChange(e, list.id)}
-                          name={list.observation}
-                        />
-                        <ContentInfo htmlFor={list.observation}>
-                          <Info size={32} id="info" />
-                        </ContentInfo>
-                      </ContainerInfo>
+              <ContainerInput key={list.id}>
+                <div>
+                  <input
+                    id={list.id}
+                    type="checkbox"
+                    {...register(
+                      list.name as keyof CreateRequerimentFormInputs
                     )}
-                  </div>
-                  {selectedItems.map((item) =>
-                    item.checked &&
+                    name={list.name}
+                  />
+                  <LabelCheck htmlFor={list.id}>
+                    <NotePencil size={30} />
+                    <div>
+                      {list.text}
+                      {list.spanText && <span> {list.spanText} </span>}
+                    </div>
+                  </LabelCheck>
+                  {list.observation && (
+                    <ContainerInfo>
+                      <input
+                        type="checkbox"
+                        id={list.observation}
+                        onChange={(e) => handleChange(e, list.id)}
+                        name={list.observation}
+                      />
+                      <ContentInfo htmlFor={list.observation}>
+                        <Info size={32} id="info" />
+                      </ContentInfo>
+                    </ContainerInfo>
+                  )}
+                </div>
+                {selectedItems.map((item) =>
+                  item.checked &&
                     item.id === list.id &&
                     item.name === list.observation ? (
-                      <TextAreaObservations
-                        key={list.id}
-                        placeholder="Escreva a observação do documento"
-                        {...register(
-                          list.observation as keyof CreateRequerimentFormInputs
-                        )}
-                      ></TextAreaObservations>
-                    ) : null
-                  )}
-                </ContainerInput>
-              ))
-            : unselectedRequestsFilter.map((list) => (
-                <ContainerInput key={list.id}>
-                  <div>
-                    <input
-                      onClick={() => handleAddingForgotteData(list.name)}
-                      id={list.id}
-                      type="checkbox"
+                    <TextAreaObservations
+                      key={list.id}
+                      placeholder="Escreva a observação do documento"
                       {...register(
-                        list.name as keyof UpdateRequerimentFormInputs
+                        list.observation as keyof CreateRequerimentFormInputs
                       )}
-                      name={list.name}
-                    />
-                    <LabelCheck htmlFor={list.id}>
-                      <NotePencil size={30} />
-                      <div>
-                        {list.text}
-                        {list.spanText && <span> {list.spanText} </span>}
-                      </div>
-                    </LabelCheck>
-                    {list.observation && (
-                      <ContainerInfo>
-                        <input
-                          type="checkbox"
-                          id={list.observation}
-                          onChange={(e) => handleChange(e, list.id)}
-                          name={list.observation}
-                        />
-                        <ContentInfo htmlFor={list.observation}>
-                          <Info size={32} id="info" />
-                        </ContentInfo>
-                      </ContainerInfo>
+                    ></TextAreaObservations>
+                  ) : null
+                )}
+              </ContainerInput>
+            ))
+            : unselectedRequestsFilter.map((list) => (
+              <ContainerInput key={list.id}>
+                <div>
+                  <input
+                    onClick={() => handleAddingForgotteData(list.name)}
+                    id={list.id}
+                    type="checkbox"
+                    {...register(
+                      list.name as keyof UpdateRequerimentFormInputs
                     )}
-                  </div>
-                </ContainerInput>
-              ))}
+                    name={list.name}
+                  />
+                  <LabelCheck htmlFor={list.id}>
+                    <NotePencil size={30} />
+                    <div>
+                      {list.text}
+                      {list.spanText && <span> {list.spanText} </span>}
+                    </div>
+                  </LabelCheck>
+                  {list.observation && (
+                    <ContainerInfo>
+                      <input
+                        type="checkbox"
+                        id={list.observation}
+                        onChange={(e) => handleChange(e, list.id)}
+                        name={list.observation}
+                      />
+                      <ContentInfo htmlFor={list.observation}>
+                        <Info size={32} id="info" />
+                      </ContentInfo>
+                    </ContainerInfo>
+                  )}
+                </div>
+              </ContainerInput>
+            ))}
         </ContainerCheckInput>
 
         <ContainerButtonInfo>
@@ -278,12 +280,18 @@ export const ControllerFormInputs = ({
         </ContainerButtonInfo>
 
         {divergentInformation === 'sim' && (
-          <TextArea
-            id="list"
-            placeholder="Digite as Informações Divergentes"
-            {...register('informacao_divergente')}
-            name="informacao_divergente"
-          />
+          <DivergenteInfoContainer>
+            <TextArea
+              id="list"
+              placeholder="Digite as Informações Divergentes"
+              {...register('informacao_divergente.info')}
+            />
+
+            <SelectedStateInfoDivergente {...register('informacao_divergente.state')}>
+              <option value="Pendente">Pendente</option>
+              <option value="Concluído">Concluído</option>
+            </SelectedStateInfoDivergente>
+          </DivergenteInfoContainer>
         )}
       </ContentInput>
     </ContainerControllerInput>

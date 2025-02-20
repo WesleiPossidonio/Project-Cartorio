@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useState } from 'react'
@@ -16,6 +16,7 @@ export const CreateRequerimentFormSchema = zod.object({
   lista_e_edital: zod.boolean().optional().optional(),
   assinatura_do_advogado: zod.boolean().optional(),
   declaracao_criminal: zod.boolean().optional(),
+  requerimento_eletronico_rcpj: zod.boolean().optional(),
   declaracao_de_desimpedimento: zod.boolean().optional(),
   livro_rasao: zod.boolean().optional(),
   ppe: zod.boolean().optional(),
@@ -31,7 +32,7 @@ export const CreateRequerimentFormSchema = zod.object({
   campo_de_assinatura: zod.boolean().optional(),
   retificacao_de_redacao: zod.boolean().optional(),
   existe_exigencias_nao_listadas: zod.boolean().optional(),
-  informacao_divergente: zod.string().optional(),
+  informacao_divergente: zod.object({ info: zod.string(), state: zod.string() }).optional(),
   observations_declaracao_sindical: zod.string().optional(),
   observations_lista_e_edital: zod.string().optional(),
   observations_assinatura_do_advogado: zod.string().optional(),
@@ -49,6 +50,7 @@ export const CreateRequerimentFormSchema = zod.object({
   observations_requisitos_de_estatutos_fundadores: zod.string().optional(),
   observations_campo_de_assinatura: zod.string().optional(),
   observations_retificacao_de_redacao: zod.string().optional(),
+  observations_requerimento_eletronico_rcpj: zod.string().optional(),
 })
 
 export type CreateRequerimentFormInputs = zod.infer<
@@ -95,8 +97,8 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
             ? 'Pendente'
             : 'Não-Listado'
           : value
-          ? 'Recebido'
-          : 'Não-Listado'
+            ? 'Recebido'
+            : 'Não-Listado'
     })
 
     const {
@@ -120,6 +122,8 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       observations_retificacao_de_redacao,
     } = data
 
+    console.log(informacao_divergente)
+
     const {
       declaracao_sindical,
       lista_e_edital,
@@ -139,6 +143,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       requisitos_de_estatutos_fundadores,
       campo_de_assinatura,
       retificacao_de_redacao,
+      requerimento_eletronico_rcpj
     } = booleanData
 
     const createRequerimentData = {
@@ -161,10 +166,10 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       requisitos_de_estatutos_fundadores,
       campo_de_assinatura,
       retificacao_de_redacao,
-      informacao_divergente:
-        informacao_divergente !== undefined
-          ? informacao_divergente
-          : 'Não há informações divergente',
+      informacao_divergente: {
+        info: informacao_divergente?.info || '',
+        state: informacao_divergente?.state || '',
+      },
       estado_do_requerimento:
         requerimentSelected === 'Pendente' ? 'Pendente' : 'Concluído',
       observations_declaracao_sindical,
@@ -184,6 +189,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       observations_requisitos_de_estatutos_fundadores,
       observations_campo_de_assinatura,
       observations_retificacao_de_redacao,
+      requerimento_eletronico_rcpj,
     }
 
     CreateRequeriment(createRequerimentData)
@@ -209,10 +215,9 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
                 dataUser={userDataLogin}
               />
             }
-            fileName={`exigencia${
-              requestListDataPDF?.numero_do_protocolo ||
+            fileName={`exigencia${requestListDataPDF?.numero_do_protocolo ||
               RequerimentSelected?.numero_do_protocolo
-            }.pdf`}
+              }.pdf`}
           >
             {({ loading }) =>
               loading ? (

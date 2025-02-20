@@ -190,12 +190,12 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
 
             {data?.exigencias?.requisitos_de_estatutos_fundadores ===
               'Pendente' && (
-              <Text style={styles.text}>
-                [ ] No caso de dissolução ou extinção deverá conter no
-                documento: (liquidação, divisão de cotas de sócios, inexistência
-                de ativo e passivo, guarda dos livros etc.) (CNCGJ Art. 953)
-              </Text>
-            )}
+                <Text style={styles.text}>
+                  [ ] No caso de dissolução ou extinção deverá conter no
+                  documento: (liquidação, divisão de cotas de sócios, inexistência
+                  de ativo e passivo, guarda dos livros etc.) (CNCGJ Art. 953)
+                </Text>
+              )}
 
             {data?.exigencias?.dissolucao_ou_exticao === 'Pendente' && (
               <Text style={styles.text}>
@@ -239,20 +239,20 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
 
             {data?.exigencias?.requisitos_de_estatutos_fundadores ===
               'Pendente' && (
-              <Text style={styles.text}>
-                [ ] Apresentar os requisitos obrigatórios no Estatuto: relação
-                de documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no
-                Art. 120 / Lei 10.406 Art. 46)
-              </Text>
-            )}
+                <Text style={styles.text}>
+                  [ ] Apresentar os requisitos obrigatórios no Estatuto: relação
+                  de documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no
+                  Art. 120 / Lei 10.406 Art. 46)
+                </Text>
+              )}
 
             {data?.exigencias?.requisitos_criacao_de_estatuto ===
               'Pendente' && (
-              <Text style={styles.text}>
-                [ ] Apresentar os requisitos obrigatórios para criação do
-                estatuto; (Lei 10.406/2002 Art. 54)
-              </Text>
-            )}
+                <Text style={styles.text}>
+                  [ ] Apresentar os requisitos obrigatórios para criação do
+                  estatuto; (Lei 10.406/2002 Art. 54)
+                </Text>
+              )}
 
             {data?.exigencias?.retificacao_de_redacao === 'Pendente' && (
               <Text style={styles.text}>
@@ -263,6 +263,12 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
             {data?.exigencias?.campo_de_assinatura === 'Pendente' && (
               <Text style={styles.text}>
                 [ ] Preencher todos os campos de assinatura
+              </Text>
+            )}
+
+            {data?.exigencias?.informacao_divergente !== null && (
+              <Text style={styles.text}>
+                [ ] {data?.exigencias?.informacao_divergente}
               </Text>
             )}
           </View>

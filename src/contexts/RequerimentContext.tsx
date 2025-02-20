@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+
 import { format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import React, {
@@ -59,7 +59,11 @@ export interface ListRequerimentProps {
   documentacao_de_identificacao?: string
   campo_de_assinatura?: string
   retificacao_de_redacao?: string
-  informacao_divergente?: string
+  informacao_divergente?: {
+    info: string
+    state: string
+  }
+  requerimento_eletronico_rcpj?: string
   updatedAt?: string
   data_da_recepcao?: string
   requisitos_de_estatutos_fundadores?: string
@@ -83,6 +87,7 @@ export interface ListRequerimentProps {
   observations_requisitos_de_estatutos_fundadores?: string
   observations_campo_de_assinatura?: string
   observations_retificacao_de_redacao?: string
+  observations_requerimento_eletronico_rcpj?: string
 }
 
 export interface AssociationProps extends CreateAssociationProps {
@@ -169,9 +174,11 @@ export const RequerimentContextProvider = ({
       const { data } = response
       const numberProtocol = data[data.length - 1]?.numero_do_protocolo
 
-      data.length === 0
-        ? setNumberProtocolClient(20240001)
-        : setNumberProtocolClient(numberProtocol)
+      if (data.length === 0) {
+        setNumberProtocolClient(20250001)
+      } else {
+        setNumberProtocolClient(numberProtocol)
+      }
 
       setDataListAssociation(data)
     } catch (error) {
@@ -250,53 +257,56 @@ export const RequerimentContextProvider = ({
 
   const sendMail = useCallback(
     async (id: number) => {
-      const { registration, name } = userDataLogin
+      if (!userDataLogin) {
+        console.error("Usuário não está logado.");
+        return;
+      }
 
-      const filteredAssociation = dataListAssociation.find((list) => {
-        return list.id === id
-      })
+      const { registration, name } = userDataLogin;
+      const filteredAssociation = dataListAssociation.find((list) => list.id === id);
+
+      if (!filteredAssociation) {
+        console.error(`Nenhuma associação encontrada para o ID: ${id}`);
+        return;
+      }
+
+      if (!filteredAssociation.createdAt) {
+        console.error("Associação não possui data de criação.");
+        return;
+      }
 
       try {
-        if (filteredAssociation && filteredAssociation.createdAt) {
-          const date = format(
-            new Date(filteredAssociation.createdAt),
-            'dd/MM/yyyy',
-            {
-              locale: ptBR,
-            }
-          )
-          const listSendEmail = {
-            ...filteredAssociation,
-            data_da_recepcao: date,
-            itens_da_lista_pendetes: filteredAssociation.exigencias,
-            registration,
-            name,
-          }
+        const date = format(new Date(filteredAssociation.createdAt), 'dd/MM/yyyy', {
+          locale: ptBR,
+        });
 
-          filteredAssociation.exigencias === null
-            ? await toast.promise(
-              api.post('sendMailAssociation', listSendEmail),
-              {
-                pending: 'Verificando seus dados',
-                success: 'Email enviado com Sucesso!',
-                error: 'Ops! Error no Servidor',
-              }
-            )
-            : await toast.promise(
-              api.post('sendMailRequeriments', listSendEmail),
-              {
-                pending: 'Verificando seus dados',
-                success: 'Email enviado com Sucesso!',
-                error: 'Ops! Error no Servidor',
-              }
-            )
-        }
+        const listSendEmail = {
+          ...filteredAssociation,
+          data_da_recepcao: date,
+          itens_da_lista_pendetes: filteredAssociation.exigencias,
+          registration,
+          name,
+        };
+
+        const apiEndpoint = filteredAssociation.exigencias === null
+          ? 'sendMailAssociation'
+          : 'sendMailRequeriments';
+
+        await toast.promise(
+          api.post(apiEndpoint, listSendEmail),
+          {
+            pending: 'Verificando seus dados',
+            success: 'Email enviado com sucesso!',
+            error: 'Ops! Erro no servidor',
+          }
+        );
       } catch (error) {
-        console.log(error)
+        console.error("Erro ao enviar e-mail:", error);
+        toast.error("Ocorreu um erro ao enviar o e-mail.");
       }
     },
     [dataListAssociation, userDataLogin]
-  )
+  );
 
   const sendMailAssociation = useCallback(
     async (dataSendMail: SendMailAssociationProps) => {
@@ -511,6 +521,7 @@ export const RequerimentContextProvider = ({
         observations_requisitos_de_estatutos_fundadores,
         observations_campo_de_assinatura,
         observations_retificacao_de_redacao,
+        requerimento_eletronico_rcpj,
       } = data
 
       const filteredAssociation = dataListAssociation.find(
@@ -531,10 +542,14 @@ export const RequerimentContextProvider = ({
         ppe,
         preechimento_completo,
         reconhecimento_de_firma,
+        requerimento_eletronico_rcpj,
         requisitos_estatuto,
         requisitos_criacao_de_estatuto,
         requisitos_de_estatutos_fundadores,
-        informacao_divergente,
+        informacao_divergente: {
+          info: informacao_divergente?.info,
+          state: informacao_divergente?.state
+        },
         campo_de_assinatura,
         retificacao_de_redacao,
         exigencias_id: id,
@@ -570,8 +585,9 @@ export const RequerimentContextProvider = ({
 
         const { data } = newList
 
-        filteredAssociation &&
-          setRequestListDataPDF({ ...data, ...filteredAssociation })
+        if (filteredAssociation) {
+          setRequestListDataPDF({ ...data, ...filteredAssociation });
+        }
 
         setDataListRequeriment((prevState) => [...prevState, data])
 
@@ -584,7 +600,7 @@ export const RequerimentContextProvider = ({
             }
           )
 
-          filteredAssociation &&
+          if (filteredAssociation) {
             sendMailRequeriment({
               ...filteredAssociation,
               name,
@@ -592,6 +608,8 @@ export const RequerimentContextProvider = ({
               itens_da_lista_pendetes: data,
               data_da_recepcao: date,
             })
+          }
+
         }
       } catch (error) {
         console.log(error)
@@ -672,7 +690,7 @@ export const RequerimentContextProvider = ({
           })
           setDataListRequeriment([...dataListRequeriment, data])
 
-          filteredAssociation &&
+          if (filteredAssociation) {
             sendMailRequeriment({
               ...filteredAssociation,
               name,
@@ -680,6 +698,8 @@ export const RequerimentContextProvider = ({
               itens_da_lista_pendetes: data,
               data_da_recepcao: date,
             })
+          }
+
         } catch (error) {
           console.log(error)
         }
@@ -703,7 +723,7 @@ export const RequerimentContextProvider = ({
             locale: ptBR,
           })
           setDataListRequeriment([...dataListRequeriment, data])
-          filteredAssociation &&
+          if (filteredAssociation) {
             sendMailRequeriment({
               ...filteredAssociation,
               name,
@@ -711,6 +731,8 @@ export const RequerimentContextProvider = ({
               itens_da_lista_pendetes: data,
               data_da_recepcao: date,
             })
+          }
+
         } catch (error) {
           console.log(error)
         }

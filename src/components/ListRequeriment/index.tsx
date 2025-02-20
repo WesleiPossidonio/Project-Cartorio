@@ -78,112 +78,112 @@ export const TableRequeriment = () => {
         <TableBody>
           {dataInpuSearch.length > 0
             ? (rowsPerPage >= 0
-                ? filteredDataSearchRequeriment.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : filteredDataSearchRequeriment
-              ).map((data) => {
-                return (
-                  <TableRowContentList
-                    key={data.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableContentList>
-                      {data.numero_do_protocolo}
-                    </TableContentList>
-                    <Dialog.Root>
-                      <Dialog.Trigger asChild>
-                        <TableContentList>
-                          {data.nome_da_instituicao}
-                        </TableContentList>
-                      </Dialog.Trigger>
-                      <UpdateAssociationModal AssociationId={data.id} />
-                    </Dialog.Root>
-                    <TableContentList>
-                      {data.nome_do_representante}
-                    </TableContentList>
-                    <TableContentList>
-                      {data.updatedAt &&
-                        formatDistanceToNow(new Date(data.updatedAt), {
-                          addSuffix: true,
-                          locale: ptBR,
-                        })}
-                    </TableContentList>
-                    <TableContentList>
-                      {data.exigencias?.estado_do_requerimento}
-                    </TableContentList>
+              ? filteredDataSearchRequeriment.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
+              : filteredDataSearchRequeriment
+            ).map((data) => {
+              return (
+                <TableRowContentList
+                  key={data.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableContentList>
+                    {data.numero_do_protocolo}
+                  </TableContentList>
+                  <Dialog.Root>
+                    <Dialog.Trigger asChild>
+                      <TableContentList>
+                        {data.nome_da_instituicao}
+                      </TableContentList>
+                    </Dialog.Trigger>
+                    <UpdateAssociationModal AssociationId={data.id} />
+                  </Dialog.Root>
+                  <TableContentList>
+                    {data.nome_do_representante}
+                  </TableContentList>
+                  <TableContentList>
+                    {data.updatedAt &&
+                      formatDistanceToNow(new Date(data.updatedAt), {
+                        addSuffix: true,
+                        locale: ptBR,
+                      })}
+                  </TableContentList>
+                  <TableContentList>
+                    {data.exigencias?.estado_do_requerimento}
+                  </TableContentList>
 
-                    <Dialog.Root>
-                      <Dialog.Trigger asChild>
-                        <TableContentList>
-                          <ListChecks className="Icon" size={32} />
-                        </TableContentList>
-                      </Dialog.Trigger>
-                      <UpdateRequerimentModal AssociationId={data.id} />
-                    </Dialog.Root>
+                  <Dialog.Root>
+                    <Dialog.Trigger asChild>
+                      <TableContentList>
+                        <ListChecks className="Icon" size={32} />
+                      </TableContentList>
+                    </Dialog.Trigger>
+                    <UpdateRequerimentModal AssociationId={data.id} />
+                  </Dialog.Root>
 
-                    <TableContentList onClick={() => sendMail(data.id)}>
-                      <PaperPlaneTilt size={29} />
-                    </TableContentList>
-                  </TableRowContentList>
-                )
-              })
+                  <TableContentList onClick={() => sendMail(data.id)}>
+                    <PaperPlaneTilt size={29} />
+                  </TableContentList>
+                </TableRowContentList>
+              )
+            })
             : (rowsPerPage >= 0
-                ? pendingListRequeriment.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : pendingListRequeriment
-              ).map((data) => {
-                return (
-                  <TableRowContentList
-                    key={data.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableContentList>
-                      {data.numero_do_protocolo}
-                    </TableContentList>
+              ? pendingListRequeriment.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
+              : pendingListRequeriment
+            ).map((data) => {
+              return (
+                <TableRowContentList
+                  key={data.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableContentList>
+                    {data.numero_do_protocolo}
+                  </TableContentList>
 
-                    <Dialog.Root>
-                      <Dialog.Trigger asChild>
-                        <TableContentList>
-                          {data.nome_da_instituicao}
-                        </TableContentList>
-                      </Dialog.Trigger>
-                      <UpdateAssociationModal AssociationId={data.id} />
-                    </Dialog.Root>
+                  <Dialog.Root>
+                    <Dialog.Trigger asChild>
+                      <TableContentList>
+                        {data.nome_da_instituicao}
+                      </TableContentList>
+                    </Dialog.Trigger>
+                    <UpdateAssociationModal AssociationId={data.id} />
+                  </Dialog.Root>
 
-                    <TableContentList>
-                      {data.nome_do_representante}
-                    </TableContentList>
-                    <TableContentList>
-                      {data.updatedAt &&
-                        formatDistanceToNow(new Date(data.updatedAt), {
-                          addSuffix: true,
-                          locale: ptBR,
-                        })}
-                    </TableContentList>
+                  <TableContentList>
+                    {data.nome_do_representante}
+                  </TableContentList>
+                  <TableContentList>
+                    {data.updatedAt &&
+                      formatDistanceToNow(new Date(data.updatedAt), {
+                        addSuffix: true,
+                        locale: ptBR,
+                      })}
+                  </TableContentList>
 
-                    <TableContentList>
-                      {data.exigencias?.estado_do_requerimento}
-                    </TableContentList>
+                  <TableContentList>
+                    {data.exigencias?.estado_do_requerimento}
+                  </TableContentList>
 
-                    <Dialog.Root>
-                      <Dialog.Trigger asChild>
-                        <TableContentList>
-                          <ListChecks className="Icon" size={32} />
-                        </TableContentList>
-                      </Dialog.Trigger>
-                      <UpdateRequerimentModal AssociationId={data.id} />
-                    </Dialog.Root>
+                  <Dialog.Root>
+                    <Dialog.Trigger asChild>
+                      <TableContentList>
+                        <ListChecks className="Icon" size={32} />
+                      </TableContentList>
+                    </Dialog.Trigger>
+                    <UpdateRequerimentModal AssociationId={data.id} />
+                  </Dialog.Root>
 
-                    <TableContentList onClick={() => sendMail(data.id)}>
-                      <PaperPlaneTilt size={29} />
-                    </TableContentList>
-                  </TableRowContentList>
-                )
-              })}
+                  <TableContentList onClick={() => sendMail(data.id)}>
+                    <PaperPlaneTilt size={29} />
+                  </TableContentList>
+                </TableRowContentList>
+              )
+            })}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />

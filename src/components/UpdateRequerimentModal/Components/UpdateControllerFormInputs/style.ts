@@ -64,6 +64,7 @@ export const ContainerInput = styled.div`
   input:checked#requisitos_criacao_de_estatuto_true + label,
   input:checked#requisitos_de_estatutos_fundadores_true + label,
   input:checked#retificacao_de_redacao_true + label,
+  input:checked#requerimento_eletronico_rcpj_true + label,
   input:checked#campo_de_assinatura_true + label {
     background: ${({ theme }) => theme.colors['base-green']};
     color: ${({ theme }) => theme.colors['base-hover']};
@@ -130,4 +131,13 @@ export const ContainerIcons = styled.div`
   justify-content: center;
   gap: 0.5rem;
   z-index: 22px;
+`
+
+export const ContainerInformacaoDivergente = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.5rem;
 `

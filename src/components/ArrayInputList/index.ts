@@ -14,6 +14,12 @@ export const arrayInputList = [
     observation: 'observations_declaracao_sindical',
   },
   {
+    id: 'requerimento_eletronico_rcpj_true',
+    name: 'requerimento_eletronico_rcpj',
+    text: 'Requerimento eletrônico expedido pelo RCPJ/RJ (REDESIM) devidamente assinado pelo solicitante ou Representante Legal',
+    observation: 'observations_requerimento_eletronico_rcpj',
+  },
+  {
     id: 'assinatura_do_advogado_true',
     name: 'assinatura_do_advogado',
     text: 'Colher assinatura do advogado no ato apresentado para registro;',

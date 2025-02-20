@@ -57,6 +57,7 @@ export const ContainerCheckInput = styled.div`
   input:checked#requisitos_de_estatutos_fundadores_true + label,
   input:checked#retificacao_de_redacao_true + label,
   input:checked#requisitos_criacao_de_estatuto_true + label,
+  input:checked#requerimento_eletronico_rcpj_true + label,
   input:checked#campo_de_assinatura_true + label {
     background: #265a63;
     color: #fff;
@@ -223,4 +224,23 @@ export const TextAreaObservations = styled(TextArea)`
   height: 6rem;
   margin-left: 0.5rem;
   margin-top: 0.2rem;
+`
+export const DivergenteInfoContainer = styled.div`
+width: 100%;
+display: flex; 
+flex-direction: column;
+align-items: flex-start;
+justify-content: center;
+gap: 1rem;
+`
+
+export const SelectedStateInfoDivergente = styled.select`
+width: 13rem;
+padding: 0.5rem;
+border: 0;
+border-radius: 8px;
+
+font-weight: 600;
+
+background-color: #fff;
 `
