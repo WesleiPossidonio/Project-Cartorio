@@ -11,7 +11,7 @@ export const PrivateRoutes = () => {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await api.get('/check-auth', { withCredentials: true })
+        const response = await api.get('/check-auth', { withCredentials: true, })
 
         if (response.status === 200) {
           setIsAuthenticated(true) // Usuário autenticado
@@ -25,6 +25,8 @@ export const PrivateRoutes = () => {
     }
 
     checkAuthentication()
+
+    console.log(menuIsVisible)
   }, [])
 
   if (isAuthenticated === null) {
