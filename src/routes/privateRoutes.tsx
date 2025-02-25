@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-
 import { Header } from '../components/header'
 import { MenuMobile } from '../components/MenuMobile'
 import api from '../services/api'
 
 export const PrivateRoutes = () => {
-  const [menuIsVisible, setMenuIsVisible] = useState<boolean>(false)
+  const [menuIsVisible, setMenuIsVisible] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
-  // const user = localStorage.getItem('cartorio:userData1.0')
 
   useEffect(() => {
-    // Verifica se o usuário está autenticado via requisição ao servidor
     const checkAuthentication = async () => {
       try {
-        await api.get('/check-auth', { withCredentials: true })  // Requisição para verificar autenticação
-        setIsAuthenticated(true)  // Se passar, o usuário está autenticado
+        const response = await api.get('/check-auth', { withCredentials: true })
+
+        if (response.status === 200) {
+          setIsAuthenticated(true) // Usuário autenticado
+        } else {
+          setIsAuthenticated(false) // Não autenticado
+        }
       } catch (error) {
-        console.log(error)
-        setIsAuthenticated(false)  // Caso contrário, o usuário não está autenticado
+        console.error('Erro ao verificar autenticação:', error)
+        setIsAuthenticated(false)
       }
     }
 
@@ -26,19 +28,16 @@ export const PrivateRoutes = () => {
   }, [])
 
   if (isAuthenticated === null) {
-    return <div>Carregando ...</div>  // Ou um spinner enquanto a verificação de autenticação ocorre
+    return <div>Carregando...</div> // Mostra um loading enquanto verifica
   }
 
   return isAuthenticated ? (
     <>
       <Header setMenuIsVisible={setMenuIsVisible} />
-      <MenuMobile
-        menuIsVisible={menuIsVisible}
-        setMenuIsVisible={setMenuIsVisible}
-      />
+      <MenuMobile menuIsVisible={menuIsVisible} setMenuIsVisible={setMenuIsVisible} />
       <Outlet />
     </>
   ) : (
-    <Navigate to="login" />
+    <Navigate to="/login" replace /> // Corrigido para "/login"
   )
 }
