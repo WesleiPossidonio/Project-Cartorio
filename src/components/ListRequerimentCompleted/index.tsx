@@ -35,7 +35,8 @@ export const TableRequerimentCompleted = () => {
   const listCompleted = dataListAssociation.filter((data) => {
     return (
       data.exigencias !== null &&
-      data.exigencias?.estado_do_requerimento === 'Concluído'
+      data.exigencias?.estado_do_requerimento === 'Concluído' &&
+      data.status_association === 'Concluído'
     )
   })
 

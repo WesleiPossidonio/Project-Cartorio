@@ -22,6 +22,7 @@ export interface CreateAssociationProps {
   telefone_contato: string
   data_da_recepcao?: string
   sobre_exigencia: string
+  status_association?: string
 }
 
 export interface UpdateAssociationProps {
@@ -33,6 +34,7 @@ export interface UpdateAssociationProps {
   cnpj_cpf: string
   email_do_representante: string
   telefone_contato: string
+  status_association?: string
   createdAt?: string
 }
 

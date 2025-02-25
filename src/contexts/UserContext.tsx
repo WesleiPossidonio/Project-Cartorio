@@ -103,7 +103,9 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const LoadDataUser = async () => {
       const dataUserLogin = await localStorage.getItem('cartorio:userData1.0')
 
-      dataUserLogin && setUserDataLogin(JSON.parse(dataUserLogin))
+      if (dataUserLogin) {
+        setUserDataLogin(JSON.parse(dataUserLogin))
+      }
     }
 
     LoadDataUser()

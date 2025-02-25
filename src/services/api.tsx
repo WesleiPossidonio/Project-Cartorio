@@ -2,21 +2,22 @@ import axios, { InternalAxiosRequestConfig } from 'axios'
 
 const api = axios.create({
   baseURL: 'https://api-cartorio.vercel.app/',
+  withCredentials: true,
 })
 
 api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
-  const userData = localStorage.getItem('cartorio:userData1.0')
-  const confirmEmail = localStorage.getItem('cartorio:UserConfirmEmail')
-  const token = userData && JSON.parse(userData).token
-  const tokenUpdatePassword = confirmEmail && JSON.parse(confirmEmail).token
+  // const userData = localStorage.getItem('cartorio:userData1.0')
+  // const confirmEmail = localStorage.getItem('cartorio:UserConfirmEmail')
+  // const token = userData && JSON.parse(userData).token
+  // const tokenUpdatePassword = confirmEmail && JSON.parse(confirmEmail).token
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
+  // if (token) {
+  //   config.headers.Authorization = `Bearer ${token}`
+  // }
 
-  if (tokenUpdatePassword) {
-    config.headers.Authorization = `Bearer ${tokenUpdatePassword}`
-  }
+  // if (tokenUpdatePassword) {
+  //   config.headers.Authorization = `Bearer ${tokenUpdatePassword}`
+  // }
 
   return config
 })
