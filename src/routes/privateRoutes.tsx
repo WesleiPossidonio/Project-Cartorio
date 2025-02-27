@@ -25,8 +25,6 @@ export const PrivateRoutes = () => {
     }
 
     checkAuthentication()
-
-    console.log(menuIsVisible)
   }, [])
 
   if (isAuthenticated === null) {

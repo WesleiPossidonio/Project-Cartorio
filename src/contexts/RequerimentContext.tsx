@@ -451,6 +451,7 @@ export const RequerimentContextProvider = ({
         cnpj_cpf,
         nome_do_representante,
         telefone_contato,
+        status_association
       } = data
 
       const updatedData = {
@@ -459,6 +460,7 @@ export const RequerimentContextProvider = ({
         cnpj_cpf,
         nome_do_representante,
         telefone_contato,
+        status_association
       }
 
       try {
@@ -473,7 +475,11 @@ export const RequerimentContextProvider = ({
 
         const { data } = updateAsssotiationResponse
 
-        setDataListAssociation([...dataListAssociation, data])
+        setDataListAssociation(prevState => {
+          const updatedList = [...prevState];
+          updatedList[id - 1] = data;
+          return updatedList;
+        });
       } catch (error) {
         console.log(error)
       }

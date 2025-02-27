@@ -19,14 +19,6 @@ api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   //   config.headers.Authorization = `Bearer ${tokenUpdatePassword}`
   // }
 
-  // Recuperando o token do cookie
-  const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1]
-
-  // Se o token estiver presente, adiciona no cabeçalho da requisição
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-
   return config
 })
 

@@ -36,7 +36,7 @@ export const TableRequerimentCompleted = () => {
     return (
       data.exigencias !== null &&
       data.exigencias?.estado_do_requerimento === 'Concluído' &&
-      data.status_association === 'Concluído'
+      data.status_association === 'Concluído' || 'Concluido'
     )
   })
 

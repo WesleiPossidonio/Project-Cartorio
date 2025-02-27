@@ -22,8 +22,6 @@ import {
   TableContentList,
   TableRowContentList,
 } from './style'
-import { toast } from 'react-toastify'
-import api from '../../services/api'
 
 export const TableAssociation = () => {
   const {
@@ -31,6 +29,7 @@ export const TableAssociation = () => {
     filteredDataSearchAssociations,
     dataInpuSearch,
     sendMail,
+    handleUpdateAssociation
   } = useRequeriment()
 
   const [page, setPage] = useState(0)
@@ -41,10 +40,19 @@ export const TableAssociation = () => {
     const filteredPendingList = dataListAssociation.filter((list) => {
       return list.exigencias === null && list.status_association === 'Pendente'
     })
-
-    console.log(filteredPendingList)
     setPendingList(filteredPendingList)
   }, [dataListAssociation])
+
+  const handleUpdateStateAssociation = async (id: number) => {
+    const requirementSelected = dataListAssociation.find(list => list.id === id)
+
+    if (requirementSelected) {
+      const data = { ...requirementSelected, status_association: 'Concluido' }
+
+      console.log(data)
+      handleUpdateAssociation(data)
+    }
+  }
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -53,26 +61,6 @@ export const TableAssociation = () => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
-  }
-
-  const handleUpadeteStateAssosiation = async (id: number) => {
-    const requirementSelected = dataListAssociation.find(list => list.id === id)
-
-    if (requirementSelected) {
-      try {
-        const data = { status_association: 'Concluído' }
-        await toast.promise(
-          api.put(`association/${id}`, data),
-          {
-            pending: 'Verificando seus dados',
-            success: 'Exigencia Atualizada com Sucesso!',
-            error: 'Ops! Verifique os Dados Digitados',
-          }
-        )
-      } catch (error) {
-        console.log(error)
-      }
-    }
   }
 
   const emptyRows =
@@ -144,7 +132,7 @@ export const TableAssociation = () => {
                     <PaperPlaneTilt size={29} />
                   </TableContentList>
 
-                  <TableContentList onClick={() => handleUpadeteStateAssosiation(data.id)}>
+                  <TableContentList onClick={() => handleUpdateStateAssociation(data.id)}>
                     <Check size={29} />
                   </TableContentList>
                 </TableRowContentList>
@@ -199,7 +187,7 @@ export const TableAssociation = () => {
                     <PaperPlaneTilt size={29} />
                   </TableContentList>
 
-                  <TableContentList onClick={() => handleUpadeteStateAssosiation(data.id)}>
+                  <TableContentList onClick={() => handleUpdateStateAssociation(data.id)}>
                     <Check size={29} />
                   </TableContentList>
                 </TableRowContentList>
