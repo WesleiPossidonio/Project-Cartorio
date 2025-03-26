@@ -1,7 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://api-1oficio.vercel.app/',
+  baseURL: 'https://api-cartorio.vercel.app/',
   withCredentials: true,
 })
 
