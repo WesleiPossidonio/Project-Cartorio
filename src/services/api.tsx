@@ -1,7 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/',
+  baseURL: 'https://api-1oficio.vercel.app/',
   withCredentials: true,
 })
 
