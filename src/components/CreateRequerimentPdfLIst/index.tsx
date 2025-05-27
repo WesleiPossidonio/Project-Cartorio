@@ -125,6 +125,10 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
           <Text style={styles.textheader2}>
             Email do Representante: {data && data.email_do_representante}
           </Text>
+
+          <Text style={styles.textheader2}>
+            Telefone de Contato: {data && data.telefone_contato}
+          </Text>
         </View>
         return (
         <View style={styles.main}>
@@ -185,12 +189,12 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
 
           {data?.exigencias?.requisitos_de_estatutos_fundadores ===
             'Pendente' && (
-            <Text style={styles.text}>
-              [ ] No caso de dissolução ou extinção deverá conter no documento:
-              (liquidação, divisão de cotas de sócios, inexistência de ativo e
-              passivo, guarda dos livros etc.) (CNCGJ Art. 953)
-            </Text>
-          )}
+              <Text style={styles.text}>
+                [ ] No caso de dissolução ou extinção deverá conter no documento:
+                (liquidação, divisão de cotas de sócios, inexistência de ativo e
+                passivo, guarda dos livros etc.) (CNCGJ Art. 953)
+              </Text>
+            )}
 
           {data?.exigencias?.dissolucao_ou_exticao === 'Pendente' && (
             <Text style={styles.text}>
@@ -234,12 +238,12 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
 
           {data?.exigencias?.requisitos_de_estatutos_fundadores ===
             'Pendente' && (
-            <Text style={styles.text}>
-              [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
-              documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
-              / Lei 10.406 Art. 46)
-            </Text>
-          )}
+              <Text style={styles.text}>
+                [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
+                documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
+                / Lei 10.406 Art. 46)
+              </Text>
+            )}
 
           {data?.exigencias?.requisitos_criacao_de_estatuto === 'Pendente' && (
             <Text style={styles.text}>
@@ -274,7 +278,7 @@ export const CreateRequerimentPdfList = ({ data, dataUser }: DataProps) => {
         </View>
         <View style={styles.main}>
           <Text style={styles.titleInfo}>Informações importantes:</Text>
-          <Text style={styles.textInfo}> - Prazo para análize 15 dias</Text>
+          <Text style={styles.textInfo}> - Prazo para análise 15 dias</Text>
           <Text style={styles.textInfo}>
             - Cumprimento de exigencia 30 dias
           </Text>
