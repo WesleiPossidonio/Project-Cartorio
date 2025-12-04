@@ -23,7 +23,6 @@ type UpdateUserFormInputs = zod.infer<typeof updateUserFormSchema>
 
 export const UpdateUserModal = () => {
   const { handleUpdateUser, userDataLogin } = useUser()
-
   const {
     register,
     handleSubmit,
@@ -35,10 +34,9 @@ export const UpdateUserModal = () => {
 
   const handleCreateNewUser = async (data: UpdateUserFormInputs) => {
     const { email, name, password, registration } = data
-    const { id } = userDataLogin
+
 
     await handleUpdateUser({
-      id,
       email,
       name,
       password,

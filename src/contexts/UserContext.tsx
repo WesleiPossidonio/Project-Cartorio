@@ -4,6 +4,7 @@ import {
   useState,
   useCallback,
   useEffect,
+  SetStateAction,
 } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -18,7 +19,6 @@ interface UserLoginProps {
 
 export interface ResponseDataUser {
   admin: boolean
-  id: string
   registration: string
   name: string
   token: string
@@ -34,7 +34,6 @@ interface CreaterUser {
 }
 
 interface UpdateUser {
-  id: string
   name: string
   password: string
   registration: string
@@ -57,6 +56,7 @@ interface UserContextType {
   confirmMail: (data: ConfirmMailProps) => Promise<void>
   updatePassword: (data: UpdatePasswordProps) => Promise<void>
   handleUpdateUser: (data: UpdateUser) => Promise<void>
+  setUserDataLogin: React.Dispatch<SetStateAction<ResponseDataUser>>
   userDataLogin: ResponseDataUser
 }
 
@@ -86,12 +86,9 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
           }
         )
         const { data } = response
-        await localStorage.setItem('cartorio:userData1.0', JSON.stringify(data))
+        localStorage.setItem('cartorio:userData1.0', JSON.stringify(data))
         setUserDataLogin(data)
-
-        setTimeout(() => {
-          navigate('/')
-        }, 1000)
+        navigate('/')
       } catch (error) {
         console.log(error)
       }
@@ -150,7 +147,9 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   }, [])
 
   const handleUpdateUser = useCallback(async (data: UpdateUser) => {
-    const { email, id, name, password, registration } = data
+    const { email, name, password, registration } = data
+    const tokenUser = localStorage.getItem('cartorio:userData1.0')
+    const idUser = decodeToken(tokenUser)
 
     const updatedData = {
       email,
@@ -160,11 +159,13 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
 
     try {
-      await toast.promise(api.put(`users/${id}`, updatedData), {
+      await toast.promise(api.put(`users/${idUser?.id}`, updatedData), {
         pending: 'Verificando seus dados',
         success: 'Senha Atualizada com Sucesso!',
         error: 'Ops! Verifique os Dados Digitados',
       })
+      await localStorage.setItem('cartorio:userData1.0', JSON.stringify(data))
+      setUserDataLogin((state) => ({ ...state, email, name, password, registration }))
     } catch (error) {
       console.log(error)
     }
@@ -203,6 +204,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         confirmMail,
         updatePassword,
         handleUpdateUser,
+        setUserDataLogin,
       }}
     >
       {children}
