@@ -122,8 +122,6 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       observations_retificacao_de_redacao,
     } = data
 
-    console.log(informacao_divergente)
-
     const {
       declaracao_sindical,
       lista_e_edital,
