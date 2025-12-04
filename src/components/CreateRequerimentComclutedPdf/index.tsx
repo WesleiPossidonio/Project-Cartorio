@@ -282,7 +282,7 @@ export const CreateRequerimentConclutedPdf = ({
         </View>
         <View style={styles.main}>
           <Text style={styles.titleInfo}>Informações importantes:</Text>
-          <Text style={styles.textInfo}> - Prazo para análise 180 dias</Text>
+          <Text style={styles.textInfo}> - Prazo para análise 30 dias</Text>
           <Text style={styles.textInfo}>
             - A parte interessada terá 30 dias, a partir da exigência, para cumpri-la ou desistir do pedido sob pena de
             cancelamento da prenotação. O documento registrado ou em exigência, não retirado no prazo de 180 dias,
