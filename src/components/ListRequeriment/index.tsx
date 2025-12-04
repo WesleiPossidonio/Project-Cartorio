@@ -10,9 +10,8 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import { ListChecks, PaperPlaneTilt } from 'phosphor-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
-import { AssociationProps } from '../../contexts/RequerimentContext'
 import { useRequeriment } from '../../hooks/useRequeriment'
 import { UpdateAssociationModal } from '../UpdateAssociationModal'
 import { UpdateRequerimentModal } from '../UpdateRequerimentModal'
@@ -33,20 +32,10 @@ export const TableRequeriment = () => {
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [pendingListRequeriment, setPendingListRequeriment] = useState<
-    AssociationProps[]
-  >([])
 
-  useEffect(() => {
-    const pendingListRequeriment = dataListAssociation.filter((list) => {
-      return (
-        list.exigencias !== null &&
-        list.exigencias?.estado_do_requerimento === 'Pendente'
-      )
-    })
-
-    setPendingListRequeriment(pendingListRequeriment)
-  }, [dataListAssociation])
+  const pendingListRequeriment = dataListAssociation.filter((list) => {
+    return list.exigencias !== null && list.exigencias?.estado_do_requerimento === 'Pendente'
+  })
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -197,7 +186,7 @@ export const TableRequeriment = () => {
         </TableBody>
       </Table>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[5, 10, 15]}
         component="div"
         count={
           pendingListRequeriment

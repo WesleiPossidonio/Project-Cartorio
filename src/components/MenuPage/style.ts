@@ -55,7 +55,7 @@ export const ContainerButton = styled.button<MenuContainerProps>`
 
   &:hover {
     background: ${({ theme, selected }) =>
-      !selected && theme.colors['base-hover']};
+    !selected && theme.colors['base-hover']};
   }
 
   svg {

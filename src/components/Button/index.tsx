@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react'
-
 import { ButtonContainer } from './styled'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -9,6 +8,21 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   selected?: boolean
 }
 
-export const Button = ({ children, ...props }: ButtonProps) => {
-  return <ButtonContainer {...props}>{children}</ButtonContainer>
+export const Button = ({
+  children,
+  buttonSubmit,
+  selectButton,
+  selected,
+  ...rest
+}: ButtonProps) => {
+  return (
+    <ButtonContainer
+      $buttonSubmit={buttonSubmit}
+      $selectButton={selectButton}
+      $selected={selected}
+      {...rest}
+    >
+      {children}
+    </ButtonContainer>
+  )
 }

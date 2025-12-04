@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
 interface ButtonContainerProps {
-  buttonSubmit?: boolean
-  selectButton?: boolean
-  selected?: boolean
+  $buttonSubmit?: boolean
+  $selectButton?: boolean
+  $selected?: boolean
 }
 
 export const ButtonContainer = styled.button<ButtonContainerProps>`
@@ -12,20 +12,20 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
   justify-content: center;
   gap: 0.5rem;
 
-  width: ${({ buttonSubmit, selectButton }) =>
-    (buttonSubmit && '20rem') || (selectButton && '5.5rem')};
+  width: ${({ $buttonSubmit, $selectButton }) =>
+    ($buttonSubmit && '20rem') || ($selectButton && '5.5rem')};
   padding: 0.756rem;
   border: none;
   border-radius: 6px;
 
-  margin-top: ${({ buttonSubmit }) => buttonSubmit && '5rem'};
+  margin-top: ${({ $buttonSubmit }) => $buttonSubmit && '5rem'};
 
   cursor: pointer;
 
   font-size: 1rem;
   box-shadow: -5px 0px 31px 0px rgba(0, 0, 0, 0.1);
 
-  background: ${({ selected }) => (selected ? '#265a63' : '#2b3d63')};
+  background: ${({ $selected }) => ($selected ? '#265a63' : '#2b3d63')};
   color: #fff;
 
   font-weight: 600;

@@ -183,11 +183,14 @@ export const RequerimentContextProvider = ({
       }
 
       setDataListAssociation(data)
+
     } catch (error) {
       console.error('Failed to fetch association list:', error)
       setDataListAssociation([])
     }
   }, [])
+
+
 
   useEffect(() => {
     getAssociationList()
