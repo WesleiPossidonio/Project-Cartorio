@@ -68,7 +68,9 @@ export const HeaderContent = ({
       </SearchForm>
 
       <Selected value={formTable} onChange={handleFilteredTable}>
-        <option value="">Filtro</option>
+        <option value="" disabled>
+          Filtro
+        </option>
         <option value="Listas-Instancias">Exâme</option>
         <option value="Listas-Exigências">Exigências</option>
         <option value="Exigências-Concluídas">Exigências Concluídas</option>

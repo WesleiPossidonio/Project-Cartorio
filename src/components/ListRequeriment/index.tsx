@@ -197,7 +197,7 @@ export const TableRequeriment = () => {
         </TableBody>
       </Table>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 15]}
+        rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={
           pendingListRequeriment
