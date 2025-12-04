@@ -130,6 +130,9 @@ export const CreateRequerimentConclutedPdf = ({
           <Text style={styles.textheader2}>
             Email do Representante: {data && data.email_do_representante}
           </Text>
+          <Text style={styles.textheader2}>
+            Telefone de Contato: {data && data.telefone_contato}
+          </Text>
         </View>
 
         <View style={styles.main}>
@@ -190,12 +193,12 @@ export const CreateRequerimentConclutedPdf = ({
 
           {data?.exigencias?.requisitos_de_estatutos_fundadores ===
             'Recebido' && (
-            <Text style={styles.text}>
-              [ ] No caso de dissolução ou extinção deverá conter no documento:
-              (liquidação, divisão de cotas de sócios, inexistência de ativo e
-              passivo, guarda dos livros etc.) (CNCGJ Art. 953)
-            </Text>
-          )}
+              <Text style={styles.text}>
+                [ ] No caso de dissolução ou extinção deverá conter no documento:
+                (liquidação, divisão de cotas de sócios, inexistência de ativo e
+                passivo, guarda dos livros etc.) (CNCGJ Art. 953)
+              </Text>
+            )}
 
           {data?.exigencias?.dissolucao_ou_exticao === 'Recebido' && (
             <Text style={styles.text}>
@@ -239,12 +242,12 @@ export const CreateRequerimentConclutedPdf = ({
 
           {data?.exigencias?.requisitos_de_estatutos_fundadores ===
             'Recebido' && (
-            <Text style={styles.text}>
-              [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
-              documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
-              / Lei 10.406 Art. 46)
-            </Text>
-          )}
+              <Text style={styles.text}>
+                [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
+                documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
+                / Lei 10.406 Art. 46)
+              </Text>
+            )}
 
           {data?.exigencias?.requisitos_criacao_de_estatuto === 'Recebido' && (
             <Text style={styles.text}>
@@ -279,12 +282,11 @@ export const CreateRequerimentConclutedPdf = ({
         </View>
         <View style={styles.main}>
           <Text style={styles.titleInfo}>Informações importantes:</Text>
-          <Text style={styles.textInfo}> - Prazo para análize 15 dias</Text>
+          <Text style={styles.textInfo}> - Prazo para análise 180 dias</Text>
           <Text style={styles.textInfo}>
-            - Cumprimento de exigencia 30 dias
-          </Text>
-          <Text style={styles.textInfo}>
-            - Prazo de registro de 30 dias satifesta as exigencias necessárias.
+            - A parte interessada terá 30 dias, a partir da exigência, para cumpri-la ou desistir do pedido sob pena de
+            cancelamento da prenotação. O documento registrado ou em exigência, não retirado no prazo de 180 dias,
+            poderá ser eliminado pelo registrador. (CNCGJ/RJ Art. 922 § 2º)
           </Text>
         </View>
         <View style={styles.header}>
