@@ -34,7 +34,7 @@ export const TableRequeriment = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const pendingListRequeriment = dataListAssociation.filter((list) => {
-    return list.exigencias !== null && list.exigencias?.estado_do_requerimento === 'Pendente'
+    return list.exigencias !== null && list.exigencias?.estado_do_requerimento === 'Pendente' && list.status_association === 'Pendente'
   })
 
   const handleChangePage = (event: unknown, newPage: number) => {
