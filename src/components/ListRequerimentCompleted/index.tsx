@@ -9,8 +9,8 @@ import {
 import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-import { PaperPlaneTilt } from 'phosphor-react'
-import React, { ChangeEvent, useState } from 'react'
+import { ArrowBendLeftDown, PaperPlaneTilt } from 'phosphor-react'
+import { ChangeEvent, useState } from 'react'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
 import { RequerimentListCompletedModal } from '../RequerimentListCompletedModal'
@@ -20,24 +20,32 @@ import {
   TableContentList,
   TableRowContentList,
 } from './style'
+import { AssociationProps } from '../../contexts/RequerimentContext'
 
 export const TableRequerimentCompleted = () => {
   const {
     dataListAssociation,
-    dataInpuSearch,
-    filteredDataConclutedRequeriment,
+    dataIputSearchConcluted,
     sendMail,
+    handleUpdateStatus
   } = useRequeriment()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
+  console.log()
+
   const listCompleted = dataListAssociation.filter((data) => {
     return (
-      data.exigencias !== null &&
       data.exigencias?.estado_do_requerimento === 'Concluído' &&
-      data.status_association === 'Concluído' || 'Concluido'
+      data.status_association === 'Concluído' || data.status_association === 'Concluido'
     )
+  })
+
+  const filteredDataConclutedRequeriment = listCompleted.filter((data) => {
+    return data.nome_da_instituicao
+      .toLowerCase()
+      .includes(dataIputSearchConcluted.toLowerCase())
   })
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -47,6 +55,29 @@ export const TableRequerimentCompleted = () => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
+  }
+
+  const handleUpdateStatusForm = (data: AssociationProps) => {
+    console.log(data)
+    if (data.exigencias === null) {
+      const listData = {
+        id: data.id,
+        status: 'Pendente',
+        updatedForm: 'Association'
+      }
+      handleUpdateStatus(listData)
+      return
+    }
+
+    if (data.exigencias?.id) {
+      const listData = {
+        id: data.exigencias?.id,
+        status: 'Pendente',
+        updatedForm: 'Requeriment',
+        exigencias_id: data.id
+      }
+      handleUpdateStatus(listData)
+    }
   }
 
   const emptyRows =
@@ -63,10 +94,11 @@ export const TableRequerimentCompleted = () => {
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
             <TableHeader2>{''}</TableHeader2>
+            <TableHeader2>{''}</TableHeader2>
           </TableRow>
         </TableHead>
         <TableBody>
-          {dataInpuSearch.length > 0
+          {dataIputSearchConcluted.length > 0
             ? (rowsPerPage > 0
               ? filteredDataConclutedRequeriment.slice(
                 page * rowsPerPage,
@@ -106,6 +138,10 @@ export const TableRequerimentCompleted = () => {
 
                   <TableContentList onClick={() => sendMail(data.id)}>
                     <PaperPlaneTilt size={29} />
+                  </TableContentList>
+
+                  <TableContentList onClick={() => handleUpdateStatusForm(data)}>
+                    <ArrowBendLeftDown size={29} />
                   </TableContentList>
                 </TableRowContentList>
               )
@@ -150,6 +186,10 @@ export const TableRequerimentCompleted = () => {
                   <TableContentList onClick={() => sendMail(data.id)}>
                     <PaperPlaneTilt size={29} />
                   </TableContentList>
+
+                  <TableContentList onClick={() => handleUpdateStatusForm(data)}>
+                    <ArrowBendLeftDown size={29} />
+                  </TableContentList>
                 </TableRowContentList>
               )
             })}
@@ -178,6 +218,8 @@ export const TableRequerimentCompleted = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        showFirstButton
+        showLastButton
       />
     </ListRequerimentTable>
   )

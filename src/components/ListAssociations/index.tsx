@@ -10,9 +10,8 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import { Check, FilePlus, PaperPlaneTilt } from 'phosphor-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
-import { UpdateAssociationProps } from '../../contexts/RequerimentContext'
 import { useRequeriment } from '../../hooks/useRequeriment'
 import { CreateRequerimentModal } from '../CreateRequerimentModal'
 import { UpdateAssociationModal } from '../UpdateAssociationModal'
@@ -26,30 +25,30 @@ import {
 export const TableAssociation = () => {
   const {
     dataListAssociation,
-    filteredDataSearchAssociations,
-    dataInpuSearch,
+    dataInpuSearchExame,
     sendMail,
     handleUpdateAssociation
   } = useRequeriment()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [pendingList, setPendingList] = useState<UpdateAssociationProps[]>([])
 
-  useEffect(() => {
-    const filteredPendingList = dataListAssociation.filter((list) => {
-      return list.exigencias === null && list.status_association === 'Pendente'
-    })
-    setPendingList(filteredPendingList)
-  }, [dataListAssociation])
+  const filteredPendingList = dataListAssociation.filter((list) => {
+    return list.exigencias === null && list.status_association === 'Pendente'
+  })
+
+  const filteredDataSearchAssociations = filteredPendingList.filter((data) => {
+    return data.nome_da_instituicao
+      .toLowerCase()
+      .includes(dataInpuSearchExame.toLowerCase())
+  })
+
 
   const handleUpdateStateAssociation = async (id: number) => {
     const requirementSelected = dataListAssociation.find(list => list.id === id)
 
     if (requirementSelected) {
-      const data = { ...requirementSelected, status_association: 'Concluido' }
-
-      console.log(data)
+      const data = { ...requirementSelected, status_association: 'Concluído' }
       handleUpdateAssociation(data)
     }
   }
@@ -64,7 +63,7 @@ export const TableAssociation = () => {
   }
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, pendingList.length - page * rowsPerPage)
+    rowsPerPage - Math.min(rowsPerPage, filteredPendingList.length - page * rowsPerPage)
 
   return (
     <ListRequerimentTable>
@@ -81,7 +80,7 @@ export const TableAssociation = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {dataInpuSearch.length > 0
+          {dataInpuSearchExame.length > 0
             ? (rowsPerPage > 0
               ? filteredDataSearchAssociations.slice(
                 page * rowsPerPage,
@@ -139,11 +138,11 @@ export const TableAssociation = () => {
               )
             })
             : (rowsPerPage > 0
-              ? pendingList.slice(
+              ? filteredPendingList.slice(
                 page * rowsPerPage,
                 page * rowsPerPage + rowsPerPage
               )
-              : pendingList
+              : filteredPendingList
             ).map((data) => {
               return (
                 <TableRowContentList
@@ -209,8 +208,8 @@ export const TableAssociation = () => {
         rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={
-          pendingList
-            ? pendingList.length
+          filteredPendingList
+            ? filteredPendingList.length
             : filteredDataSearchAssociations.length
         }
         rowsPerPage={rowsPerPage}
@@ -218,6 +217,8 @@ export const TableAssociation = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        showFirstButton
+        showLastButton
       />
     </ListRequerimentTable>
   )

@@ -25,8 +25,7 @@ import {
 export const TableRequeriment = () => {
   const {
     dataListAssociation,
-    dataInpuSearch,
-    filteredDataSearchRequeriment,
+    dataInputSearchAssociation,
     sendMail,
   } = useRequeriment()
 
@@ -35,6 +34,12 @@ export const TableRequeriment = () => {
 
   const pendingListRequeriment = dataListAssociation.filter((list) => {
     return list.exigencias !== null && list.exigencias?.estado_do_requerimento === 'Pendente' && list.status_association === 'Pendente'
+  })
+
+  const filteredDataSearchRequeriment = pendingListRequeriment.filter((data) => {
+    return data.nome_da_instituicao
+      .toLowerCase()
+      .includes(dataInputSearchAssociation.toLowerCase())
   })
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -65,7 +70,7 @@ export const TableRequeriment = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {dataInpuSearch.length > 0
+          {dataInputSearchAssociation.length > 0
             ? (rowsPerPage >= 0
               ? filteredDataSearchRequeriment.slice(
                 page * rowsPerPage,
@@ -198,6 +203,8 @@ export const TableRequeriment = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        showFirstButton
+        showLastButton
       />
     </ListRequerimentTable>
   )

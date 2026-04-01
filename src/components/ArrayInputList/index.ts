@@ -7,13 +7,6 @@ export const arrayInputList = [
     observation: 'observations_lista_e_edital',
   },
   {
-    id: 'declaracao_sindical_true',
-    name: 'declaracao_sindical',
-    text: 'Apresentar declaração emitida pelo Ministério do Trabalho referente a unicidade sindical e da base territorial',
-    spanText: '(CNCGJ Art. 935 § 4º)',
-    observation: 'observations_declaracao_sindical',
-  },
-  {
     id: 'requerimento_eletronico_rcpj_true',
     name: 'requerimento_eletronico_rcpj',
     text: 'Requerimento eletrônico expedido pelo RCPJ/RJ (REDESIM) devidamente assinado pelo solicitante ou Representante Legal',
@@ -27,6 +20,13 @@ export const arrayInputList = [
     observation: 'observations_assinatura_do_advogado',
   },
   {
+    id: 'documento_inelegivel_true',
+    name: 'documento_inelegivel',
+    text: 'Documento Inelegível. Solicitar documento legível para o registro do ato;',
+    spanText: '(CNCGJ Art. 932 § 1º)',
+    observation: 'observations_documento_inelegivel',
+  },
+  {
     id: 'declaracao_criminal_true',
     name: 'declaracao_criminal',
     text: 'Apresentar declaração de desimpedimento e/ou certidão criminal;',
@@ -36,7 +36,7 @@ export const arrayInputList = [
   {
     id: 'requisitos_estatuto_true',
     name: 'requisitos_estatuto',
-    text: 'Apresentar cópia do estatuto registrado no Distrito Federal',
+    text: 'Apresentar cópia do último estatuto registrado no Distrito Federal',
     spanText: '(Obs:para diretórios de partidos políticos); (CNCGJ Art. 945)',
     observation: 'observations_requisitos_estatuto',
   },
@@ -80,7 +80,7 @@ export const arrayInputList = [
   {
     id: 'reconhecimento_de_firma_true',
     name: 'reconhecimento_de_firma',
-    text: 'Apresentar reconhecimento de firme no requerimento do DBE',
+    text: 'Apresentar reconhecimento de firma no requerimento do DBE',
     observation: 'observations_reconhecimento_de_firma',
   },
   {

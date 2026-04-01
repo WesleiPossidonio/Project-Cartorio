@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 
 export const ListRequerimentTable = styled(TableContainer)`
   height: max-content;
-  max-height: 450px;
+  max-height: 550px;
   margin-top: 2rem;
   padding: 0 1rem;
   background: #fff;

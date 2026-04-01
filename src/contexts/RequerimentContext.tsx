@@ -45,7 +45,7 @@ interface SendMailAssociationProps extends CreateAssociationProps {
 
 export interface ListRequerimentProps {
   id?: number
-  declaracao_sindical?: string
+  documento_inelegivel?: string
   lista_e_edital?: string
   assinatura_do_advogado?: string
   declaracao_criminal?: string
@@ -75,7 +75,7 @@ export interface ListRequerimentProps {
   observations_lista_e_edital?: string
   observations_assinatura_do_advogado?: string
   observations_declaracao_criminal?: string
-  observations_declaracao_sindical?: string
+  observations_documento_inelegivel?: string
   observations_declaracao_de_desimpedimento?: string
   observations_livro_rasao?: string
   observations_requisitos_estatuto?: string
@@ -114,25 +114,31 @@ interface filteredRequerimentProps {
   formTable: string
 }
 
+interface UpdatestatusProps {
+  id: number
+  status: string
+  updatedForm: string
+  exigencias_id?: number
+}
+
 interface RequerimentContextType {
   dataListRequeriment: ListRequerimentProps[]
-  filteredDataSearchRequeriment: AssociationProps[]
-  filteredDataConclutedRequeriment: AssociationProps[]
-  filteredDataSearchAssociations: AssociationProps[]
-  dataInpuSearch: string
+  dataInpuSearchExame: string
   selectAListRequeriment: ListRequerimentProps[]
   requestListDataPDF: AssociationProps | undefined
   dataListAssociation: AssociationProps[]
+  dataInputSearchAssociation: string
+  dataIputSearchConcluted: string
+  searchFunction: (data: filteredRequerimentProps) => void
   setSelectAListRequeriment: (curatedList: ListRequerimentProps[]) => void
   setDataListRequeriment: (data: ListRequerimentProps[]) => void
   CreateRequeriment: (data: ListRequerimentProps) => Promise<void>
   handleCreateAssociation: (data: CreateAssociationProps) => Promise<void>
-  filteredRequeriment: (data: filteredRequerimentProps) => void
-  filteredRequerimentConcluted: (query: string) => void
   updateRequeriment: (data: UpdateListProps) => Promise<void>
   sendMail: (id: number) => Promise<void>
   handleUpdateAssociation: (data: UpdateAssociationProps) => Promise<void>
   getAssociationList: () => Promise<void>
+  handleUpdateStatus: (data: UpdatestatusProps) => Promise<void>
 }
 
 interface RequerimentProviderProps {
@@ -150,18 +156,12 @@ export const RequerimentContextProvider = ({
   const [dataListAssociation, setDataListAssociation] = useState<
     AssociationProps[]
   >([])
-
   const [requestListDataPDF, setRequestListDataPDF] =
     useState<AssociationProps>()
-  const [dataInpuSearch, setDataInpuSearch] = useState('')
-  const [filteredDataSearchRequeriment, setFilteredDataSearchRequeriment] =
-    useState<AssociationProps[]>(dataListAssociation)
-  const [filteredDataSearchAssociations, setFilteredDataSearchAssociations] =
-    useState<AssociationProps[]>(dataListAssociation)
-  const [
-    filteredDataConclutedRequeriment,
-    setFilteredConclutedDataRequeriment,
-  ] = useState<AssociationProps[]>(dataListAssociation)
+  const [dataInpuSearchExame, setDataInpuSearchExame] = useState('')
+  const [dataInputSearchAssociation, setDataInputSearchAssociation] = useState('')
+  const [dataIputSearchConcluted, setDataInputSearchConcluted] = useState('')
+
   const [selectAListRequeriment, setSelectAListRequeriment] = useState<
     ListRequerimentProps[]
   >([])
@@ -190,74 +190,27 @@ export const RequerimentContextProvider = ({
     }
   }, [])
 
-
-
   useEffect(() => {
     getAssociationList()
   }, [getAssociationList, dataListRequeriment, userDataLogin])
 
-  const filteredRequeriment = ({
-    formTable,
-    query,
-  }: filteredRequerimentProps) => {
-    const filterData = (dataList: any[], query: string) => {
-      return dataList.filter((data) => {
-        return (
-          (data.nome_da_instituicao &&
-            data.nome_da_instituicao
-              .toLowerCase()
-              .includes(query.toLowerCase())) ||
-          (data.numero_do_protocolo &&
-            data.numero_do_protocolo.toString().includes(query))
-        )
-      })
+
+  const searchFunction = (data: filteredRequerimentProps) => {
+    const { query, formTable } = data
+
+    switch (formTable) {
+      case 'Listas-Instancias':
+        setDataInpuSearchExame(query)
+        break
+      case 'Listas-Exigências':
+        setDataInputSearchAssociation(query)
+        break
+      case 'Exigências-Concluídas':
+        setDataInputSearchConcluted(query)
+        break
+      default:
+        break
     }
-
-    if (formTable === 'Listas-Instancias') {
-      const dropDownListAssosiations = dataListAssociation.filter(
-        (list) => list.exigencias === null
-      )
-      const filteredAssociations = filterData(dropDownListAssosiations, query)
-      setFilteredDataSearchAssociations(filteredAssociations)
-    } else if (formTable === 'Listas-Exigências') {
-      const dropDownList = dataListAssociation.filter(
-        (list) =>
-          list.exigencias !== null &&
-          list.exigencias?.estado_do_requerimento === 'Pendente'
-      )
-      const filteredRequeriment = filterData(dropDownList, query)
-      setFilteredDataSearchRequeriment(filteredRequeriment)
-    } else if (formTable === 'Exigências-Concluídas') {
-      const dropDownList = dataListAssociation.filter(
-        (list) =>
-          list.exigencias !== null &&
-          list.exigencias?.estado_do_requerimento === 'Concluído'
-      )
-      const filteredRequerimentCompleted = filterData(dropDownList, query)
-      setFilteredConclutedDataRequeriment(filteredRequerimentCompleted)
-    }
-
-    setDataInpuSearch(query)
-  }
-
-  const filteredRequerimentConcluted = (query: string) => {
-    const listCompleted = dataListAssociation.filter((list) => {
-      return list.exigencias?.estado_do_requerimento === 'Concluído'
-    })
-
-    const filteredRequeriment = listCompleted.filter((data) => {
-      return (
-        (data.nome_da_instituicao &&
-          data.nome_da_instituicao
-            .toLowerCase()
-            .includes(query.toLowerCase())) ||
-        (data.numero_do_protocolo &&
-          data.numero_do_protocolo.toString().includes(query))
-      )
-    })
-
-    setFilteredConclutedDataRequeriment(filteredRequeriment)
-    setDataInpuSearch(query)
   }
 
   const sendMail = useCallback(
@@ -490,6 +443,52 @@ export const RequerimentContextProvider = ({
     [dataListAssociation]
   )
 
+  const handleUpdateStatus = useCallback(async (data: UpdatestatusProps) => {
+    const { id, status, updatedForm, exigencias_id } = data
+
+    if (updatedForm === 'Association') {
+
+      const AssociationStatus = {
+        status_association: status
+      }
+
+      try {
+        await toast.promise(
+          api.put(`association/${id}`, AssociationStatus),
+          {
+            pending: 'Verificando seus dados',
+            success: 'Status da Exigência Atualizada com Sucesso!',
+            error: 'Ops! Verifique os Dados Digitados',
+          }
+        )
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const RequerimentStatus = {
+      exigencias_id,
+      estado_do_requerimento: status
+    }
+
+    try {
+      await toast.promise(
+        api.put(
+          `updateRequeriment/${id}`,
+          RequerimentStatus
+        ),
+        {
+          pending: 'Verificando seus dados',
+          success: 'Exigencia Atualizada com Sucesso!',
+          error: 'Ops! Verifique os Dados Digitados',
+        }
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
   const CreateRequeriment = useCallback(
     async (data: ListRequerimentProps) => {
       const { name, registration } = userDataLogin
@@ -498,7 +497,7 @@ export const RequerimentContextProvider = ({
         assinatura_do_advogado,
         declaracao_criminal,
         declaracao_de_desimpedimento,
-        declaracao_sindical,
+        documento_inelegivel,
         dissolucao_ou_exticao,
         documentacao_de_identificacao,
         fundacoes,
@@ -515,7 +514,7 @@ export const RequerimentContextProvider = ({
         campo_de_assinatura,
         retificacao_de_redacao,
         estado_do_requerimento,
-        observations_declaracao_sindical,
+        observations_documento_inelegivel,
         observations_lista_e_edital,
         observations_assinatura_do_advogado,
         observations_declaracao_criminal,
@@ -543,7 +542,7 @@ export const RequerimentContextProvider = ({
         assinatura_do_advogado,
         declaracao_criminal,
         declaracao_de_desimpedimento,
-        declaracao_sindical,
+        documento_inelegivel,
         dissolucao_ou_exticao,
         documentacao_de_identificacao,
         fundacoes,
@@ -565,7 +564,7 @@ export const RequerimentContextProvider = ({
         retificacao_de_redacao,
         exigencias_id: id,
         estado_do_requerimento,
-        observations_declaracao_sindical,
+        observations_documento_inelegivel,
         observations_lista_e_edital,
         observations_assinatura_do_advogado,
         observations_declaracao_criminal,
@@ -646,7 +645,7 @@ export const RequerimentContextProvider = ({
         data_da_recepcao: data.data_da_recepcao,
         declaracao_criminal: data.declaracao_criminal,
         declaracao_de_desimpedimento: data.declaracao_de_desimpedimento,
-        declaracao_sindical: data.declaracao_sindical,
+        declaracao_sindical: data.documento_inelegivel,
         dissolucao_ou_exticao: data.dissolucao_ou_exticao,
         documentacao_de_identificacao: data.documentacao_de_identificacao,
         estado_do_requerimento: data.estado_do_requerimento,
@@ -761,23 +760,22 @@ export const RequerimentContextProvider = ({
     <RequerimentContext.Provider
       value={{
         dataListRequeriment,
-        filteredDataSearchRequeriment,
         selectAListRequeriment,
-        dataInpuSearch,
+        dataInpuSearchExame,
         requestListDataPDF,
-        filteredDataConclutedRequeriment,
+        dataListAssociation,
+        dataInputSearchAssociation,
+        dataIputSearchConcluted,
         CreateRequeriment,
-        filteredRequeriment,
         setSelectAListRequeriment,
         updateRequeriment,
         sendMail,
-        filteredRequerimentConcluted,
         setDataListRequeriment,
         handleCreateAssociation,
-        dataListAssociation,
+        handleUpdateStatus,
+        searchFunction,
         handleUpdateAssociation,
         getAssociationList,
-        filteredDataSearchAssociations,
       }}
     >
       {children}

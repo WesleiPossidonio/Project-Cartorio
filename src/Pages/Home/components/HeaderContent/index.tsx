@@ -24,13 +24,12 @@ export const HeaderContent = ({
   formTable,
   setFormTable,
 }: HeaderContentProps) => {
-  const { filteredRequeriment } = useRequeriment()
+  const { searchFunction } = useRequeriment()
 
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
-    reset,
   } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchFormSchema),
   })
@@ -45,8 +44,8 @@ export const HeaderContent = ({
       formTable,
     }
 
-    filteredRequeriment(filteredList)
-    reset()
+    searchFunction(filteredList)
+    if (!data.query) return
   }
 
   return (
@@ -71,9 +70,18 @@ export const HeaderContent = ({
         <option value="" disabled>
           Filtro
         </option>
-        <option value="Listas-Instancias">Exâme</option>
-        <option value="Listas-Exigências">Exigências</option>
-        <option value="Exigências-Concluídas">Exigências Concluídas</option>
+
+        <option value="Listas-Instancias">
+          Exame
+        </option>
+
+        <option value="Listas-Exigências">
+          Exigências
+        </option>
+
+        <option value="Exigências-Concluídas">
+          Exigências Concluídas
+        </option>
       </Selected>
     </HeaderHome>
   )
