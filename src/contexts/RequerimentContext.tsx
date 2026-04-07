@@ -12,6 +12,7 @@ import { toast } from 'react-toastify'
 
 import { useUser } from '../hooks/useUser'
 import api from '../services/api'
+import axios from 'axios'
 
 export interface CreateAssociationProps {
   nome_da_instituicao: string
@@ -96,7 +97,7 @@ export interface AssociationProps extends CreateAssociationProps {
   id: number
   updatedAt?: string
   createdAt?: string
-  exigencias?: ListRequerimentProps
+  exigencia?: ListRequerimentProps
 }
 
 interface SendMaiRequerimentProps extends CreateAssociationProps {
@@ -194,7 +195,6 @@ export const RequerimentContextProvider = ({
     getAssociationList()
   }, [getAssociationList, dataListRequeriment, userDataLogin])
 
-
   const searchFunction = (data: filteredRequerimentProps) => {
     const { query, formTable } = data
 
@@ -241,14 +241,16 @@ export const RequerimentContextProvider = ({
         const listSendEmail = {
           ...filteredAssociation,
           data_da_recepcao: date,
-          itens_da_lista_pendetes: filteredAssociation.exigencias,
+          itens_da_lista_pendetes: filteredAssociation.exigencia,
           registration,
           name,
         };
 
-        const apiEndpoint = filteredAssociation.exigencias === null
+        const apiEndpoint = filteredAssociation.exigencia === null
           ? 'sendMailAssociation'
           : 'sendMailRequeriments';
+
+        await axios.post('https://n8n.tideontech.com.br/webhook-test/7e8b3b42-a296-47e0-959a-c8b3055d26f3', listSendEmail)
 
         await toast.promise(
           api.post(apiEndpoint, listSendEmail),

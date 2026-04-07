@@ -73,8 +73,8 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
 
 
     setDataRequerimentSelected(
-      filteredRequerimentSelected?.exigencias &&
-      filteredRequerimentSelected.exigencias
+      filteredRequerimentSelected?.exigencia &&
+      filteredRequerimentSelected.exigencia
     )
   }, [AssociationId, dataListAssociation])
 

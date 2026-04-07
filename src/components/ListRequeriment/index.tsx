@@ -9,7 +9,7 @@ import {
 import * as Dialog from '@radix-ui/react-dialog'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-import { ListChecks, PaperPlaneTilt } from 'phosphor-react'
+import { ListChecks, PaperPlaneTilt, Printer } from 'phosphor-react'
 import { ChangeEvent, useState } from 'react'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
@@ -21,6 +21,10 @@ import {
   TableContentList,
   TableRowContentList,
 } from './style'
+import { CreatePdfList } from '../CreatePdfLIst'
+import { useUser } from '../../hooks/useUser'
+import { AssociationProps } from '../../contexts/RequerimentContext'
+import { pdf } from '@react-pdf/renderer'
 
 export const TableRequeriment = () => {
   const {
@@ -29,11 +33,13 @@ export const TableRequeriment = () => {
     sendMail,
   } = useRequeriment()
 
+  const { userDataLogin } = useUser()
+
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const pendingListRequeriment = dataListAssociation.filter((list) => {
-    return list.exigencias !== null && list.exigencias?.estado_do_requerimento === 'Pendente' && list.status_association === 'Pendente'
+    return list.exigencia !== null && list.exigencia?.estado_do_requerimento === 'Pendente' && list.status_association === 'Pendente'
   })
 
   const filteredDataSearchRequeriment = pendingListRequeriment.filter((data) => {
@@ -51,6 +57,24 @@ export const TableRequeriment = () => {
     setPage(0)
   }
 
+  const printRequeriment = async (data: AssociationProps) => {
+    const dataList = {
+      data: data,
+      dataUser: userDataLogin,
+    }
+
+    const blob = await pdf(
+      <CreatePdfList data={dataList.data} dataUser={dataList.dataUser} />
+    ).toBlob()
+
+    const url = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'requerimento.pdf'
+    link.click()
+  }
+
   const emptyRows =
     rowsPerPage -
     Math.min(rowsPerPage, pendingListRequeriment.length - page * rowsPerPage)
@@ -65,6 +89,7 @@ export const TableRequeriment = () => {
             <TableHeader2>Nome do Representante</TableHeader2>
             <TableHeader2>Data do Requerimento</TableHeader2>
             <TableHeader2>Estado do Requerimento</TableHeader2>
+            <TableHeader2>{''}</TableHeader2>
             <TableHeader2>{''}</TableHeader2>
             <TableHeader2>{''}</TableHeader2>
           </TableRow>
@@ -105,7 +130,11 @@ export const TableRequeriment = () => {
                       })}
                   </TableContentList>
                   <TableContentList>
-                    {data.exigencias?.estado_do_requerimento}
+                    {data.exigencia?.estado_do_requerimento}
+                  </TableContentList>
+
+                  <TableContentList onClick={() => printRequeriment(data)}>
+                    <Printer size={32} />
                   </TableContentList>
 
                   <Dialog.Root>
@@ -120,6 +149,7 @@ export const TableRequeriment = () => {
                   <TableContentList onClick={() => sendMail(data.id)}>
                     <PaperPlaneTilt size={29} />
                   </TableContentList>
+
                 </TableRowContentList>
               )
             })
@@ -160,7 +190,11 @@ export const TableRequeriment = () => {
                   </TableContentList>
 
                   <TableContentList>
-                    {data.exigencias?.estado_do_requerimento}
+                    {data.exigencia?.estado_do_requerimento}
+                  </TableContentList>
+
+                  <TableContentList onClick={() => printRequeriment(data)}>
+                    <Printer size={32} />
                   </TableContentList>
 
                   <Dialog.Root>

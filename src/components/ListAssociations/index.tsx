@@ -34,8 +34,10 @@ export const TableAssociation = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const filteredPendingList = dataListAssociation.filter((list) => {
-    return list.exigencias === null && list.status_association === 'Pendente'
+    return list.exigencia === null && list.status_association === 'Pendente'
   })
+
+  console.log(dataListAssociation)
 
   const filteredDataSearchAssociations = filteredPendingList.filter((data) => {
     return data.nome_da_instituicao

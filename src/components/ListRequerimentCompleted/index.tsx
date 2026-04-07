@@ -37,8 +37,8 @@ export const TableRequerimentCompleted = () => {
 
   const listCompleted = dataListAssociation.filter((data) => {
     return (
-      data.exigencias?.estado_do_requerimento === 'Concluído' &&
-      data.status_association === 'Concluído' || data.status_association === 'Concluido'
+      data.exigencia?.estado_do_requerimento === 'Concluído' ||
+      data.status_association === 'Concluído' && data.exigencia?.estado_do_requerimento === 'Concluído'
     )
   })
 
@@ -59,7 +59,7 @@ export const TableRequerimentCompleted = () => {
 
   const handleUpdateStatusForm = (data: AssociationProps) => {
     console.log(data)
-    if (data.exigencias === null) {
+    if (data.exigencia === null) {
       const listData = {
         id: data.id,
         status: 'Pendente',
@@ -69,9 +69,9 @@ export const TableRequerimentCompleted = () => {
       return
     }
 
-    if (data.exigencias?.id) {
+    if (data.exigencia?.id) {
       const listData = {
-        id: data.exigencias?.id,
+        id: data.exigencia?.id,
         status: 'Pendente',
         updatedForm: 'Requeriment',
         exigencias_id: data.id

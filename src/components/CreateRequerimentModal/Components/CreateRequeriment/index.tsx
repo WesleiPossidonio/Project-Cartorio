@@ -12,7 +12,7 @@ import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
 import { ButtonHome, SectionCreateRequirement } from './styled'
 
 export const CreateRequerimentFormSchema = zod.object({
-  declaracao_sindical: zod.boolean().optional(),
+  documento_inelegivel: zod.boolean().optional(),
   lista_e_edital: zod.boolean().optional().optional(),
   assinatura_do_advogado: zod.boolean().optional(),
   declaracao_criminal: zod.boolean().optional(),
@@ -33,7 +33,7 @@ export const CreateRequerimentFormSchema = zod.object({
   retificacao_de_redacao: zod.boolean().optional(),
   existe_exigencias_nao_listadas: zod.boolean().optional(),
   informacao_divergente: zod.object({ info: zod.string(), state: zod.string() }).optional(),
-  observations_declaracao_sindical: zod.string().optional(),
+  observations_documento_inelegivel: zod.string().optional(),
   observations_lista_e_edital: zod.string().optional(),
   observations_assinatura_do_advogado: zod.string().optional(),
   observations_declaracao_criminal: zod.string().optional(),
@@ -103,7 +103,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
 
     const {
       informacao_divergente,
-      observations_declaracao_sindical,
+      observations_documento_inelegivel,
       observations_lista_e_edital,
       observations_assinatura_do_advogado,
       observations_declaracao_criminal,
@@ -170,7 +170,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       },
       estado_do_requerimento:
         requerimentSelected === 'Pendente' ? 'Pendente' : 'Concluído',
-      observations_declaracao_sindical,
+      observations_documento_inelegivel,
       observations_lista_e_edital,
       observations_assinatura_do_advogado,
       observations_declaracao_criminal,

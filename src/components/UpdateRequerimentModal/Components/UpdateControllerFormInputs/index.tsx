@@ -118,16 +118,16 @@ export const UpdateControllerFormInputs = ({
           />
         )}
 
-        {updateList.declaracao_sindical === 'Pendente' && (
+        {updateList.documento_inelegivel === 'Pendente' && (
           <ContainerInput>
             <input
-              id="declaracao_sindical_true"
+              id="documento_inelegivel_true"
               type="checkbox"
-              {...register('declaracao_sindical')}
-              name="declaracao_sindical"
+              {...register('documento_inelegivel')}
+              name="documento_inelegivel"
             />
 
-            <LabelCheck htmlFor="declaracao_sindical_true">
+            <LabelCheck htmlFor="documento_inelegivel_true">
               <p>
                 Apresentar declaração emitida pelo Ministério do Trabalho
                 referente a unicidade sindical e da base territorial;{' '}
@@ -135,28 +135,28 @@ export const UpdateControllerFormInputs = ({
               </p>
               <ContainerIcons>
                 <Trash
-                  onClick={() => handleDeleteRequest('declaracao_sindical')}
+                  onClick={() => handleDeleteRequest('documento_inelegivel')}
                   size={35}
                 />
                 <Warning
                   size={32}
                   color={
-                    updateList.observations_declaracao_sindical !==
+                    updateList.observations_documento_inelegivel !==
                       'Sem observações'
                       ? '#FF0000'
                       : '#000'
                   }
-                  onClick={() => toggleObservationInput('declaracao_sindical')}
+                  onClick={() => toggleObservationInput('documento_inelegivel')}
                 />
               </ContainerIcons>
             </LabelCheck>
           </ContainerInput>
         )}
 
-        {openInputsObservations.declaracao_sindical && (
+        {openInputsObservations.documento_inelegivel && (
           <TextAreaObservations
-            {...register('observations_declaracao_sindical')}
-            defaultValue={updateList.observations_declaracao_sindical}
+            {...register('observations_documento_inelegivel')}
+            defaultValue={updateList.observations_documento_inelegivel}
           />
         )}
 
