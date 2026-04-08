@@ -21,7 +21,7 @@ import {
 } from './style'
 
 export const UpdateRequerimentFormSchema = zod.object({
-  declaracao_sindical: zod.boolean().optional(),
+  documento_inelegivel: zod.boolean().optional(),
   assinatura_do_advogado: zod.boolean().optional(),
   declaracao_criminal: zod.boolean().optional(),
   requisitos_estatuto: zod.boolean().optional(),
