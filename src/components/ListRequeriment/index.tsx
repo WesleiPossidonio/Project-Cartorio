@@ -39,13 +39,14 @@ export const TableRequeriment = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const pendingListRequeriment = dataListAssociation.filter((list) => {
-    return list.exigencia !== null && list.exigencia?.estado_do_requerimento === 'Pendente' && list.status_association === 'Pendente'
+    return list.exigencia !== null && list.exigencia?.estado_do_requerimento ===
+      'Pendente' && list.status_association === 'Pendente'
   })
 
   const filteredDataSearchRequeriment = pendingListRequeriment.filter((data) => {
     return data.nome_da_instituicao
       .toLowerCase()
-      .includes(dataInputSearchAssociation.toLowerCase())
+      .includes(dataInputSearchAssociation.toLowerCase()) || data.numero_do_protocolo === Number(dataInputSearchAssociation)
   })
 
   const handleChangePage = (event: unknown, newPage: number) => {

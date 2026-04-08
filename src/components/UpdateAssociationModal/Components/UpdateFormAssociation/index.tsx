@@ -1,49 +1,39 @@
-/* eslint-disable camelcase */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useForm, Controller } from 'react-hook-form'
 import * as zod from 'zod'
+import { useEffect, useState } from 'react'
 
 import { AssociationProps } from '../../../../contexts/RequerimentContext'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
+
 import { Button } from '../../../Button'
 import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
 import { formatCpfCnpj } from '../../../formatCpfCnpj'
 import { Input } from '../../../Input'
+
 import { ButtonHome, ContainerForm, SectionCreateRequirement } from './styled'
 
 export const UpdateAssociationFormSchema = zod.object({
-  nome_da_instituicao: zod
-    .string()
-    .nonempty('Por favor, digite o nome da instituição'),
-  nome_do_representante: zod
-    .string()
-    .nonempty('Por favor, digite o nome do representante'),
+  nome_da_instituicao: zod.string().nonempty('Digite o nome da instituição'),
+  nome_do_representante: zod.string().nonempty('Digite o nome do representante'),
+
   cnpj_cpf: zod
-    .string({
-      required_error: 'CPF/CNPJ é obrigatório.',
-    })
-    .refine((doc) => {
-      const replacedDoc = doc.replace(/\D/g, '')
-      return replacedDoc.length >= 11
-    }, 'CPF/CNPJ deve conter no mínimo 11 caracteres.')
-    .refine((doc) => {
-      const replacedDoc = doc.replace(/\D/g, '')
-      return replacedDoc.length <= 14
-    }, 'CPF/CNPJ deve conter no máximo 14 caracteres.')
-    .refine((doc) => {
-      const replacedDoc = doc.replace(/\D/g, '')
-      return !!Number(replacedDoc)
-    }, 'CPF/CNPJ deve conter apenas números.'),
+    .string()
+    .min(11, 'CPF/CNPJ inválido')
+    .max(18, 'CPF/CNPJ inválido'),
+
   sobre_exigencia: zod.string().min(4, 'Digite sobre o serviço'),
+
   email_do_representante: zod
     .string()
-    .email('Por favor digite um email válido'),
+    .email('Digite um email válido'),
+
   telefone_contato: zod
     .string()
-    .min(11, 'Por Favor, digite o numero de telefone corretamente')
-    .max(11, 'Por Favor, digite o numero de telefone corretamente'),
+    .min(11, 'Telefone inválido')
+    .max(11, 'Telefone inválido'),
 })
 
 export type UpdateAssociationFormInputs = zod.infer<
@@ -57,150 +47,125 @@ interface FormUpdateAssociationProps {
 export const FormUpdateAssociation = ({
   dataAssociation,
 }: FormUpdateAssociationProps) => {
+
+  const { requestListDataPDF, handleUpdateAssociation } = useRequeriment()
+  const { userDataLogin } = useUser()
+
+  const [generatedPdf, setGeneratedPdf] = useState<AssociationProps | null>(null)
+
   const {
     control,
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
     reset,
+    formState: { errors, isSubmitting },
   } = useForm<UpdateAssociationFormInputs>({
     resolver: zodResolver(UpdateAssociationFormSchema),
-    shouldUnregister: true,
   })
 
-  const { requestListDataPDF, handleUpdateAssociation } = useRequeriment()
-
-  const { userDataLogin } = useUser()
+  // 🔹 Atualiza formulário quando dados da API chegam
+  useEffect(() => {
+    if (dataAssociation) {
+      reset({
+        nome_da_instituicao: dataAssociation.nome_da_instituicao,
+        nome_do_representante: dataAssociation.nome_do_representante,
+        cnpj_cpf: dataAssociation.cnpj_cpf,
+        email_do_representante: dataAssociation.email_do_representante,
+        telefone_contato: dataAssociation.telefone_contato,
+        sobre_exigencia: dataAssociation.sobre_exigencia,
+      })
+    }
+  }, [dataAssociation, reset])
 
   const handleAddAssociation = async (data: UpdateAssociationFormInputs) => {
-    const {
-      nome_da_instituicao,
-      nome_do_representante,
-      telefone_contato,
-      email_do_representante,
-      cnpj_cpf,
-    } = data
 
-    const idAssociation = dataAssociation && dataAssociation.id
+    if (!dataAssociation?.id) return
 
-    if (idAssociation) {
-      const updatedDataAssociation = {
-        id: idAssociation,
-        cnpj_cpf,
-        nome_da_instituicao,
-        nome_do_representante,
-        telefone_contato,
-        email_do_representante,
-      }
-
-      handleUpdateAssociation(updatedDataAssociation)
-
-      reset()
+    const updatedData = {
+      id: dataAssociation.id,
+      ...data,
     }
+
+    await handleUpdateAssociation(updatedData)
+
+    setGeneratedPdf(updatedData)
   }
+
   return (
     <SectionCreateRequirement>
+
       <form onSubmit={handleSubmit(handleAddAssociation)}>
+
         <ContainerForm>
-          <div id="institution-name">
-            <Input
-              placeholder="Nome da Instituição"
-              type="text"
-              {...register('nome_da_instituicao')}
-              error={errors.nome_da_instituicao?.message}
-              defaultValue={
-                dataAssociation && dataAssociation.nome_da_instituicao
-              }
-            />
-          </div>
+
+          <Input
+            placeholder="Nome da Instituição"
+            {...register('nome_da_instituicao')}
+            error={errors.nome_da_instituicao?.message}
+          />
 
           <Controller
             name="cnpj_cpf"
             control={control}
-            render={({ field: { onChange, ...props } }) => {
-              return (
-                <Input
-                  onChange={(e) => {
-                    const { value } = e.target
-                    e.target.value = formatCpfCnpj(value)
-                    onChange(e)
-                  }}
-                  placeholder="CPF/CNPJ"
-                  {...props}
-                  id="number-cnpj"
-                  defaultValue={dataAssociation && dataAssociation.cnpj_cpf}
-                  error={errors.cnpj_cpf?.message}
-                />
-              )
-            }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                placeholder="CPF/CNPJ"
+                onChange={(e) =>
+                  field.onChange(formatCpfCnpj(e.target.value))
+                }
+                error={errors.cnpj_cpf?.message}
+              />
+            )}
           />
 
-          <div id="name-of-representative">
-            <Input
-              placeholder="Nome do Representante"
-              type="text"
-              id="name-of-representative"
-              {...register('nome_do_representante')}
-              defaultValue={
-                dataAssociation && dataAssociation.nome_do_representante
-              }
-            />
-          </div>
+          <Input
+            placeholder="Nome do Representante"
+            {...register('nome_do_representante')}
+            error={errors.nome_do_representante?.message}
+          />
 
-          <div id="email">
-            <Input
-              placeholder="E-mail"
-              type="text"
-              id="email"
-              {...register('email_do_representante')}
-              error={errors.email_do_representante?.message}
-              defaultValue={
-                dataAssociation && dataAssociation.email_do_representante
-              }
-            />
-          </div>
+          <Input
+            placeholder="E-mail"
+            {...register('email_do_representante')}
+            error={errors.email_do_representante?.message}
+          />
 
-          <div id="phone">
-            <Input
-              placeholder="Telefone de contato"
-              type="text"
-              id="phone"
-              {...register('telefone_contato')}
-              error={errors.telefone_contato?.message}
-              defaultValue={dataAssociation && dataAssociation.telefone_contato}
-            />
-          </div>
+          <Input
+            placeholder="Telefone"
+            {...register('telefone_contato')}
+            error={errors.telefone_contato?.message}
+          />
 
-          <div id="AboutRequeriment">
-            <Input
-              placeholder="Descreva o Serviço"
-              type="text"
-              id="AboutRequeriment"
-              {...register('sobre_exigencia')}
-              error={errors.sobre_exigencia?.message}
-              defaultValue={dataAssociation && dataAssociation.sobre_exigencia}
-            />
-          </div>
+          <Input
+            placeholder="Descreva o Serviço"
+            {...register('sobre_exigencia')}
+            error={errors.sobre_exigencia?.message}
+          />
+
         </ContainerForm>
 
         <div className="PdfContainer">
           <PDFDownloadLink
             document={
               <CreateAssociationPdfList
-                data={requestListDataPDF || dataAssociation}
+                data={generatedPdf || dataAssociation}
                 dataUser={userDataLogin}
               />
             }
-            fileName={`exigencia-${
-              requestListDataPDF?.numero_do_protocolo ||
+            fileName={`exigencia-${requestListDataPDF?.numero_do_protocolo ||
               dataAssociation?.numero_do_protocolo
-            }.pdf`}
+              }.pdf`}
           >
             {({ loading }) =>
               loading ? (
-                <ButtonHome type="button">Carregando PDF</ButtonHome>
+                <ButtonHome type="button">
+                  Carregando PDF
+                </ButtonHome>
               ) : (
-                <ButtonHome type="button">Imprimir</ButtonHome>
+                <ButtonHome type="button">
+                  Imprimir
+                </ButtonHome>
               )
             }
           </PDFDownloadLink>
@@ -209,7 +174,9 @@ export const FormUpdateAssociation = ({
         <Button type="submit" disabled={isSubmitting} buttonSubmit>
           Atualizar Dados
         </Button>
+
       </form>
+
     </SectionCreateRequirement>
   )
 }

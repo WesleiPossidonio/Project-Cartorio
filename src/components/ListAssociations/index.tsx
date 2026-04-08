@@ -40,7 +40,7 @@ export const TableAssociation = () => {
   const filteredDataSearchAssociations = filteredPendingList.filter((data) => {
     return data.nome_da_instituicao
       .toLowerCase()
-      .includes(dataInpuSearchExame.toLowerCase())
+      .includes(dataInpuSearchExame.toLowerCase()) || data.numero_do_protocolo === Number(dataInpuSearchExame)
   })
 
 

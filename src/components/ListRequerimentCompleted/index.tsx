@@ -33,8 +33,6 @@ export const TableRequerimentCompleted = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
-  console.log()
-
   const listCompleted = dataListAssociation.filter((data) => {
     return (
       data.exigencia?.estado_do_requerimento === 'Concluído' ||
@@ -45,7 +43,7 @@ export const TableRequerimentCompleted = () => {
   const filteredDataConclutedRequeriment = listCompleted.filter((data) => {
     return data.nome_da_instituicao
       .toLowerCase()
-      .includes(dataIputSearchConcluted.toLowerCase())
+      .includes(dataIputSearchConcluted.toLowerCase()) || data.numero_do_protocolo === Number(dataIputSearchConcluted)
   })
 
   const handleChangePage = (event: unknown, newPage: number) => {
