@@ -46,6 +46,7 @@ export const InputStyled = styled.input`
   font-style: normal;
   font-weight: 400;
   padding: 0.5rem;
+  text-transform: uppercase;
 
   color: ${({ theme }) => theme.colors['base-cinza-100']};
 `

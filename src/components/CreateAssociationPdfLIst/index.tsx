@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   main: {
     margin: 30,
     marginBottom: 10,
+    textTransform: 'uppercase',
   },
   headerImage: {
     display: 'flex',
