@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useForm, Controller } from 'react-hook-form'
 import * as zod from 'zod'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { AssociationProps } from '../../../../contexts/RequerimentContext'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
@@ -51,13 +51,12 @@ export const FormUpdateAssociation = ({
   const { requestListDataPDF, handleUpdateAssociation } = useRequeriment()
   const { userDataLogin } = useUser()
 
-  const [generatedPdf, setGeneratedPdf] = useState<AssociationProps | null>(null)
-
   const {
     control,
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<UpdateAssociationFormInputs>({
     resolver: zodResolver(UpdateAssociationFormSchema),
@@ -77,8 +76,16 @@ export const FormUpdateAssociation = ({
     }
   }, [dataAssociation, reset])
 
-  const handleAddAssociation = async (data: UpdateAssociationFormInputs) => {
+  const formValues = watch()
 
+  const pdfData: AssociationProps | undefined = dataAssociation
+    ? {
+      ...dataAssociation,
+      ...formValues,
+    }
+    : undefined
+
+  const handleAddAssociation = async (data: UpdateAssociationFormInputs) => {
     if (!dataAssociation?.id) return
 
     const updatedData = {
@@ -87,8 +94,6 @@ export const FormUpdateAssociation = ({
     }
 
     await handleUpdateAssociation(updatedData)
-
-    setGeneratedPdf(updatedData)
   }
 
   return (
@@ -149,7 +154,7 @@ export const FormUpdateAssociation = ({
           <PDFDownloadLink
             document={
               <CreateAssociationPdfList
-                data={generatedPdf || dataAssociation}
+                data={pdfData}
                 dataUser={userDataLogin}
               />
             }
