@@ -19,7 +19,7 @@ interface DataProps {
 }
 
 const styles = StyleSheet.create({
-  page: { backgroundColor: '#FFF' },
+  page: { backgroundColor: '#FFF', textTransform: 'uppercase' },
   header: {
     margin: 30,
     marginBottom: 30,
