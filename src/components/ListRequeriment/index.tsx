@@ -40,7 +40,7 @@ export const TableRequeriment = () => {
 
   const pendingListRequeriment = dataListAssociation.filter((list) => {
     return list.exigencia !== null && list.exigencia?.estado_do_requerimento ===
-      'Pendente' && list.status_association === 'Pendente'
+      'Pendente' && list.status_association === 'Concluído'
   })
 
   const filteredDataSearchRequeriment = pendingListRequeriment.filter((data) => {
