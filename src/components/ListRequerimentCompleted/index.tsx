@@ -27,7 +27,7 @@ export const TableRequerimentCompleted = () => {
     dataListAssociation,
     dataIputSearchConcluted,
     sendMail,
-    handleUpdateStatus
+    handleUpdateStatus,
   } = useRequeriment()
 
   const [page, setPage] = useState(0)
@@ -36,14 +36,17 @@ export const TableRequerimentCompleted = () => {
   const listCompleted = dataListAssociation.filter((data) => {
     return (
       data.exigencia?.estado_do_requerimento === 'Concluído' ||
-      data.status_association === 'Concluído' && data.exigencia?.estado_do_requerimento === 'Concluído'
+      data.status_association === 'Concluído'
     )
   })
 
   const filteredDataConclutedRequeriment = listCompleted.filter((data) => {
-    return data.nome_da_instituicao
-      .toLowerCase()
-      .includes(dataIputSearchConcluted.toLowerCase()) || data.numero_do_protocolo === Number(dataIputSearchConcluted)
+    return (
+      data.nome_da_instituicao
+        .toLowerCase()
+        .includes(dataIputSearchConcluted.toLowerCase()) ||
+      data.numero_do_protocolo === Number(dataIputSearchConcluted)
+    )
   })
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -61,7 +64,7 @@ export const TableRequerimentCompleted = () => {
       const listData = {
         id: data.id,
         status: 'Pendente',
-        updatedForm: 'Association'
+        updatedForm: 'Association',
       }
       handleUpdateStatus(listData)
       return
@@ -72,7 +75,7 @@ export const TableRequerimentCompleted = () => {
         id: data.exigencia?.id,
         status: 'Pendente',
         updatedForm: 'Requeriment',
-        exigencias_id: data.id
+        exigencias_id: data.id,
       }
       handleUpdateStatus(listData)
     }
@@ -98,99 +101,103 @@ export const TableRequerimentCompleted = () => {
         <TableBody>
           {dataIputSearchConcluted.length > 0
             ? (rowsPerPage > 0
-              ? filteredDataConclutedRequeriment.slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage
-              )
-              : filteredDataConclutedRequeriment
-            ).map((data) => {
-              return (
-                <TableRowContentList
-                  key={data.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableContentList>
-                    {data.numero_do_protocolo}
-                  </TableContentList>
-                  <Dialog.Root>
-                    <Dialog.Trigger asChild>
-                      <TableContentList>
-                        {data.nome_da_instituicao}
-                      </TableContentList>
-                    </Dialog.Trigger>
-                    <RequerimentListCompletedModal
-                      idRequerimentSelected={data.id}
-                      listCompleted={listCompleted}
-                    />
-                  </Dialog.Root>
-                  <TableContentList>
-                    {data.nome_do_representante}
-                  </TableContentList>
-                  <TableContentList>
-                    {data.updatedAt &&
-                      formatDistanceToNow(new Date(data.updatedAt), {
-                        addSuffix: true,
-                        locale: ptBR,
-                      })}
-                  </TableContentList>
+                ? filteredDataConclutedRequeriment.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : filteredDataConclutedRequeriment
+              ).map((data) => {
+                return (
+                  <TableRowContentList
+                    key={data.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableContentList>
+                      {data.numero_do_protocolo}
+                    </TableContentList>
+                    <Dialog.Root>
+                      <Dialog.Trigger asChild>
+                        <TableContentList>
+                          {data.nome_da_instituicao}
+                        </TableContentList>
+                      </Dialog.Trigger>
+                      <RequerimentListCompletedModal
+                        idRequerimentSelected={data.id}
+                        listCompleted={listCompleted}
+                      />
+                    </Dialog.Root>
+                    <TableContentList>
+                      {data.nome_do_representante}
+                    </TableContentList>
+                    <TableContentList>
+                      {data.updatedAt &&
+                        formatDistanceToNow(new Date(data.updatedAt), {
+                          addSuffix: true,
+                          locale: ptBR,
+                        })}
+                    </TableContentList>
 
-                  <TableContentList onClick={() => sendMail(data.id)}>
-                    <PaperPlaneTilt size={29} />
-                  </TableContentList>
+                    <TableContentList onClick={() => sendMail(data.id)}>
+                      <PaperPlaneTilt size={29} />
+                    </TableContentList>
 
-                  <TableContentList onClick={() => handleUpdateStatusForm(data)}>
-                    <ArrowBendLeftDown size={29} />
-                  </TableContentList>
-                </TableRowContentList>
-              )
-            })
+                    <TableContentList
+                      onClick={() => handleUpdateStatusForm(data)}
+                    >
+                      <ArrowBendLeftDown size={29} />
+                    </TableContentList>
+                  </TableRowContentList>
+                )
+              })
             : (rowsPerPage > 0
-              ? listCompleted.slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage
-              )
-              : listCompleted
-            ).map((data) => {
-              return (
-                <TableRowContentList
-                  key={data.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableContentList>
-                    {data.numero_do_protocolo}
-                  </TableContentList>
-                  <Dialog.Root>
-                    <Dialog.Trigger asChild>
-                      <TableContentList>
-                        {data.nome_da_instituicao}
-                      </TableContentList>
-                    </Dialog.Trigger>
-                    <RequerimentListCompletedModal
-                      idRequerimentSelected={data.id}
-                      listCompleted={listCompleted}
-                    />
-                  </Dialog.Root>
-                  <TableContentList>
-                    {data.nome_do_representante}
-                  </TableContentList>
-                  <TableContentList>
-                    {data.updatedAt &&
-                      formatDistanceToNow(new Date(data.updatedAt), {
-                        addSuffix: true,
-                        locale: ptBR,
-                      })}
-                  </TableContentList>
+                ? listCompleted.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : listCompleted
+              ).map((data) => {
+                return (
+                  <TableRowContentList
+                    key={data.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableContentList>
+                      {data.numero_do_protocolo}
+                    </TableContentList>
+                    <Dialog.Root>
+                      <Dialog.Trigger asChild>
+                        <TableContentList>
+                          {data.nome_da_instituicao}
+                        </TableContentList>
+                      </Dialog.Trigger>
+                      <RequerimentListCompletedModal
+                        idRequerimentSelected={data.id}
+                        listCompleted={listCompleted}
+                      />
+                    </Dialog.Root>
+                    <TableContentList>
+                      {data.nome_do_representante}
+                    </TableContentList>
+                    <TableContentList>
+                      {data.updatedAt &&
+                        formatDistanceToNow(new Date(data.updatedAt), {
+                          addSuffix: true,
+                          locale: ptBR,
+                        })}
+                    </TableContentList>
 
-                  <TableContentList onClick={() => sendMail(data.id)}>
-                    <PaperPlaneTilt size={29} />
-                  </TableContentList>
+                    <TableContentList onClick={() => sendMail(data.id)}>
+                      <PaperPlaneTilt size={29} />
+                    </TableContentList>
 
-                  <TableContentList onClick={() => handleUpdateStatusForm(data)}>
-                    <ArrowBendLeftDown size={29} />
-                  </TableContentList>
-                </TableRowContentList>
-              )
-            })}
+                    <TableContentList
+                      onClick={() => handleUpdateStatusForm(data)}
+                    >
+                      <ArrowBendLeftDown size={29} />
+                    </TableContentList>
+                  </TableRowContentList>
+                )
+              })}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />
