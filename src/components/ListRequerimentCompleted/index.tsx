@@ -49,6 +49,8 @@ export const TableRequerimentCompleted = () => {
     )
   })
 
+  console.log(filteredDataConclutedRequeriment)
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
