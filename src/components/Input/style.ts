@@ -18,7 +18,6 @@ export const InputContaineStyle = styled.div<InputStyleContainerProps>`
   font-weight: 400;
   font-size: 0.8835125rem;
   line-height: 1.3125rem;
-  text-transform: uppercase;
 
   background: ${({ theme }) => theme.colors['base-background']};
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
@@ -46,7 +45,6 @@ export const InputStyled = styled.input`
   font-style: normal;
   font-weight: 400;
   padding: 0.5rem;
-  text-transform: uppercase;
 
   color: ${({ theme }) => theme.colors['base-cinza-100']};
 `
