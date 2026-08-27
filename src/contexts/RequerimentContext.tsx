@@ -162,7 +162,8 @@ export const RequerimentContextProvider = ({
   const { userDataLogin } = useUser()
 
   const getAssociationListPending = useCallback(
-    async (page = 1, search = '') => {
+    async (page = 1, search: string) => {
+         console.log(dataInputSearchRequirement, search)
       try {
         const response = await api.get(
           'association/pending',
@@ -300,30 +301,31 @@ export const RequerimentContextProvider = ({
     getCompletedAssociations,
   ])
 
-  const searchFunction = (
-    data: filteredRequerimentProps,
-  ) => {
-    const { query, formTable } = data
+ const searchFunction = (
+  data: filteredRequerimentProps,
+) => {
+  const { query, formTable } = data
 
-    switch (formTable) {
-      case 'Listas-Instancias':
-        setDataInputSearchRequirement(query)
-        break
+  switch (formTable) {
+    case 'Listas-Instancias':
+      setDataInputSearchAssociation(query)
+      setCurrentPageWithoutRequirement(1)
+      break
 
-      case 'Listas-Exigências':
-        setDataInputSearchAssociation(query)
-        setCurrentPageWithoutRequirement(1)
-        break
+    case 'Listas-Exigências':
+      setDataInputSearchRequirement(query)
+      setCurrentPagePendingRequirements(1)
+      break
 
-      case 'Exigências-Concluídas':
-        setDataInputSearchConcluted(query)
-        setCurrentPageCompletedAssociations(1)
-        break
+    case 'Exigências-Concluídas':
+      setDataInputSearchConcluted(query)
+      setCurrentPageCompletedAssociations(1)
+      break
 
-      default:
-        break
-    }
+    default:
+      break
   }
+}
 
   const findAssociationById = useCallback(
     (id?: number) => {
