@@ -10,8 +10,9 @@ import { format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
 import ImageLogo from '../../assets/Logo-Cartorio.jpg'
-import { AssociationProps } from '../../contexts/RequerimentContext'
+
 import { ResponseDataUser } from '../../contexts/UserContext'
+import { AssociationProps } from '../../@types/typesRequerimentContest'
 
 interface DataProps {
   data: AssociationProps
