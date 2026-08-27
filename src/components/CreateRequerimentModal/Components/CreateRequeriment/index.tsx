@@ -72,11 +72,11 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
     shouldUnregister: true,
   })
 
-  const { CreateRequeriment, requestListDataPDF, dataListAssociation } =
+  const { CreateRequeriment, requestListDataPDF, dataListAssociationWithoutRequirement } =
     useRequeriment()
   const [requerimentSelected, setRequerimentSelected] = useState('Pendente')
 
-  const RequerimentSelected = dataListAssociation.find((list) => list.id === id)
+  const RequerimentSelected = dataListAssociationWithoutRequirement.find((list) => list.id === id)
 
   const { userDataLogin } = useUser()
 
@@ -124,6 +124,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
 
     const {
       declaracao_sindical,
+      documento_inelegivel,
       lista_e_edital,
       assinatura_do_advogado,
       declaracao_criminal,
@@ -147,6 +148,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
     const createRequerimentData = {
       id,
       declaracao_sindical,
+      documento_inelegivel,
       lista_e_edital,
       assinatura_do_advogado,
       declaracao_criminal,

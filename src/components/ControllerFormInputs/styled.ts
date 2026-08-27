@@ -52,6 +52,7 @@ export const ContainerCheckInput = styled.div`
   input:checked#reconhecimento_de_firma_true + label,
   input:checked#preechimento_completo_true + label,
   input:checked#oab_true + label,
+  input:checked#documento_inelegivel_true + label,
   input:checked#documentacao_de_identificacao_true + label,
   input:checked#requisitos_criacao_de_estatuto_true + label,
   input:checked#requisitos_de_estatutos_fundadores_true + label,

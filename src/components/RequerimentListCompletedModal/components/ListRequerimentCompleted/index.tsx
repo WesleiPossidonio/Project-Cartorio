@@ -1,7 +1,6 @@
 import { PDFDownloadLink } from '@react-pdf/renderer'
 
 import { Button, TextRegular } from '../../..'
-import { AssociationProps } from '../../../../contexts/RequerimentContext'
 import { useUser } from '../../../../hooks/useUser'
 import { CreateRequerimentConclutedPdf } from '../../../CreateRequerimentComclutedPdf'
 import {
@@ -11,6 +10,7 @@ import {
   HeaderModal,
   TextListModal,
 } from './styled'
+import { AssociationProps } from '../../../../@types/typesRequerimentContest'
 
 interface ListRequerimentCompletedProps {
   RequerimentCompleted?: AssociationProps

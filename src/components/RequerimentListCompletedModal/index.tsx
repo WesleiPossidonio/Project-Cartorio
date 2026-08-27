@@ -1,10 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'phosphor-react'
-import React from 'react'
-
-import { AssociationProps } from '../../contexts/RequerimentContext'
 import { ListRequerimentCompleted } from './components/ListRequerimentCompleted'
 import { CloseButton, Content, Overlay } from './style'
+import { AssociationProps } from '../../@types/typesRequerimentContest'
 
 interface RequerimentListCompletedModalProps {
   idRequerimentSelected: number

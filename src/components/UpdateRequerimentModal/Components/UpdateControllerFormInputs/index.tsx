@@ -2,12 +2,9 @@ import { Trash, Warning } from 'phosphor-react'
 import React, { useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 import { toast } from 'react-toastify'
-
-import { ListRequerimentProps } from '../../../../contexts/RequerimentContext'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import api from '../../../../services/api'
 import { TextAreaObservations } from '../../../ControllerFormInputs/styled'
-import { CreateRequerimentFormInputs } from '../../../CreateRequerimentModal/Components/CreateRequeriment'
 import { TitleText } from '../../../typography'
 import {
   ContainerControllerInput,
@@ -18,6 +15,8 @@ import {
   LabelCheck,
   SelectedStateInfoDivergente,
 } from './style'
+import { ListRequerimentProps } from '../../../../@types/typesRequerimentContest'
+import { CreateRequerimentFormInputs } from '../../../CreateRequerimentModal/Components/CreateRequeriment'
 
 interface ControllerUpdateProps {
   register: UseFormRegister<CreateRequerimentFormInputs>
@@ -28,7 +27,7 @@ export const UpdateControllerFormInputs = ({
   register,
   dataRequeriment,
 }: ControllerUpdateProps) => {
-  const { dataListRequeriment, setDataListRequeriment } = useRequeriment()
+  const { dataListPendingRequirements, setDataListPendingRequirements } = useRequeriment()
 
   const [openInputsObservations, setOpenInputsObservations] = useState<{
     [key: string]: boolean
@@ -36,6 +35,7 @@ export const UpdateControllerFormInputs = ({
   const [updateList, setUpdateList] = useState<ListRequerimentProps>({
     ...dataRequeriment,
   })
+
 
   const handleDeleteRequest = async (nameList: string) => {
     const deleteList = {
@@ -57,7 +57,7 @@ export const UpdateControllerFormInputs = ({
 
         const { data } = updateRequermentResponse
 
-        setDataListRequeriment([...dataListRequeriment, data])
+        setDataListPendingRequirements([...dataListPendingRequirements, data])
         setUpdateList(data)
       } catch (error) {
         console.log(error)
@@ -129,9 +129,7 @@ export const UpdateControllerFormInputs = ({
 
             <LabelCheck htmlFor="documento_inelegivel_true">
               <p>
-                Apresentar declaração emitida pelo Ministério do Trabalho
-                referente a unicidade sindical e da base territorial;{' '}
-                <span> (CNCGJ Art. 935 § 4º) </span>
+                Documento Inelegível{' '}
               </p>
               <ContainerIcons>
                 <Trash

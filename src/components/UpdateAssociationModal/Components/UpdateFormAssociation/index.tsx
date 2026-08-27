@@ -4,7 +4,6 @@ import { useForm, Controller } from 'react-hook-form'
 import * as zod from 'zod'
 import { useEffect } from 'react'
 
-import { AssociationProps } from '../../../../contexts/RequerimentContext'
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
 
@@ -14,6 +13,7 @@ import { formatCpfCnpj } from '../../../formatCpfCnpj'
 import { Input } from '../../../Input'
 
 import { ButtonHome, ContainerForm, SectionCreateRequirement } from './styled'
+import { AssociationProps } from '../../../../@types/typesRequerimentContest'
 
 export const UpdateAssociationFormSchema = zod.object({
   nome_da_instituicao: zod.string().nonempty('Digite o nome da instituição'),

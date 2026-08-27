@@ -3,13 +3,12 @@ import { ChangeEvent, useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import { ListRequerimentProps } from '../../contexts/RequerimentContext'
+
 import { useRequeriment } from '../../hooks/useRequeriment'
 import api from '../../services/api'
 import { Button } from '../Button'
 import { CreateRequerimentFormInputs } from '../CreateRequerimentModal/Components/CreateRequeriment'
 import { TextRegular } from '../typography'
-import { UpdateRequerimentFormInputs } from '../UpdateRequerimentModal'
 import {
   ContainerInput,
   ContainerCheckInput,
@@ -24,6 +23,7 @@ import {
   DivergenteInfoContainer,
   SelectedStateInfoDivergente,
 } from './styled'
+import { ListRequerimentProps } from '../../@types/typesRequerimentContest'
 
 interface StateInputListProps {
   id: string
@@ -87,6 +87,7 @@ export const ControllerFormInputs = ({
       [nameList]: 'Pendente',
       exigencias_id: arrayUpdateInputList?.id,
     }
+    
 
     if (arrayUpdateInputList) {
       try {
@@ -226,7 +227,7 @@ export const ControllerFormInputs = ({
                     id={list.id}
                     type="checkbox"
                     {...register(
-                      list.name as keyof UpdateRequerimentFormInputs
+                      list.name as keyof CreateRequerimentFormInputs
                     )}
                     name={list.name}
                   />

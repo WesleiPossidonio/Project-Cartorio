@@ -63,6 +63,7 @@ export const ContainerInput = styled.div`
   input:checked#documentacao_de_identificacao_true + label,
   input:checked#requisitos_criacao_de_estatuto_true + label,
   input:checked#requisitos_de_estatutos_fundadores_true + label,
+  input:checked#documento_inelegivel_true + label,
   input:checked#retificacao_de_redacao_true + label,
   input:checked#requerimento_eletronico_rcpj_true + label,
   input:checked#campo_de_assinatura_true + label {

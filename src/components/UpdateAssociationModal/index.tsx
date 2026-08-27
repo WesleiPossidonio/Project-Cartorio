@@ -1,6 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'phosphor-react'
-import React from 'react'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
 import { FormUpdateAssociation } from './Components/UpdateFormAssociation'
@@ -11,9 +10,9 @@ interface RequerimentProps {
 }
 
 export const UpdateAssociationModal = ({ AssociationId }: RequerimentProps) => {
-  const { dataListAssociation } = useRequeriment()
+  const { dataListPendingRequirements } = useRequeriment()
 
-  const associationSelected = dataListAssociation.find(
+  const associationSelected = dataListPendingRequirements.find(
     (list) => list.id === AssociationId
   )
 

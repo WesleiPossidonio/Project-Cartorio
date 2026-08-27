@@ -1,17 +1,19 @@
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'phosphor-react'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import * as zod from 'zod'
 
-import { ListRequerimentProps } from '../../contexts/RequerimentContext'
 import { useRequeriment } from '../../hooks/useRequeriment'
+
+
 import { arrayInputList } from '../ArrayInputList'
 import { Button } from '../Button'
 import { ControllerFormInputs } from '../ControllerFormInputs'
 import { TextRegular } from '../typography'
 import { UpdateControllerFormInputs } from './Components/UpdateControllerFormInputs'
+
 import {
   CloseButton,
   ContainerAddRequeriment,
@@ -20,88 +22,93 @@ import {
   Overlay,
 } from './style'
 
-export const UpdateRequerimentFormSchema = zod.object({
-  documento_inelegivel: zod.boolean().optional(),
-  assinatura_do_advogado: zod.boolean().optional(),
-  declaracao_criminal: zod.boolean().optional(),
-  requisitos_estatuto: zod.boolean().optional(),
-  declaracao_de_desimpedimento: zod.boolean().optional(),
-  livro_rasao: zod.boolean().optional(),
-  ppe: zod.boolean().optional(),
-  dissolucao_ou_exticao: zod.boolean().optional(),
-  fundacoes: zod.boolean().optional(),
-  reconhecimento_de_firma: zod.boolean().optional(),
-  preechimento_completo: zod.boolean().optional(),
-  oab: zod.boolean().optional(),
-  documentacao_de_identificacao: zod.boolean().optional(),
-  requisitos_de_estatutos_fundadores: zod.boolean().optional(),
-  requisitos_criacao_de_estatuto: zod.boolean().optional(),
-  lista_e_edital: zod.boolean().optional().optional(),
-  retificacao_de_redacao: zod.boolean().optional(),
-  campo_de_assinatura: zod.boolean().optional(),
-  existe_exigencias_nao_listadas: zod.boolean().optional(),
-  informacao_divergente: zod.object({ info: zod.string(), state: zod.string() }).optional(),
-})
-
-export type UpdateRequerimentFormInputs = zod.infer<
-  typeof UpdateRequerimentFormSchema
->
+import { ListRequerimentProps } from '../../@types/typesRequerimentContest'
+import { CreateRequerimentFormInputs, CreateRequerimentFormSchema } from '../CreateRequerimentModal/Components/CreateRequeriment'
+import api from '../../services/api'
 
 interface RequerimentProps {
   AssociationId: number
 }
 
-export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
+export const UpdateRequerimentModal = ({
+  AssociationId,
+}: RequerimentProps) => {
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
     reset,
-  } = useForm<UpdateRequerimentFormInputs>({
-    resolver: zodResolver(UpdateRequerimentFormSchema),
+  } = useForm<CreateRequerimentFormInputs>({
+    resolver: zodResolver(CreateRequerimentFormSchema),
     shouldUnregister: true,
   })
-  const { dataListAssociation, updateRequeriment } = useRequeriment()
+
+  const {
+    updateRequeriment,
+  } = useRequeriment()
+
   const [dataRequerimentSelected, setDataRequerimentSelected] =
     useState<ListRequerimentProps>()
+
   const [addDataToListUpdate, setAddDataToListUpdate] = useState('')
 
   useEffect(() => {
-    const filteredRequerimentSelected = dataListAssociation.find(
-      (list) => list.id === AssociationId
-    )
+    const getRequeriment = async () => {
+      try {
+        const { data } = await api.get(
+          `association/${AssociationId}`
+        )
+  
+        setDataRequerimentSelected(data.exigencia)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  getRequeriment()
+  }, [AssociationId])
 
-    setDataRequerimentSelected(
-      filteredRequerimentSelected?.exigencia &&
-      filteredRequerimentSelected.exigencia
-    )
-  }, [AssociationId, dataListAssociation])
-
-  const handleUpdateRequeriment = (data: UpdateRequerimentFormInputs) => {
+  const handleUpdateRequeriment = (
+    data: CreateRequerimentFormInputs,
+  ) => {
     const booleanData: Record<string, string> = {}
-
-    const filteredEntries = Object.entries(data).filter(
-      ([, value]) => typeof value === 'boolean'
-    )
-
-    const { informacao_divergente } = data
-
-    filteredEntries.map(([key, value]) => {
-      return (booleanData[key] = value ? 'Recebido' : 'Pendente')
+  
+    Object.entries(data).forEach(([key, value]) => {
+      if (typeof value === 'boolean') {
+        booleanData[key] = value ? 'Recebido' : 'Pendente'
+      }
     })
-
-    const updatedData = { ...booleanData, id: dataRequerimentSelected?.id, informacao_divergente }
-
-    updateRequeriment({ ...updatedData, handleListConcluted: false })
-
+  
+    const informacaoDivergente =
+      data.informacao_divergente?.info &&
+      data.informacao_divergente?.state
+        ? {
+            info: data.informacao_divergente.info,
+            state: data.informacao_divergente.state,
+          }
+        : undefined
+  
+    const updatedData = {
+      ...booleanData,
+      id: dataRequerimentSelected?.id,
+      exigencias_id: AssociationId,
+      informacao_divergente: informacaoDivergente,
+    }
+  
+    updateRequeriment({
+      ...updatedData,
+      handleListConcluted: false,
+    })
+  
     reset()
   }
-
+  
   return (
     <Dialog.Portal>
       <Overlay />
+
       <Content>
         <Dialog.Title>Atualizar Exigências</Dialog.Title>
+
         <CloseButton>
           <X size={24} />
         </CloseButton>
@@ -117,20 +124,22 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
               <TextRegular weight={700}>
                 Esqueceu algum Item? Deseja Adicionar-lo?
               </TextRegular>
+
               <div>
                 <Button
                   type="button"
                   selectButton
                   onClick={() => setAddDataToListUpdate('sim')}
-                  selected={addDataToListUpdate === 'sim' && true}
+                  selected={addDataToListUpdate === 'sim'}
                 >
                   Sim
                 </Button>
+
                 <Button
                   type="button"
                   selectButton
                   onClick={() => setAddDataToListUpdate('não')}
-                  selected={addDataToListUpdate === 'não' && true}
+                  selected={addDataToListUpdate === 'não'}
                 >
                   Não
                 </Button>
@@ -146,7 +155,11 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
               />
             )}
 
-            <Button type="submit" disabled={isSubmitting} buttonSubmit>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              buttonSubmit
+            >
               Atualizar Dados
             </Button>
           </form>
@@ -155,3 +168,4 @@ export const UpdateRequerimentModal = ({ AssociationId }: RequerimentProps) => {
     </Dialog.Portal>
   )
 }
+
