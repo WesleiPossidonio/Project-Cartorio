@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { PlusCircle, User, UserCircle, UserCirclePlus, X } from 'phosphor-react'
+import { ClipboardText, PlusCircle, User, UserCircle, UserCirclePlus, X } from 'phosphor-react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -73,8 +73,16 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
               </TextRegular>
             </ContainerButton>
           </Dialog.Trigger>
-          <UpdateUserModal />
+          <UpdateUserModal title='Meus Dados' />
         </Dialog.Root>
+
+        <ContainerButton
+          selected={menuSelected2}
+          onClick={handleIsSelected2}
+        >
+          <ClipboardText size={32} />
+          <TextRegular size="m">Usuários</TextRegular>
+        </ContainerButton>
 
         <ButtonMobile href="#">
           <PlusCircle size={32} />
