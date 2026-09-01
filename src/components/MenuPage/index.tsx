@@ -16,8 +16,8 @@ import { UpdateUserModal } from '../UpdateUserDataModal'
 import { ContainerButton, MenuContainer } from './style'
 
 interface MenuPageProps {
-  setLinkMenuSelected: React.Dispatch<React.SetStateAction<{ page: string; modal: string }>>
-  linkMenuSelected: { page: string; modal: string }
+  setLinkMenuSelected?: React.Dispatch<React.SetStateAction<{ page: string; modal: string }>>
+  linkMenuSelected?: { page: string; modal: string }
 }
 
 export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProps) => {
@@ -28,20 +28,30 @@ export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProp
 
   const handleIsSelected = (data: string) => {
     if (data === 'Home') {
-      setLinkMenuSelected({ page: data, modal: '' })
+      if (setLinkMenuSelected) {
+        setLinkMenuSelected({ page: data, modal: '' })
+      }
       navigate('/')
     }
-    if(data === 'Usuários'){
-      setLinkMenuSelected({ page: data, modal: '' })
+
+    if (data === 'Usuários') {
+      if (setLinkMenuSelected) {
+        setLinkMenuSelected({ page: data, modal: '' })
+      }
     }
+
     if (data === 'addUser') {
-      setLinkMenuSelected({ page: 'Home', modal: data })
+      if (setLinkMenuSelected) {
+        setLinkMenuSelected({ page: 'Home', modal: data })
+      }
     }
+
     if (data === 'addRequeriment') {
-      setLinkMenuSelected({ page: 'Home', modal: data })
+      setLinkMenuSelected?.({ page: 'Home', modal: data })
     }
+
     if (data === 'UpdateDataUser') {
-      setLinkMenuSelected({ page: 'Home', modal: data })
+      setLinkMenuSelected?.({ page: 'Home', modal: data })
     }
   }
 
@@ -50,7 +60,7 @@ export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProp
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <ContainerButton
-            selected={linkMenuSelected.modal === 'UpdateDataUser' && true}
+            selected={linkMenuSelected?.modal === 'UpdateDataUser' && true}
             onClick={() => handleIsSelected('UpdateDataUser')}
           >
             <UserCircle size={32} />
@@ -61,7 +71,7 @@ export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProp
       </Dialog.Root>
 
       <ContainerButton
-        selected={linkMenuSelected.page === 'Usuários' && true}
+        selected={linkMenuSelected?.page === 'Usuários' && true}
         onClick={() => handleIsSelected('Usuários')}
       >
         <ClipboardText size={32} />
@@ -69,7 +79,7 @@ export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProp
       </ContainerButton>
 
       <ContainerButton
-        selected={linkMenuSelected.page === 'Home' && true}
+        selected={linkMenuSelected?.page === 'Home' && true}
         onClick={() => handleIsSelected('Home')}
       >
         <ClipboardText size={32} />
@@ -80,7 +90,7 @@ export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProp
         <Dialog.Root>
           <Dialog.Trigger asChild>
             <ContainerButton
-              selected={linkMenuSelected.modal === 'addUser' && true}
+              selected={linkMenuSelected?.modal === 'addUser' && true}
               onClick={() => handleIsSelected('addUser')}
               isUserAdmin={userDataLogin.admin}
             >
@@ -95,7 +105,7 @@ export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProp
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <ContainerButton
-            selected={linkMenuSelected.modal === 'addRequeriment' && true}
+            selected={linkMenuSelected?.modal === 'addRequeriment' && true}
             onClick={() => handleIsSelected('addRequeriment')}
           >
             <PlusCircle size={32} />

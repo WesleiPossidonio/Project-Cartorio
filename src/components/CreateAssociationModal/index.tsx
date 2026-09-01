@@ -2,7 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'phosphor-react'
 import React from 'react'
 
-import { FormCreateAssociation } from './components/CreateFormAssociation'
+import { FormCreateAssociation } from './CreateFormAssociation'
 import { CloseButton, Content, Overlay } from './style'
 
 export const CreateAssociationModal = () => {

@@ -11,9 +11,8 @@ import ptBR from 'date-fns/locale/pt-BR'
 
 import ImageLogo from '../../assets/Logo-Cartorio.jpg'
 
-import { ResponseDataUser } from '../../contexts/UserContext'
 import { AssociationProps } from '../../@types/typesRequerimentContext'
-
+import { ResponseDataUser } from '../../@types/typesUserContext'
 interface DataProps {
   data: AssociationProps
   dataUser: ResponseDataUser

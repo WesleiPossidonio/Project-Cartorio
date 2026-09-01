@@ -5,11 +5,14 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 
-import { Button, ControllerFormInputs, arrayInputList } from '../../..'
+
 import { useRequeriment } from '../../../../hooks/useRequeriment'
 import { useUser } from '../../../../hooks/useUser'
 import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
 import { ButtonHome, SectionCreateRequirement } from './styled'
+import ControllerFormInputs from '../../../ControllerFormInputs'
+import { arrayInputList } from '../../../ArrayInputList'
+import { Button } from '../../../Button'
 
 export const CreateRequerimentFormSchema = zod.object({
   documento_inelegivel: zod.boolean().optional(),

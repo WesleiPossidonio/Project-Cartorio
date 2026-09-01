@@ -1,13 +1,12 @@
 import React from 'react'
-
-import { MenuPage, TableRequerimentCompleted } from '../../components'
 import { HeaderContent } from './components/HeaderContent'
 import { ContainerHome, ContainerMainList, ContentRequeriement } from './style'
+import { MenuPage, TableRequerimentCompleted } from '../../components'
 
 export const CompletedAplicationList = () => {
   return (
     <ContainerHome>
-      <MenuPage />
+      <MenuPage  />
       <ContentRequeriement>
         <ContainerMainList>
           <HeaderContent />

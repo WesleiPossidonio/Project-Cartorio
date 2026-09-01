@@ -19,7 +19,6 @@ export interface UserData extends ResponseDataUser {
 }
 
 export interface CreaterUser {
-  id: string
   admin: boolean
   name: string
   password: string
