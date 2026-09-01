@@ -6,8 +6,6 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
-
-
 import { arrayInputList } from '../ArrayInputList'
 import { Button } from '../Button'
 import { ControllerFormInputs } from '../ControllerFormInputs'

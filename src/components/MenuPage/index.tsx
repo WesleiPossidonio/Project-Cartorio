@@ -23,9 +23,7 @@ interface MenuPageProps {
 export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProps) => {
 
   const { userDataLogin } = useUser()
-
   const navigate = useNavigate()
-
   const handleIsSelected = (data: string) => {
     if (data === 'Home') {
       if (setLinkMenuSelected) {

@@ -84,10 +84,15 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
           <TextRegular size="m">Usuários</TextRegular>
         </ContainerButton>
 
-        <ButtonMobile href="#">
-          <PlusCircle size={32} />
-          Requerimentos
-        </ButtonMobile>
+        <ContainerButton
+          selected={menuSelected2}
+          onClick={handleIsSelected2}
+        >
+          <ButtonMobile href="#">
+            <PlusCircle size={32} />
+            Requerimentos
+          </ButtonMobile>
+        </ContainerButton>
 
         <Dialog.Root>
           <Dialog.Trigger asChild>
