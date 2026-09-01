@@ -26,7 +26,7 @@ interface MenuProps {
 export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
   const navigate = useNavigate()
 
-  const { userDataLogin } = useUser()
+  const { userDataLogin, setLinkMenuSelected } = useUser()
 
   useEffect(() => {
     document.body.style.overflowY = menuIsVisible ? 'hidden' : 'auto'
@@ -34,15 +34,18 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
 
   const [menuSelected2, setmenuSelectd2] = useState(false)
 
-  const handleIsSelected2 = () => {
+  const handleIsSelected2 = (data: string) => {
     setMenuIsVisible(false)
     setmenuSelectd2(true)
+    console.log(data)
+    setLinkMenuSelected({page: data, modal: ''})
   }
 
   const handleGoOut = () => {
     localStorage.removeItem('cartorio:userData1.0')
     navigate('/login')
   }
+
   return (
     <Container isVisible={menuIsVisible}>
       <X size={32} onClick={() => setMenuIsVisible(false)} />
@@ -65,7 +68,7 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
           <Dialog.Trigger asChild>
             <ContainerButton
               selected={menuSelected2}
-              onClick={handleIsSelected2}
+               onClick={() =>handleIsSelected2('')}
             >
               <UserCircle size={32} />
               <TextRegular size="l" weight={700}>
@@ -78,7 +81,7 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
 
         <ContainerButton
           selected={menuSelected2}
-          onClick={handleIsSelected2}
+          onClick={() => handleIsSelected2('Usuários')}
         >
           <ClipboardText size={32} />
           <TextRegular size="m">Usuários</TextRegular>
@@ -86,7 +89,7 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
 
         <ContainerButton
           selected={menuSelected2}
-          onClick={handleIsSelected2}
+          onClick={() => handleIsSelected2('Home')}
         >
           <ButtonMobile href="#">
             <PlusCircle size={32} />
@@ -98,7 +101,7 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
           <Dialog.Trigger asChild>
             <ContainerButton
               selected={menuSelected2}
-              onClick={handleIsSelected2}
+              onClick={() =>handleIsSelected2('')}
             >
               <UserCirclePlus size={32} />
               <TextRegular size="l" weight={700}>
@@ -113,7 +116,7 @@ export const MenuMobile = ({ menuIsVisible, setMenuIsVisible }: MenuProps) => {
           <Dialog.Trigger asChild>
             <ContainerButton
               selected={menuSelected2}
-              onClick={handleIsSelected2}
+              onClick={() =>handleIsSelected2('')}
             >
               <PlusCircle size={32} />
               <TextRegular size="l" weight={700}>

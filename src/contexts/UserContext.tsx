@@ -31,6 +31,8 @@ interface UserContextType {
   handleDeleteUser: (id: string) => Promise<void>
   getAllUsers: (page?: number, search?: string) => Promise<void>
   setCurrentPage: React.Dispatch<SetStateAction<number>>
+  setLinkMenuSelected: React.Dispatch<SetStateAction<{ page: string; modal: string }>>
+  linkMenuSelected: { page: string; modal: string }
   pagination: UserPagination
   userDataLogin: ResponseDataUser
   listUsers: UserData[]
@@ -47,7 +49,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   const navigate = useNavigate()
   const [userDataLogin, setUserDataLogin] = useState<ResponseDataUser>(
     {} as ResponseDataUser
-  )  
+  )
   const [listUsers, setListUsers] = useState<UserData[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [pagination, setPagination] = useState<UserPagination>({
@@ -55,6 +57,11 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     limit: 10,
     total: 0,
     totalPages: 0,
+  })
+
+  const [linkMenuSelected, setLinkMenuSelected] = useState({
+    page: 'Home',
+    modal: ''
   })
 
   const getAllUsers = useCallback(
@@ -236,7 +243,8 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         updatePassword,
         handleUpdateUser,
         getAllUsers,
-
+        setLinkMenuSelected,
+        linkMenuSelected,
         listUsers,
         setUserDataLogin,
         handleDeleteUser,

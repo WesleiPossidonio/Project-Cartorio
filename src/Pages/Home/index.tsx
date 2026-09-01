@@ -9,13 +9,12 @@ import {
 } from '../../components'
 import { HeaderContent } from './components/HeaderContent'
 import { ContainerHome, ContainerMainList, Content } from './style'
+import { useUser } from '../../hooks/useUser'
 
 export const Home = () => {
+  const {setLinkMenuSelected, linkMenuSelected} = useUser()
   const [formTable, setFormTable] = useState('')
-  const [linkMenuSelected, setLinkMenuSelected] = useState({
-    page: 'Home',
-    modal: ''
-  })
+
 
   return (
     <ContainerHome>
