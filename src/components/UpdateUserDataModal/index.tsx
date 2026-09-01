@@ -8,21 +8,42 @@ import * as zod from 'zod'
 import { useUser } from '../../hooks/useUser'
 import { Input } from '../Input'
 import { CloseButton, Content, Overlay } from './style'
+import { UpdateUser } from '../../@types/typesUserContext'
+
+
+interface UpdateUserProps {
+  id?: string
+  title: string
+}
 
 const updateUserFormSchema = zod.object({
   name: zod.string().min(3, 'Por gentileza digite o seu nome'),
   email: zod.string().email('Por Favor digite um email válido'),
   password: zod
     .string()
-    .min(6, 'Limite mínimo de 6 digitos')
-    .max(8, 'Limite máximo de 8 digitos'),
+    .min(6, 'Limite mínimo de 6 digitos'),
   registration: zod.string().min(3, 'Por gentileza digite o nº da matricula'),
 })
 
 type UpdateUserFormInputs = zod.infer<typeof updateUserFormSchema>
 
-export const UpdateUserModal = () => {
-  const { handleUpdateUser, userDataLogin } = useUser()
+export const UpdateUserModal = ({ id, title }: UpdateUserProps) => {
+const { handleUpdateUser, userDataLogin, listUsers } = useUser()
+
+const userDataSelected = listUsers.find(
+  (user) => user.id === id
+)
+
+const user = userDataSelected ?? userDataLogin
+
+const userData: UpdateUser = {
+  id: user.id,
+  name: user.name,
+  email: user.email,
+  password: '',
+  registration: user.registration,
+}
+
   const {
     register,
     handleSubmit,
@@ -35,8 +56,8 @@ export const UpdateUserModal = () => {
   const handleCreateNewUser = async (data: UpdateUserFormInputs) => {
     const { email, name, password, registration } = data
 
-
     await handleUpdateUser({
+      id: userDataLogin.id,
       email,
       name,
       password,
@@ -49,7 +70,7 @@ export const UpdateUserModal = () => {
     <Dialog.Portal>
       <Overlay />
       <Content>
-        <Dialog.Title>Meus Dados</Dialog.Title>
+        <Dialog.Title>{title}</Dialog.Title>
         <CloseButton>
           <X size={24} />
         </CloseButton>
@@ -57,7 +78,7 @@ export const UpdateUserModal = () => {
           <Input
             type="text"
             placeholder="Nome"
-            defaultValue={userDataLogin.name}
+            defaultValue={userData.name}
             {...register('name')}
             error={errors.name?.message}
           />
@@ -65,20 +86,20 @@ export const UpdateUserModal = () => {
           <Input
             type="text"
             placeholder="Email"
-            defaultValue={userDataLogin.email}
+            defaultValue={userData.email}
             {...register('email')}
             error={errors.email?.message}
           />
           <Input
             type="text"
             placeholder="Nº Matricula"
-            defaultValue={userDataLogin.registration}
+            defaultValue={userData.registration}
             {...register('registration')}
             error={errors.registration?.message}
           />
 
           <Input
-            type="text"
+            type="password"
             placeholder="Senha"
             {...register('password')}
             error={errors.password?.message}

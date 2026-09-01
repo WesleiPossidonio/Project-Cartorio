@@ -22,7 +22,7 @@ import {
   Overlay,
 } from './style'
 
-import { ListRequerimentProps } from '../../@types/typesRequerimentContest'
+import { ListRequerimentProps } from '../../@types/typesRequerimentContext'
 import { CreateRequerimentFormInputs, CreateRequerimentFormSchema } from '../CreateRequerimentModal/Components/CreateRequeriment'
 import api from '../../services/api'
 

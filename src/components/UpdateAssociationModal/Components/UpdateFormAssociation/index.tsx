@@ -13,7 +13,7 @@ import { formatCpfCnpj } from '../../../formatCpfCnpj'
 import { Input } from '../../../Input'
 
 import { ButtonHome, ContainerForm, SectionCreateRequirement } from './styled'
-import { AssociationProps } from '../../../../@types/typesRequerimentContest'
+import { AssociationProps } from '../../../../@types/typesRequerimentContext'
 
 export const UpdateAssociationFormSchema = zod.object({
   nome_da_instituicao: zod.string().nonempty('Digite o nome da instituição'),

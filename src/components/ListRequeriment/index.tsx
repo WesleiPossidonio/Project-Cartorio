@@ -16,6 +16,7 @@ import {
   ListChecks,
   PaperPlaneTilt,
   Printer,
+  Trash,
 } from 'phosphor-react'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
@@ -28,7 +29,7 @@ import { useUser } from '../../hooks/useUser'
 
 import { pdf } from '@react-pdf/renderer'
 
-import { AssociationProps } from '../../@types/typesRequerimentContest'
+import { AssociationProps } from '../../@types/typesRequerimentContext'
 
 import {
   ListRequerimentTable,
@@ -42,6 +43,7 @@ export const TableRequeriment = () => {
     paginationPendingRequirements,
     currentPagePendingRequirements,
     setCurrentPagePendingRequirements,
+    haldleDeleteRequeriment,
     dataListPendingRequirements,
     sendMail,
   } = useRequeriment()
@@ -213,6 +215,17 @@ export const TableRequeriment = () => {
                     }
                   >
                     <PaperPlaneTilt size={29} />
+                  </TableContentList>
+
+                  <TableContentList
+                    onClick={() => {
+                      const exigenciaId = data.exigencia?.id
+                      if (exigenciaId !== undefined) {
+                        haldleDeleteRequeriment(exigenciaId)
+                      }
+                    }}
+                  >
+                    <Trash size={29} />
                   </TableContentList>
                 </TableRowContentList>
               )

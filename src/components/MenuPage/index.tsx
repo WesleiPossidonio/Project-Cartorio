@@ -5,7 +5,7 @@ import {
   UserCircle,
   UserCirclePlus,
 } from 'phosphor-react'
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useUser } from '../../hooks/useUser'
@@ -15,8 +15,12 @@ import { TextRegular } from '../typography'
 import { UpdateUserModal } from '../UpdateUserDataModal'
 import { ContainerButton, MenuContainer } from './style'
 
-export const MenuPage = () => {
-  const [linkMenuSelected, setLinkMenuSelected] = useState('')
+interface MenuPageProps {
+  setLinkMenuSelected: React.Dispatch<React.SetStateAction<{ page: string; modal: string }>>
+  linkMenuSelected: { page: string; modal: string }
+}
+
+export const MenuPage = ({ setLinkMenuSelected, linkMenuSelected }: MenuPageProps) => {
 
   const { userDataLogin } = useUser()
 
@@ -24,17 +28,20 @@ export const MenuPage = () => {
 
   const handleIsSelected = (data: string) => {
     if (data === 'Home') {
-      setLinkMenuSelected(data)
+      setLinkMenuSelected({ page: data, modal: '' })
       navigate('/')
     }
+    if(data === 'Usuários'){
+      setLinkMenuSelected({ page: data, modal: '' })
+    }
     if (data === 'addUser') {
-      setLinkMenuSelected(data)
+      setLinkMenuSelected({ page: 'Home', modal: data })
     }
     if (data === 'addRequeriment') {
-      setLinkMenuSelected(data)
+      setLinkMenuSelected({ page: 'Home', modal: data })
     }
     if (data === 'UpdateDataUser') {
-      setLinkMenuSelected(data)
+      setLinkMenuSelected({ page: 'Home', modal: data })
     }
   }
 
@@ -43,28 +50,37 @@ export const MenuPage = () => {
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <ContainerButton
-            selected={linkMenuSelected === 'UpdateDataUser' && true}
+            selected={linkMenuSelected.modal === 'UpdateDataUser' && true}
             onClick={() => handleIsSelected('UpdateDataUser')}
           >
             <UserCircle size={32} />
             <TextRegular size="m">Meus Dados</TextRegular>
           </ContainerButton>
         </Dialog.Trigger>
-        <UpdateUserModal />
+        <UpdateUserModal title='Meus Dados' />
       </Dialog.Root>
 
       <ContainerButton
-        selected={linkMenuSelected === 'Home' && true}
+        selected={linkMenuSelected.page === 'Usuários' && true}
+        onClick={() => handleIsSelected('Usuários')}
+      >
+        <ClipboardText size={32} />
+        <TextRegular size="m">Usuários</TextRegular>
+      </ContainerButton>
+
+      <ContainerButton
+        selected={linkMenuSelected.page === 'Home' && true}
         onClick={() => handleIsSelected('Home')}
       >
         <ClipboardText size={32} />
         <TextRegular size="m">Requerimentos</TextRegular>
       </ContainerButton>
+
       {userDataLogin.admin && (
         <Dialog.Root>
           <Dialog.Trigger asChild>
             <ContainerButton
-              selected={linkMenuSelected === 'addUser' && true}
+              selected={linkMenuSelected.modal === 'addUser' && true}
               onClick={() => handleIsSelected('addUser')}
               isUserAdmin={userDataLogin.admin}
             >
@@ -79,7 +95,7 @@ export const MenuPage = () => {
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <ContainerButton
-            selected={linkMenuSelected === 'addRequeriment' && true}
+            selected={linkMenuSelected.modal === 'addRequeriment' && true}
             onClick={() => handleIsSelected('addRequeriment')}
           >
             <PlusCircle size={32} />

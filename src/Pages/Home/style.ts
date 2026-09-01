@@ -8,7 +8,7 @@ export const ContainerHome = styled.section`
   justify-content: center;
 `
 
-export const ContentRequeriement = styled.main`
+export const Content = styled.main`
   position: fixed;
   top: 6rem;
   bottom: 0;

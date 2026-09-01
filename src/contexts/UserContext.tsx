@@ -11,45 +11,16 @@ import { toast } from 'react-toastify'
 
 import api from '../services/api'
 import { decodeToken } from '../utils/DecodeToken'
-
-interface UserLoginProps {
-  name: string
-  password: string
-}
-
-export interface ResponseDataUser {
-  admin: boolean
-  registration: string
-  name: string
-  token: string
-  email: string
-}
-
-interface CreaterUser {
-  admin: boolean
-  name: string
-  password: string
-  registration: string
-  email: string
-}
-
-interface UpdateUser {
-  name: string
-  password: string
-  registration: string
-  email: string
-}
-
-interface ConfirmMailProps {
-  email: string
-}
-
-interface UpdatePasswordProps {
-  password: string
-  confirmPassword: string
-  updateNumber: string
-}
-
+import { 
+  ConfirmMailProps, 
+  CreaterUser, 
+  ResponseDataUser, 
+  UpdatePasswordProps, 
+  UpdateUser, 
+  UserData, 
+  UserLoginProps, 
+  UserPagination 
+} from '../@types/typesUserContext'
 interface UserContextType {
   handleCreateUser: (data: CreaterUser) => Promise<void>
   handleLoginUser: (data: UserLoginProps) => Promise<void>
@@ -57,7 +28,13 @@ interface UserContextType {
   updatePassword: (data: UpdatePasswordProps) => Promise<void>
   handleUpdateUser: (data: UpdateUser) => Promise<void>
   setUserDataLogin: React.Dispatch<SetStateAction<ResponseDataUser>>
+  handleDeleteUser: (id: string) => Promise<void>
+  getAllUsers: (page?: number, search?: string) => Promise<void>
+  setCurrentPage: React.Dispatch<SetStateAction<number>>
+  pagination: UserPagination
   userDataLogin: ResponseDataUser
+  listUsers: UserData[]
+  currentPage: number
 }
 
 interface UserContextProviderProps {
@@ -70,7 +47,48 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   const navigate = useNavigate()
   const [userDataLogin, setUserDataLogin] = useState<ResponseDataUser>(
     {} as ResponseDataUser
+  )  
+  const [listUsers, setListUsers] = useState<UserData[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pagination, setPagination] = useState<UserPagination>({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+  })
+
+  const getAllUsers = useCallback(
+    async (page = 1, search = '') => {
+      try {
+        const response = await api.get('users', {
+          params: {
+            page,
+            limit: 10,
+            search: search.trim() || undefined,
+          },
+        })
+  
+        const { usersData, total, currentPage, totalPages } =
+          response.data
+  
+        setListUsers(usersData)
+  
+        setPagination({
+          page: currentPage,
+          limit: 10,
+          total,
+          totalPages,
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    []
   )
+
+  useEffect(() => {
+    getAllUsers()
+  }, [getAllUsers])
 
   const handleLoginUser = useCallback(
     async (data: UserLoginProps) => {
@@ -195,6 +213,19 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
   }, [])
 
+  const handleDeleteUser = useCallback(async (id: string) => {
+    try {
+      await toast.promise(api.delete(`users/${id}`), {
+        pending: 'Deletando Usuário',
+        success: 'Usuário Deletado com Sucesso!',
+        error: 'Ops! Verifique os Dados Digitados',
+      })
+      setListUsers((prevList) => prevList.filter((user) => user.id !== id))
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
   return (
     <UserContext.Provider
       value={{
@@ -204,7 +235,14 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         confirmMail,
         updatePassword,
         handleUpdateUser,
+        getAllUsers,
+
+        listUsers,
         setUserDataLogin,
+        handleDeleteUser,
+        currentPage,
+        setCurrentPage,
+        pagination,
       }}
     >
       {children}

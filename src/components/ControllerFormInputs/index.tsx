@@ -23,7 +23,7 @@ import {
   DivergenteInfoContainer,
   SelectedStateInfoDivergente,
 } from './styled'
-import { ListRequerimentProps } from '../../@types/typesRequerimentContest'
+import { ListRequerimentProps } from '../../@types/typesRequerimentContext'
 
 interface StateInputListProps {
   id: string

@@ -10,7 +10,7 @@ import {
   HeaderModal,
   TextListModal,
 } from './styled'
-import { AssociationProps } from '../../../../@types/typesRequerimentContest'
+import { AssociationProps } from '../../../../@types/typesRequerimentContext'
 
 interface ListRequerimentCompletedProps {
   RequerimentCompleted?: AssociationProps

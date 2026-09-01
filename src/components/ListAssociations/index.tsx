@@ -15,6 +15,7 @@ import {
   Check,
   FilePlus,
   PaperPlaneTilt,
+  Trash,
 } from 'phosphor-react'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
@@ -37,6 +38,7 @@ export const TableAssociation = () => {
     setCurrentPageWithoutRequirement,
     sendMail,
     handleUpdateAssociation,
+    handleDeleteAssociation
   } = useRequeriment()
 
 
@@ -155,6 +157,14 @@ export const TableAssociation = () => {
                 }
               >
                 <Check size={29} />
+              </TableContentList>
+
+              <TableContentList
+                onClick={() =>
+                  handleDeleteAssociation(data.id)
+                }
+              >
+                <Trash size={29} />
               </TableContentList>
             </TableRowContentList>
           ))}

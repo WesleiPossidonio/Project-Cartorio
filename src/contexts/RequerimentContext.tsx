@@ -26,7 +26,7 @@ import {
   UpdateAssociationProps,
   UpdateListProps,
   UpdatestatusProps,
-} from '../@types/typesRequerimentContest'
+} from '../@types/typesRequerimentContext'
 
 interface RequerimentContextType {
   dataListRequeriment: ListRequerimentProps[]
@@ -63,6 +63,8 @@ interface RequerimentContextType {
   setCurrentPageCompletedAssociations: (page: number) => void
   getPendingRequirements: (page?: number, search?: string) => Promise<void>
   getCompletedAssociations: (page?: number, search?: string) => Promise<void>
+  haldleDeleteRequeriment: (id: number) => Promise<void>
+  handleDeleteAssociation: (id: number) => Promise<void>
 }
 
 interface RequerimentProviderProps {
@@ -163,7 +165,6 @@ export const RequerimentContextProvider = ({
 
   const getAssociationListPending = useCallback(
     async (page = 1, search: string) => {
-         console.log(dataInputSearchRequirement, search)
       try {
         const response = await api.get(
           'association/pending',
@@ -933,122 +934,215 @@ export const RequerimentContextProvider = ({
     ],
   )
 
-const updateRequeriment = useCallback(
-  async (data: UpdateListProps) => {
-    const currentDate = new Date()
-
-    const dataString = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`
-
-    const { name, registration } = userDataLogin
-
-    const dataRequerimentUpdated = {
-      id: data.id,
-      assinatura_do_advogado: data.assinatura_do_advogado,
-      campo_de_assinatura: data.campo_de_assinatura,
-      data_atualizacao: dataString,
-      data_da_recepcao: data.data_da_recepcao,
-      declaracao_criminal: data.declaracao_criminal,
-      declaracao_de_desimpedimento:
-        data.declaracao_de_desimpedimento,
-      declaracao_sindical: data.documento_inelegivel,
-      dissolucao_ou_exticao: data.dissolucao_ou_exticao,
-      documentacao_de_identificacao:
-        data.documentacao_de_identificacao,
-      fundacoes: data.fundacoes,
-      exigencias_id: data.exigencias_id,
-      informacao_divergente: data.informacao_divergente,
-      lista_e_edital: data.lista_e_edital,
-      livro_rasao: data.livro_rasao,
-      oab: data.oab,
-      ppe: data.ppe,
-      preechimento_completo: data.preechimento_completo,
-      reconhecimento_de_firma:
-        data.reconhecimento_de_firma,
-      requisitos_criacao_de_estatuto:
-        data.requisitos_criacao_de_estatuto,
-      requisitos_de_estatutos_fundadores:
-        data.requisitos_de_estatutos_fundadores,
-      requisitos_estatuto: data.requisitos_estatuto,
-      retificacao_de_redacao:
-        data.retificacao_de_redacao,
-      requerimento_eletronico_rcpj:
-        data.requerimento_eletronico_rcpj,
-    }
-
-    const filteredAssociation = findAssociationById(data.id)
-
-    try {
-      const updateRequermentResponse =
-        await toast.promise(
-          api.put(
-            `updateRequeriment/${dataRequerimentUpdated.id}`,
-            dataRequerimentUpdated,
+  const updateRequeriment = useCallback(
+    async (data: UpdateListProps) => {
+      const currentDate = new Date()
+  
+      const dataString = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`
+  
+      const { name, registration } = userDataLogin
+  
+      const dataRequerimentUpdated = {
+        id: data.id,
+        assinatura_do_advogado: data.assinatura_do_advogado,
+        campo_de_assinatura: data.campo_de_assinatura,
+        data_atualizacao: dataString,
+        data_da_recepcao: data.data_da_recepcao,
+        declaracao_criminal: data.declaracao_criminal,
+        declaracao_de_desimpedimento:
+          data.declaracao_de_desimpedimento,
+        declaracao_sindical: data.documento_inelegivel,
+        dissolucao_ou_exticao: data.dissolucao_ou_exticao,
+        documentacao_de_identificacao:
+          data.documentacao_de_identificacao,
+        fundacoes: data.fundacoes,
+        exigencias_id: data.exigencias_id,
+        informacao_divergente: data.informacao_divergente,
+        lista_e_edital: data.lista_e_edital,
+        livro_rasao: data.livro_rasao,
+        oab: data.oab,
+        ppe: data.ppe,
+        preechimento_completo: data.preechimento_completo,
+        reconhecimento_de_firma:
+          data.reconhecimento_de_firma,
+        requisitos_criacao_de_estatuto:
+          data.requisitos_criacao_de_estatuto,
+        requisitos_de_estatutos_fundadores:
+          data.requisitos_de_estatutos_fundadores,
+        requisitos_estatuto: data.requisitos_estatuto,
+        retificacao_de_redacao:
+          data.retificacao_de_redacao,
+        requerimento_eletronico_rcpj:
+          data.requerimento_eletronico_rcpj,
+      }
+  
+      const filteredAssociation = findAssociationById(data.id)
+  
+      try {
+        const updateRequermentResponse =
+          await toast.promise(
+            api.put(
+              `updateRequeriment/${dataRequerimentUpdated.id}`,
+              dataRequerimentUpdated,
+            ),
+            {
+              pending: 'Verificando seus dados',
+              success: 'Exigência atualizada com sucesso!',
+              error: 'Ops! Verifique os dados digitados',
+            },
+          )
+  
+        const { data: updatedRequeriment } =
+          updateRequermentResponse
+  
+        setDataListRequeriment((prev) => [
+          ...prev,
+          updatedRequeriment,
+        ])
+  
+        if (filteredAssociation) {
+          const date = format(
+            new Date(
+              updatedRequeriment.updatedAt ??
+                updatedRequeriment.updateAt ??
+                new Date(),
+            ),
+            'dd/MM/yyyy',
+            {
+              locale: ptBR,
+            },
+          )
+  
+          await sendMailRequeriment({
+            ...filteredAssociation,
+            name,
+            registration,
+            itens_da_lista_pendetes:
+              updatedRequeriment,
+            data_da_recepcao: date,
+          })
+        }
+  
+        await Promise.all([
+          getPendingRequirements(
+            currentPagePendingRequirements,
+            dataInputSearchRequirement,
           ),
+          getCompletedAssociations(
+            currentPageCompletedAssociations,
+            dataInputSearchConcluted,
+          ),
+        ])
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [
+      userDataLogin,
+      findAssociationById,
+      sendMailRequeriment,
+      getPendingRequirements,
+      getCompletedAssociations,
+      currentPagePendingRequirements,
+      currentPageCompletedAssociations,
+      dataInputSearchRequirement,
+      dataInputSearchConcluted,
+    ],
+  )
+
+  const haldleDeleteRequeriment = useCallback(
+    async (id: number) => {
+      try {
+        await toast.promise(
+          api.delete(`requeriment/${id}`),
           {
             pending: 'Verificando seus dados',
-            success: 'Exigência atualizada com sucesso!',
+            success: 'Exigência deletada com sucesso!',
             error: 'Ops! Verifique os dados digitados',
           },
         )
 
-      const { data: updatedRequeriment } =
-        updateRequermentResponse
-
-      setDataListRequeriment((prev) => [
-        ...prev,
-        updatedRequeriment,
-      ])
-
-      if (filteredAssociation) {
-        const date = format(
-          new Date(
-            updatedRequeriment.updatedAt ??
-              updatedRequeriment.updateAt ??
-              new Date(),
+        setDataListRequeriment((prev) =>
+          prev.filter(
+            (requeriment) => requeriment.id !== id,
           ),
-          'dd/MM/yyyy',
+        )
+
+        await Promise.all([
+          getPendingRequirements(
+            currentPagePendingRequirements,
+            dataInputSearchRequirement,
+          ),
+          getCompletedAssociations(
+            currentPageCompletedAssociations,
+            dataInputSearchConcluted,
+          ),
+        ])
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [
+      getPendingRequirements,
+      getCompletedAssociations,
+      currentPagePendingRequirements,
+      currentPageCompletedAssociations,
+      dataInputSearchRequirement,
+      dataInputSearchConcluted,
+    ],
+  )
+
+  const handleDeleteAssociation = useCallback(
+    async (id: number) => {
+      try {
+        await toast.promise(
+          api.delete(`association/${id}`),
           {
-            locale: ptBR,
+            pending: 'Verificando seus dados',
+            success: 'Associação deletada com sucesso!',
+            error: 'Ops! Verifique os dados digitados',
           },
         )
 
-        await sendMailRequeriment({
-          ...filteredAssociation,
-          name,
-          registration,
-          itens_da_lista_pendetes:
-            updatedRequeriment,
-          data_da_recepcao: date,
-        })
+        setDataListAssociationWithoutRequirement(
+          (prev) =>
+            prev.filter(
+              (association) =>
+                association.id !== id,
+            ),
+        )
+
+        await Promise.all([
+          getAssociationListPending(
+            currentPageWithoutRequirement,
+            dataInputSearchAssociation,
+          ),
+          getPendingRequirements(
+            currentPagePendingRequirements,
+            dataInputSearchRequirement,
+          ),
+          getCompletedAssociations(
+            currentPageCompletedAssociations,
+            dataInputSearchConcluted,
+          ),
+        ])
+      } catch (error) {
+        console.log(error)
       }
-
-      await Promise.all([
-        getPendingRequirements(
-          currentPagePendingRequirements,
-          dataInputSearchRequirement,
-        ),
-        getCompletedAssociations(
-          currentPageCompletedAssociations,
-          dataInputSearchConcluted,
-        ),
-      ])
-    } catch (error) {
-      console.log(error)
-    }
-  },
-  [
-    userDataLogin,
-    findAssociationById,
-    sendMailRequeriment,
-    getPendingRequirements,
-    getCompletedAssociations,
-    currentPagePendingRequirements,
-    currentPageCompletedAssociations,
-    dataInputSearchRequirement,
-    dataInputSearchConcluted,
-  ],
-)
-
+    },
+    [
+      getAssociationListPending,
+      getPendingRequirements,
+      getCompletedAssociations,
+      currentPageWithoutRequirement,
+      currentPagePendingRequirements,
+      currentPageCompletedAssociations,
+      dataInputSearchAssociation,
+      dataInputSearchRequirement,
+      dataInputSearchConcluted,
+    ],
+  )
+  
   return (
     <RequerimentContext.Provider
       value={{
@@ -1093,6 +1187,8 @@ const updateRequeriment = useCallback(
         setCurrentPageWithoutRequirement,
         setCurrentPagePendingRequirements,
         setCurrentPageCompletedAssociations,
+        haldleDeleteRequeriment,
+        handleDeleteAssociation
       }}
     >
       {children}

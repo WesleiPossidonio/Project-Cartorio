@@ -18,7 +18,7 @@ import {
   TableContentList,
   TableRowContentList,
 } from './style'
-import { AssociationProps } from '../../@types/typesRequerimentContest'
+import { AssociationProps } from '../../@types/typesRequerimentContext'
 
 export const TableRequerimentCompleted = () => {
   const {
