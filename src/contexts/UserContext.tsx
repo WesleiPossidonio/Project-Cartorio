@@ -137,7 +137,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const { password, admin, name, registration, email } = data
 
     try {
-      await toast.promise(
+    const response =  await toast.promise(
         api.post('users', { password, admin, name, registration, email }),
         {
           pending: 'Enviando Dados',
@@ -145,6 +145,8 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
           error: 'Usuário existente Verifique seu email e senha 🤯',
         }
       )
+
+      setListUsers((prevList: UserData[]) => [...prevList, response.data])
     } catch (error) {
       console.log(error)
     }

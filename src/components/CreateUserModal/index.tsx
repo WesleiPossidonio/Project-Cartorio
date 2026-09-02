@@ -22,8 +22,7 @@ const createUserFormSchema = zod.object({
   email: zod.string().email('Por Favor digite um email válido'),
   password: zod
     .string()
-    .min(6, 'Limite Minímo de seis digitos')
-    .max(8, 'Limite Máximo de seis digitos'),
+    .min(6, 'Limite Minímo de seis digitos'),
   registration: zod.string().min(3, 'Por gentileza digite o nº da matricula'),
 })
 
