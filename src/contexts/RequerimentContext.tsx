@@ -63,6 +63,7 @@ interface RequerimentContextType {
   setCurrentPageCompletedAssociations: (page: number) => void
   getPendingRequirements: (page?: number, search?: string) => Promise<void>
   getCompletedAssociations: (page?: number, search?: string) => Promise<void>
+  getAssociationListPending: (page?: number, search?: string) => Promise<void>
   haldleDeleteRequeriment: (id: number) => Promise<void>
   handleDeleteAssociation: (id: number) => Promise<void>
 }
@@ -164,7 +165,7 @@ export const RequerimentContextProvider = ({
   const { userDataLogin } = useUser()
 
   const getAssociationListPending = useCallback(
-    async (page = 1, search: string) => {
+    async (page = 1, search = '') => {
       try {
         const response = await api.get(
           'association/pending',
@@ -1153,24 +1154,15 @@ export const RequerimentContextProvider = ({
         dataInputSearchAssociation,
         paginationWithoutRequirement,
         currentPageWithoutRequirement,
-
-        /*
-         * Requerimentos pendentes
-         */
         dataListPendingRequirements,
         dataInputSearchRequirement,
         paginationPendingRequirements,
         currentPagePendingRequirements,
         setDataListPendingRequirements,
-
-        /*
-         * Concluídos
-         */
         dataListCompletedAssociations,
         dataInputSearchConcluted,
         paginationCompletedAssociations,
         currentPageCompletedAssociations,
-
         CreateRequeriment,
         setSelectAListRequeriment,
         updateRequeriment,
@@ -1180,10 +1172,9 @@ export const RequerimentContextProvider = ({
         handleUpdateStatus,
         searchFunction,
         handleUpdateAssociation,
-
+getAssociationListPending,
         getPendingRequirements,
         getCompletedAssociations,
-
         setCurrentPageWithoutRequirement,
         setCurrentPagePendingRequirements,
         setCurrentPageCompletedAssociations,
