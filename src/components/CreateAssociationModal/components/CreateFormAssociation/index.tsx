@@ -174,24 +174,30 @@ export const FormCreateAssociation = () => {
         </ContainerForm>
 
         <div className="PdfContainer">
-          <PDFDownloadLink
-            document={
-              <CreateAssociationPdfList
-                data={requestListDataPDF}
-                dataUser={userDataLogin}
-              />
-            }
-            fileName={`exigencia${requestListDataPDF?.nome_da_instituicao}.pdf`}
-          >
-            {({ loading }: { loading: boolean }) =>
-              loading ? (
-                <ButtonHome type="button">Carregando PDF</ButtonHome>
-              ) : (
-                <ButtonHome type="button">Imprimir</ButtonHome>
-              )
-            }
-          </PDFDownloadLink>
-        </div>
+           {requestListDataPDF && (
+             <PDFDownloadLink
+               document={
+                 <CreateAssociationPdfList
+                   data={requestListDataPDF}
+                   dataUser={userDataLogin}
+                 />
+               }
+               fileName={`exigencia${requestListDataPDF.nome_da_instituicao}.pdf`}
+             >
+               {({ loading }: { loading: boolean }) =>
+                 loading ? (
+                   <ButtonHome type="button">
+                     Carregando PDF
+                   </ButtonHome>
+                 ) : (
+                   <ButtonHome type="button">
+                     Imprimir
+                   </ButtonHome>
+                 )
+               }
+             </PDFDownloadLink>
+           )}
+          </div>
 
         <Button type="submit" disabled={isSubmitting} buttonSubmit>
           Enviar Dados

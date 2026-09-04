@@ -269,12 +269,6 @@ export const CreateAssociationPdfList = ({ data, dataUser }: DataProps) => {
                 [ ] Preencher todos os campos de assinatura
               </Text>
             )}
-
-            {data?.exigencia?.informacao_divergente?.state === 'Pendente' && (
-              <Text style={styles.text}>
-                [ ] {data?.exigencia?.informacao_divergente?.info}
-              </Text>
-            )}
           </View>
         )}
 

@@ -197,23 +197,29 @@ export const ListRequerimentCompleted = ({
         </ContainerRequeriments>
 
         <div className="PdfContainer">
-          <PDFDownloadLink
-            document={
-              <CreateRequerimentConclutedPdf
-                data={RequerimentCompleted}
-                dataUser={userDataLogin}
-              />
-            }
-            fileName={`exigencia${RequerimentCompleted?.numero_do_protocolo}.pdf`}
-          >
-            {({ loading }: { loading: boolean }) =>
-              loading ? (
-                <Button type="button">Carregando PDF</Button>
-              ) : (
-                <Button type="button">Imprimir</Button>
-              )
-            }
-          </PDFDownloadLink>
+          {RequerimentCompleted && (
+            <PDFDownloadLink
+              document={
+                <CreateRequerimentConclutedPdf
+                  data={RequerimentCompleted}
+                  dataUser={userDataLogin}
+                />
+              }
+              fileName={`exigencia${RequerimentCompleted.numero_do_protocolo}.pdf`}
+            >
+              {({ loading }: { loading: boolean }) =>
+                loading ? (
+                  <Button type="button">
+                    Carregando PDF
+                  </Button>
+                ) : (
+                  <Button type="button">
+                    Imprimir
+                  </Button>
+                )
+              }
+            </PDFDownloadLink>
+          )}
         </div>
       </ContainerModal>
     </div>

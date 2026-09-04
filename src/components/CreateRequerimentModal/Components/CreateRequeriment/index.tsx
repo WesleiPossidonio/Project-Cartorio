@@ -232,27 +232,33 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
           requerimentSelected={requerimentSelected}
         />
 
-        <div className="PdfContainer">
+        {(requestListDataPDF || RequerimentSelected) && (
           <PDFDownloadLink
             document={
               <CreateAssociationPdfList
-                data={requestListDataPDF || RequerimentSelected}
+                data={requestListDataPDF || RequerimentSelected!}
                 dataUser={userDataLogin}
               />
             }
-            fileName={`exigencia${requestListDataPDF?.numero_do_protocolo ||
-              RequerimentSelected?.numero_do_protocolo
-              }.pdf`}
+            fileName={`exigencia${
+              requestListDataPDF?.numero_do_protocolo ||
+              RequerimentSelected?.numero_do_protocolo ||
+              ''
+            }.pdf`}
           >
             {({ loading }: { loading: boolean }) =>
               loading ? (
-                <ButtonHome type="button">Carregando PDF</ButtonHome>
+                <ButtonHome type="button">
+                  Carregando PDF
+                </ButtonHome>
               ) : (
-                <ButtonHome type="button">Imprimir</ButtonHome>
+                <ButtonHome type="button">
+                  Imprimir
+                </ButtonHome>
               )
             }
           </PDFDownloadLink>
-        </div>
+        )}
 
         <Button type="submit" disabled={isSubmitting} buttonSubmit>
           Enviar Dados
