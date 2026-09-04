@@ -207,17 +207,9 @@ export const ListRequerimentCompleted = ({
               }
               fileName={`exigencia${RequerimentCompleted.numero_do_protocolo}.pdf`}
             >
-              {({ loading }: { loading: boolean }) =>
-                loading ? (
-                  <Button type="button">
-                    Carregando PDF
-                  </Button>
-                ) : (
-                  <Button type="button">
-                    Imprimir
-                  </Button>
-                )
-              }
+              <Button type="button">
+                Imprimir
+              </Button>
             </PDFDownloadLink>
           )}
         </div>
