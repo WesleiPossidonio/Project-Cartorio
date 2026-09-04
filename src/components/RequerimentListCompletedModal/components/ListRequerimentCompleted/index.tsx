@@ -120,12 +120,6 @@ export const ListRequerimentCompleted = ({
               <span>(CNCGJ Art. 941)</span>
             </TextListModal>
           )}
-          {RequerimentCompleted?.exigencia?.informacao_divergente?.state !==
-            'Pendente' && (
-              <TextListModal>
-                {RequerimentCompleted?.exigencia?.informacao_divergente?.info}
-              </TextListModal>
-            )}
           {RequerimentCompleted?.exigencia?.lista_e_edital === 'Recebido' && (
             <TextListModal>
               Apresentar lista de presença e edital;
@@ -212,7 +206,7 @@ export const ListRequerimentCompleted = ({
             }
             fileName={`exigencia${RequerimentCompleted?.numero_do_protocolo}.pdf`}
           >
-            {({ loading }) =>
+            {({ loading }: { loading: boolean }) =>
               loading ? (
                 <Button type="button">Carregando PDF</Button>
               ) : (

@@ -244,7 +244,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
               RequerimentSelected?.numero_do_protocolo
               }.pdf`}
           >
-            {({ loading }) =>
+            {({ loading }: { loading: boolean }) =>
               loading ? (
                 <ButtonHome type="button">Carregando PDF</ButtonHome>
               ) : (

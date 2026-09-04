@@ -183,7 +183,7 @@ export const FormCreateAssociation = () => {
             }
             fileName={`exigencia${requestListDataPDF?.nome_da_instituicao}.pdf`}
           >
-            {({ loading }) =>
+            {({ loading }: { loading: boolean }) =>
               loading ? (
                 <ButtonHome type="button">Carregando PDF</ButtonHome>
               ) : (
