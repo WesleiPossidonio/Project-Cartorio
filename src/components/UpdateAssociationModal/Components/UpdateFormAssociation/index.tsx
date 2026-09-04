@@ -1,35 +1,28 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PDFDownloadLink } from '@react-pdf/renderer'
 import { useForm, Controller } from 'react-hook-form'
 import * as zod from 'zod'
 import { useEffect } from 'react'
 
 import { useRequeriment } from '../../../../hooks/useRequeriment'
-import { useUser } from '../../../../hooks/useUser'
 
 import { Button } from '../../../Button'
-import { CreateAssociationPdfList } from '../../../CreateAssociationPdfLIst'
 import { formatCpfCnpj } from '../../../formatCpfCnpj'
 import { Input } from '../../../Input'
 
-import { ButtonHome, ContainerForm, SectionCreateRequirement } from './styled'
+import { ContainerForm, SectionCreateRequirement } from './styled'
 import { AssociationProps } from '../../../../@types/typesRequerimentContext'
 
 export const UpdateAssociationFormSchema = zod.object({
   nome_da_instituicao: zod.string().nonempty('Digite o nome da instituição'),
   nome_do_representante: zod.string().nonempty('Digite o nome do representante'),
-
   cnpj_cpf: zod
     .string()
     .min(11, 'CPF/CNPJ inválido')
     .max(18, 'CPF/CNPJ inválido'),
-
   sobre_exigencia: zod.string().min(4, 'Digite sobre o serviço'),
-
   email_do_representante: zod
     .string()
     .email('Digite um email válido'),
-
   telefone_contato: zod
     .string()
     .min(11, 'Telefone inválido')
@@ -48,15 +41,13 @@ export const FormUpdateAssociation = ({
   dataAssociation,
 }: FormUpdateAssociationProps) => {
 
-  const { requestListDataPDF, handleUpdateAssociation } = useRequeriment()
-  const { userDataLogin } = useUser()
+  const { handleUpdateAssociation } = useRequeriment()
 
   const {
     control,
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<UpdateAssociationFormInputs>({
     resolver: zodResolver(UpdateAssociationFormSchema),
@@ -76,14 +67,6 @@ export const FormUpdateAssociation = ({
     }
   }, [dataAssociation, reset])
 
-  const formValues = watch()
-
-  const pdfData: AssociationProps | undefined = dataAssociation
-    ? {
-      ...dataAssociation,
-      ...formValues,
-    }
-    : undefined
 
   const handleAddAssociation = async (data: UpdateAssociationFormInputs) => {
     if (!dataAssociation?.id) return
@@ -149,32 +132,6 @@ export const FormUpdateAssociation = ({
           />
 
         </ContainerForm>
-
-        <div className="PdfContainer">
-          <PDFDownloadLink
-            document={
-              <CreateAssociationPdfList
-                data={pdfData}
-                dataUser={userDataLogin}
-              />
-            }
-            fileName={`exigencia-${requestListDataPDF?.numero_do_protocolo ||
-              dataAssociation?.numero_do_protocolo
-              }.pdf`}
-          >
-            {({ loading }) =>
-              loading ? (
-                <ButtonHome type="button">
-                  Carregando PDF
-                </ButtonHome>
-              ) : (
-                <ButtonHome type="button">
-                  Imprimir
-                </ButtonHome>
-              )
-            }
-          </PDFDownloadLink>
-        </div>
 
         <Button type="submit" disabled={isSubmitting} buttonSubmit>
           Atualizar Dados
