@@ -36,7 +36,7 @@ export const TableAssociation = () => {
     paginationWithoutRequirement,
     dataListAssociationWithoutRequirement,
     setCurrentPageWithoutRequirement,
-    sendMail,
+    sendMailAssociation,
     handleUpdateAssociation,
     handleDeleteAssociation
   } = useRequeriment()
@@ -146,7 +146,13 @@ export const TableAssociation = () => {
               </Dialog.Root>
 
               <TableContentList
-                onClick={() => sendMail(data.id)}
+                onClick={() =>
+                  sendMailAssociation({
+                    ...data,
+                    name: data.nome_da_instituicao,
+                    registration: String(data.numero_do_protocolo),
+                  })
+                }
               >
                 <PaperPlaneTilt size={29} />
               </TableContentList>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 import { format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
@@ -55,6 +56,7 @@ interface RequerimentContextType {
   handleCreateAssociation: (data: CreateAssociationProps) => Promise<void>
   updateRequeriment: (data: UpdateListProps) => Promise<void>
   sendMail: (id: number) => Promise<void>
+  sendMailAssociation: (data: SendMailAssociationProps) => Promise<void>
   handleUpdateAssociation: (data: UpdateAssociationProps) => Promise<void>
   handleUpdateStatus: (data: UpdatestatusProps) => Promise<void>
   setDataListPendingRequirements: (data: AssociationProps[]) => void
@@ -301,33 +303,33 @@ export const RequerimentContextProvider = ({
     currentPageCompletedAssociations,
     dataInputSearchConcluted,
     getCompletedAssociations,
-  ])
-
- const searchFunction = (
-  data: filteredRequerimentProps,
-) => {
-  const { query, formTable } = data
-
-  switch (formTable) {
-    case 'Listas-Instancias':
-      setDataInputSearchAssociation(query)
-      setCurrentPageWithoutRequirement(1)
-      break
-
-    case 'Listas-Exigências':
-      setDataInputSearchRequirement(query)
-      setCurrentPagePendingRequirements(1)
-      break
-
-    case 'Exigências-Concluídas':
-      setDataInputSearchConcluted(query)
-      setCurrentPageCompletedAssociations(1)
-      break
-
-    default:
-      break
+   ])
+ 
+  const searchFunction = (
+   data: filteredRequerimentProps,
+)  => {
+   const { query, formTable } = data
+ 
+   switch (formTable) {
+     case 'Listas-Instancias':
+       setDataInputSearchAssociation(query)
+       setCurrentPageWithoutRequirement(1)
+       break
+ 
+     case 'Listas-Exigências':
+       setDataInputSearchRequirement(query)
+       setCurrentPagePendingRequirements(1)
+       break
+ 
+     case 'Exigências-Concluídas':
+       setDataInputSearchConcluted(query)
+       setCurrentPageCompletedAssociations(1)
+       break
+ 
+     default:
+       break
+   }
   }
-}
 
   const findAssociationById = useCallback(
     (id?: number) => {
@@ -354,14 +356,8 @@ export const RequerimentContextProvider = ({
     ],
   )
 
-
   const sendMail = useCallback(
     async (id: number) => {
-      if (!userDataLogin) {
-        console.error('Usuário não está logado.')
-        return
-      }
-
       const { registration, name } =
         userDataLogin
 
@@ -370,7 +366,7 @@ export const RequerimentContextProvider = ({
 
       if (!filteredAssociation) {
         console.error(
-          `Nenhuma associação encontrada para o ID: ${id}`,
+          `Associação não encontrada`,
         )
         return
       }
@@ -383,19 +379,10 @@ export const RequerimentContextProvider = ({
       }
 
       try {
-        const date = format(
-          new Date(
-            filteredAssociation.createdAt,
-          ),
-          'dd/MM/yyyy',
-          {
-            locale: ptBR,
-          },
-        )
+ 
 
         const listSendEmail = {
           ...filteredAssociation,
-          data_da_recepcao: date,
           itens_da_lista_pendetes:
             filteredAssociation.exigencia,
           registration,
@@ -443,6 +430,7 @@ export const RequerimentContextProvider = ({
         telefone_contato,
         registration,
         name,
+        sobre_exigencia,
       } = dataSendMail
 
       const listSendEmailAssociation = {
@@ -455,12 +443,13 @@ export const RequerimentContextProvider = ({
         telefone_contato,
         registration,
         name,
+        sobre_exigencia,
       }
 
       try {
         await api.post(
-          'sendMailAssociation',
-          listSendEmailAssociation,
+           'sendMailAssociation',
+           listSendEmailAssociation,
         )
       } catch (error) {
         console.log(error)
@@ -523,6 +512,7 @@ export const RequerimentContextProvider = ({
         nome_do_representante,
         telefone_contato,
         sobre_exigencia,
+        data_da_recepcao
       } = data
 
       const regex = /(\d{2})(\d{5})(\d{4})/
@@ -542,6 +532,7 @@ export const RequerimentContextProvider = ({
           formatedNumberPhone,
         email_do_representante,
         sobre_exigencia,
+        data_da_recepcao,
       }
 
       try {
@@ -633,15 +624,6 @@ export const RequerimentContextProvider = ({
                 'Ops! Verifique os Dados Digitados',
             },
           )
-
-          /*
-           * Recarrega as tabelas.
-           *
-           * Isso é mais seguro do que usar:
-           * updatedList[id - 1] = data
-           *
-           * pois agora os dados são paginados.
-           */
 
           await Promise.all([
             getAssociationListPending(
@@ -778,7 +760,6 @@ export const RequerimentContextProvider = ({
         requisitos_estatuto,
         requisitos_criacao_de_estatuto,
         requisitos_de_estatutos_fundadores,
-        informacao_divergente,
         campo_de_assinatura,
         retificacao_de_redacao,
         observations_documento_inelegivel,
@@ -799,6 +780,7 @@ export const RequerimentContextProvider = ({
         observations_campo_de_assinatura,
         observations_retificacao_de_redacao,
         requerimento_eletronico_rcpj,
+        unlisted_requirements,
       } = data
 
       const filteredAssociation =
@@ -823,10 +805,6 @@ export const RequerimentContextProvider = ({
         requisitos_criacao_de_estatuto,
         requisitos_de_estatutos_fundadores,
         estado_do_requerimento,
-        informacao_divergente: {
-          info: informacao_divergente?.info,
-          state: informacao_divergente?.state,
-        },
 
         campo_de_assinatura,
         retificacao_de_redacao,
@@ -850,6 +828,11 @@ export const RequerimentContextProvider = ({
         observations_requisitos_de_estatutos_fundadores,
         observations_campo_de_assinatura,
         observations_retificacao_de_redacao,
+        unlisted_requirements: unlisted_requirements?.map((list) => ({
+          name: list.name,
+          observacao: list.observacao,
+          status: 'Pendente',
+        })),
       }
 
       try {
@@ -958,7 +941,6 @@ export const RequerimentContextProvider = ({
           data.documentacao_de_identificacao,
         fundacoes: data.fundacoes,
         exigencias_id: data.exigencias_id,
-        informacao_divergente: data.informacao_divergente,
         lista_e_edital: data.lista_e_edital,
         livro_rasao: data.livro_rasao,
         oab: data.oab,
@@ -1172,7 +1154,8 @@ export const RequerimentContextProvider = ({
         handleUpdateStatus,
         searchFunction,
         handleUpdateAssociation,
-getAssociationListPending,
+        sendMailAssociation,
+        getAssociationListPending,
         getPendingRequirements,
         getCompletedAssociations,
         setCurrentPageWithoutRequirement,

@@ -35,7 +35,16 @@ export const CreateRequerimentFormSchema = zod.object({
   campo_de_assinatura: zod.boolean().optional(),
   retificacao_de_redacao: zod.boolean().optional(),
   existe_exigencias_nao_listadas: zod.boolean().optional(),
-  informacao_divergente: zod.object({ info: zod.string(), state: zod.string() }).optional(),
+  unlisted_requirements: zod
+  .array(
+    zod.object({
+      id: zod.string().optional(),
+      name: zod.string().optional(),
+      observacao: zod.string().optional(),
+      status: zod.enum(['Pendente', 'Concluído'])
+    })
+  )
+  .default([]),
   observations_documento_inelegivel: zod.string().optional(),
   observations_lista_e_edital: zod.string().optional(),
   observations_assinatura_do_advogado: zod.string().optional(),
@@ -70,18 +79,21 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
     handleSubmit,
     formState: { isSubmitting },
     reset,
+    control
   } = useForm<CreateRequerimentFormInputs>({
     resolver: zodResolver(CreateRequerimentFormSchema),
     shouldUnregister: true,
   })
 
-  const { CreateRequeriment, requestListDataPDF, dataListAssociationWithoutRequirement } =
-    useRequeriment()
+  const { userDataLogin } = useUser()
+  const { 
+    CreateRequeriment, 
+    requestListDataPDF, 
+    dataListAssociationWithoutRequirement 
+  } = useRequeriment()
   const [requerimentSelected, setRequerimentSelected] = useState('Pendente')
 
   const RequerimentSelected = dataListAssociationWithoutRequirement.find((list) => list.id === id)
-
-  const { userDataLogin } = useUser()
 
   const handleSelectedRequeriment = (data: string) => {
     setRequerimentSelected(data)
@@ -105,7 +117,6 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
     })
 
     const {
-      informacao_divergente,
       observations_documento_inelegivel,
       observations_lista_e_edital,
       observations_assinatura_do_advogado,
@@ -123,6 +134,8 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       observations_requisitos_de_estatutos_fundadores,
       observations_campo_de_assinatura,
       observations_retificacao_de_redacao,
+      observations_requerimento_eletronico_rcpj,
+      unlisted_requirements,
     } = data
 
     const {
@@ -148,6 +161,16 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       requerimento_eletronico_rcpj
     } = booleanData
 
+    const normalizedUnlistedRequirements = (
+      unlisted_requirements.length > 0
+        ? unlisted_requirements
+        : [{ name: undefined, observacao: undefined }]
+    ) as unknown as [{
+      name?: string
+      atatus?: string
+      observacao?: string
+    }]
+
     const createRequerimentData = {
       id,
       declaracao_sindical,
@@ -169,10 +192,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       requisitos_de_estatutos_fundadores,
       campo_de_assinatura,
       retificacao_de_redacao,
-      informacao_divergente: {
-        info: informacao_divergente?.info || '',
-        state: informacao_divergente?.state || '',
-      },
+      unlisted_requirements: normalizedUnlistedRequirements,
       estado_do_requerimento:
         requerimentSelected === 'Pendente' ? 'Pendente' : 'Concluído',
       observations_documento_inelegivel,
@@ -192,6 +212,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       observations_requisitos_de_estatutos_fundadores,
       observations_campo_de_assinatura,
       observations_retificacao_de_redacao,
+      observations_requerimento_eletronico_rcpj,
       requerimento_eletronico_rcpj,
     }
 
@@ -203,6 +224,7 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
     <SectionCreateRequirement>
       <form onSubmit={handleSubmit(handleCreateRequeriment)}>
         <ControllerFormInputs
+          control={control}
           register={register}
           arrayInputList={arrayInputList}
           controllerUsageStatus="Created"

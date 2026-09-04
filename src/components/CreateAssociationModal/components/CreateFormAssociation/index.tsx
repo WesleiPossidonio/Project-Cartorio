@@ -13,6 +13,7 @@ import { Input } from '../../../Input'
 import { Button } from '../../../Button'
 
 export const createAssociationFormSchema = zod.object({
+  data_da_recepcao: zod.string().nonempty('Por favor, digite a data'),
   nome_da_instituicao: zod
     .string()
     .nonempty('Por favor, digite o nome da instituição'),
@@ -20,21 +21,19 @@ export const createAssociationFormSchema = zod.object({
     .string()
     .nonempty('Por favor, digite o nome do representante'),
   cnpj_cpf: zod
-    .string({
-      required_error: 'CPF/CNPJ é obrigatório.',
-    })
-    .refine((doc) => {
-      const replacedDoc = doc.replace(/\D/g, '')
-      return replacedDoc.length >= 11
-    }, 'CPF/CNPJ deve conter no mínimo 11 caracteres.')
-    .refine((doc) => {
-      const replacedDoc = doc.replace(/\D/g, '')
-      return replacedDoc.length <= 14
-    }, 'CPF/CNPJ deve conter no máximo 14 caracteres.')
-    .refine((doc) => {
-      const replacedDoc = doc.replace(/\D/g, '')
-      return !!Number(replacedDoc)
-    }, 'CPF/CNPJ deve conter apenas números.'),
+  .string({
+    required_error: 'CPF/CNPJ é obrigatório.',
+  })
+  .refine((doc) => {
+    const numbers = doc.replace(/\D/g, '')
+
+    return numbers.length === 11 || numbers.length === 14
+  }, 'Digite um CPF com 11 números ou um CNPJ com 14 números.')
+  .refine((doc) => {
+    const numbers = doc.replace(/\D/g, '')
+
+    return /^\d+$/.test(numbers)
+  }, 'CPF/CNPJ deve conter apenas números.'),
   sobre_exigencia: zod.string().min(4, 'Digite sobre o serviço'),
   email_do_representante: zod
     .string()
@@ -75,15 +74,17 @@ export const FormCreateAssociation = () => {
       telefone_contato,
       email_do_representante,
       sobre_exigencia,
+      data_da_recepcao
     } = data
 
     const dataAssociation = {
-      cnpj_cpf,
+      cnpj_cpf: cnpj_cpf.replace(/\D/g, ''),
       nome_da_instituicao,
       nome_do_representante,
       telefone_contato,
       email_do_representante,
       sobre_exigencia,
+      data_da_recepcao
     }
 
     await handleCreateAssociation(dataAssociation)
@@ -100,6 +101,15 @@ export const FormCreateAssociation = () => {
               type="text"
               {...register('nome_da_instituicao')}
               error={errors.nome_da_instituicao?.message}
+            />
+          </div>
+
+          <div id="data-da-recepção">
+            <Input
+              placeholder="Data da recepção"
+              type="date"
+              {...register('data_da_recepcao')}
+              error={errors.data_da_recepcao?.message}
             />
           </div>
 

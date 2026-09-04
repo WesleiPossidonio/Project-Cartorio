@@ -5,7 +5,7 @@ export interface CreateAssociationProps {
   cnpj_cpf: string
   email_do_representante: string
   telefone_contato: string
-  data_da_recepcao?: string
+  data_da_recepcao: string
   sobre_exigencia: string
   status_association?: string
 }
@@ -30,6 +30,7 @@ export interface SendMailAssociationProps extends CreateAssociationProps {
 
 export interface ListRequerimentProps {
   id?: number
+  exigencias_id?: number
   documento_inelegivel?: string
   lista_e_edital?: string
   assinatura_do_advogado?: string
@@ -46,10 +47,12 @@ export interface ListRequerimentProps {
   documentacao_de_identificacao?: string
   campo_de_assinatura?: string
   retificacao_de_redacao?: string
-  informacao_divergente?: {
-    info: string
-    state: string
-  }
+  unlisted_requirements?: [{
+    id?: number
+    name?: string,
+    status?: string,
+    observacao?: string
+  }]
   requerimento_eletronico_rcpj?: string
   updatedAt?: string
   data_da_recepcao?: string

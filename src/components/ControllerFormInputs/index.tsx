@@ -1,6 +1,6 @@
-import { Info, NotePencil } from 'phosphor-react'
+import { Info, NotePencil, Trash } from 'phosphor-react'
 import { ChangeEvent, useState } from 'react'
-import { UseFormRegister } from 'react-hook-form'
+import { Control, useFieldArray, UseFormRegister } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 
@@ -16,14 +16,13 @@ import {
   ContentInput,
   LabelCheck,
   ContainerButtonInfo,
-  TextArea,
   ContentInfo,
   ContainerInfo,
   TextAreaObservations,
-  DivergenteInfoContainer,
-  SelectedStateInfoDivergente,
+  ContainerUnlistedRequirements,
 } from './styled'
-import { ListRequerimentProps } from '../../@types/typesRequerimentContext'
+import { AssociationProps, ListRequerimentProps } from '../../@types/typesRequerimentContext'
+
 
 interface StateInputListProps {
   id: string
@@ -41,6 +40,7 @@ type SelectedItemsProps = {
 
 interface ControllerProps {
   register: UseFormRegister<CreateRequerimentFormInputs>
+  control: Control<CreateRequerimentFormInputs>
   arrayInputList: StateInputListProps[]
   arrayUpdateInputList?: ListRequerimentProps
   controllerUsageStatus: 'Created' | 'Update'
@@ -52,22 +52,25 @@ interface ControllerProps {
 export const ControllerFormInputs = ({
   arrayInputList,
   controllerUsageStatus,
+  control,
   register,
   arrayUpdateInputList,
   handleSelectedRequeriment,
   requerimentSelected,
 }: ControllerProps) => {
-  const [divergentInformation, setDivergentInformation] = useState('')
   const [selectedItems, setSelectedItems] = useState<SelectedItemsProps[]>([])
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'unlisted_requirements',
+  })  
 
-  const { setDataListRequeriment, dataListRequeriment } = useRequeriment()
+  const { setDataListPendingRequirements, dataListPendingRequirements } = useRequeriment()
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement>,
     itemId: string
   ) => {
     const { name, checked } = event.target
-
     setSelectedItems((prevSelectedItems) => {
       const existingItem = prevSelectedItems.find((item) => item.id === itemId)
 
@@ -77,43 +80,44 @@ export const ControllerFormInputs = ({
 
       return prevSelectedItems.map((item) =>
         item.id === itemId ? { ...item, checked } : item
-      )
-    })
+    )})
   }
 
-  const handleAddingForgotteData = async (nameList: string) => {
-    const ForgotteDataList = {
-      ...arrayUpdateInputList,
-      [nameList]: 'Pendente',
-      exigencias_id: arrayUpdateInputList?.id,
-    }
-    
 
-    if (arrayUpdateInputList) {
-      try {
-        const createRequermentResponse = await toast.promise(
-          api.put(
-            `updateRequeriment/${arrayUpdateInputList.id}`,
-            ForgotteDataList
-          ),
-          {
-            pending: 'Verificando seus dados',
-            success: 'Exigência Adicionada com Sucesso!',
-            error: 'Ops! Verifique os Dados Digitados',
-          }
-        )
+const handleUpdateRequirementStatus = async (nameList: string) => {
+  if (!arrayUpdateInputList) return
 
-        const { data } = createRequermentResponse
-        setDataListRequeriment([...dataListRequeriment, data])
-      } catch (error) {
-        console.log(error)
+  try {
+    const updateRequerimentResponse = await toast.promise(
+      api.patch(
+        `updateRequeriment/${arrayUpdateInputList.id}`,
+         {
+          [nameList]: 'Pendente',
+        }
+      ),
+      {
+        pending: 'Verificando seus dados',
+        success: 'Exigência Adicionada com Sucesso!',
+        error: 'Ops! Verifique os Dados Digitados',
       }
-    }
-  }
+    )
 
-  const handleDivergentInformation = (data: string) => {
-    setDivergentInformation(data)
+    const { data } = updateRequerimentResponse
+
+    setDataListPendingRequirements(
+      dataListPendingRequirements.map((item: AssociationProps) =>
+        item.exigencia?.id === data.id
+          ? {
+              ...item,
+              exigencia: data,
+            }
+          : item
+      )
+    )
+  } catch (error) {
+    console.log(error)
   }
+}
 
   const unselectedRequestsFilter =
     arrayInputList &&
@@ -223,7 +227,7 @@ export const ControllerFormInputs = ({
               <ContainerInput key={list.id}>
                 <div>
                   <input
-                    onClick={() => handleAddingForgotteData(list.name)}
+                    onClick={() => handleUpdateRequirementStatus(list.name)}
                     id={list.id}
                     type="checkbox"
                     {...register(
@@ -238,6 +242,7 @@ export const ControllerFormInputs = ({
                       {list.spanText && <span> {list.spanText} </span>}
                     </div>
                   </LabelCheck>
+
                   {list.observation && (
                     <ContainerInfo>
                       <input
@@ -257,43 +262,39 @@ export const ControllerFormInputs = ({
         </ContainerCheckInput>
 
         <ContainerButtonInfo>
-          <TextRegular weight={700}>
+          <TextRegular size='l' weight={700}>
             Adicionar Exigências Não Listadas?
           </TextRegular>
-          <div>
+
+          {fields.map((field, index) => (
+            <ContainerUnlistedRequirements key={field.id}>
+              <input
+                {...register(`unlisted_requirements.${index}.name`)}
+                placeholder="Exigência"
+              />
+        
+              <input
+                {...register(`unlisted_requirements.${index}.observacao`)}
+                placeholder="Observação da Exigência"
+              />
+        
+              <button
+                id='delete'
+                type="button"
+                onClick={() => remove(index)}
+              >
+                <Trash size={32}/>
+              </button>
+            </ContainerUnlistedRequirements>
+          ))}
+
             <Button
-              selected={divergentInformation === 'sim'}
-              selectButton
-              type="button"
-              onClick={() => handleDivergentInformation('sim')}
+              type="button" onClick={() =>
+                append({ name: '', observacao: '', status: 'Pendente'})}
             >
-              Sim
+              Adicionar exigência
             </Button>
-            <Button
-              selected={divergentInformation === 'não'}
-              selectButton
-              type="button"
-              onClick={() => handleDivergentInformation('não')}
-            >
-              Não
-            </Button>
-          </div>
         </ContainerButtonInfo>
-
-        {divergentInformation === 'sim' && (
-          <DivergenteInfoContainer>
-            <TextArea
-              id="list"
-              placeholder="Digite as Informações Divergentes"
-              {...register('informacao_divergente.info')}
-            />
-
-            <SelectedStateInfoDivergente {...register('informacao_divergente.state')}>
-              <option value="Pendente">Pendente</option>
-              <option value="Concluído">Concluído</option>
-            </SelectedStateInfoDivergente>
-          </DivergenteInfoContainer>
-        )}
       </ContentInput>
     </ContainerControllerInput>
   )

@@ -2,7 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'phosphor-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useRequeriment } from '../../hooks/useRequeriment'
@@ -20,10 +20,10 @@ import {
   Overlay,
 } from './style'
 
-import { ListRequerimentProps } from '../../@types/typesRequerimentContext'
-import { CreateRequerimentFormInputs, CreateRequerimentFormSchema } from '../CreateRequerimentModal/Components/CreateRequeriment'
-import api from '../../services/api'
-
+import { 
+  CreateRequerimentFormInputs, 
+  CreateRequerimentFormSchema 
+} from '../CreateRequerimentModal/Components/CreateRequeriment'
 interface RequerimentProps {
   AssociationId: number
 }
@@ -34,6 +34,7 @@ export const UpdateRequerimentModal = ({
   const {
     register,
     handleSubmit,
+    control,
     formState: { isSubmitting },
     reset,
   } = useForm<CreateRequerimentFormInputs>({
@@ -43,27 +44,12 @@ export const UpdateRequerimentModal = ({
 
   const {
     updateRequeriment,
+    dataListPendingRequirements
   } = useRequeriment()
-
-  const [dataRequerimentSelected, setDataRequerimentSelected] =
-    useState<ListRequerimentProps>()
-
   const [addDataToListUpdate, setAddDataToListUpdate] = useState('')
-
-  useEffect(() => {
-    const getRequeriment = async () => {
-      try {
-        const { data } = await api.get(
-          `association/${AssociationId}`
-        )
-  
-        setDataRequerimentSelected(data.exigencia)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-  getRequeriment()
-  }, [AssociationId])
+  const dataRequerimentSelected = 
+  dataListPendingRequirements.find(list => 
+    list.exigencia?.exigencias_id === AssociationId)
 
   const handleUpdateRequeriment = (
     data: CreateRequerimentFormInputs,
@@ -75,21 +61,22 @@ export const UpdateRequerimentModal = ({
         booleanData[key] = value ? 'Recebido' : 'Pendente'
       }
     })
-  
-    const informacaoDivergente =
-      data.informacao_divergente?.info &&
-      data.informacao_divergente?.state
-        ? {
-            info: data.informacao_divergente.info,
-            state: data.informacao_divergente.state,
-          }
-        : undefined
+
+    const normalizedUnlistedRequirements = (
+      data.unlisted_requirements.length > 0
+        ? data.unlisted_requirements
+        : [{ name: undefined, observacao: undefined }]
+    ) as unknown as [{
+      name?: string
+      atatus?: string
+      observacao?: string
+    }]
   
     const updatedData = {
       ...booleanData,
       id: dataRequerimentSelected?.id,
       exigencias_id: AssociationId,
-      informacao_divergente: informacaoDivergente,
+      unlisted_requirements: normalizedUnlistedRequirements
     }
   
     updateRequeriment({
@@ -115,7 +102,7 @@ export const UpdateRequerimentModal = ({
           <form onSubmit={handleSubmit(handleUpdateRequeriment)}>
             <UpdateControllerFormInputs
               register={register}
-              dataRequeriment={dataRequerimentSelected}
+              dataRequeriment={dataRequerimentSelected?.exigencia}
             />
 
             <ContainerAddRequeriment>
@@ -146,9 +133,10 @@ export const UpdateRequerimentModal = ({
 
             {addDataToListUpdate === 'sim' && (
               <ControllerFormInputs
+                control={control}
                 register={register}
                 arrayInputList={arrayInputList}
-                arrayUpdateInputList={dataRequerimentSelected}
+                arrayUpdateInputList={dataRequerimentSelected?.exigencia}
                 controllerUsageStatus="Update"
               />
             )}

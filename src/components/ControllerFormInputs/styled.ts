@@ -88,7 +88,7 @@ export const ContainerInput = styled.div`
 `
 
 export const LabelCheck = styled.label`
-  width: 90%;
+  width: 100%;
   font-size: 0.875rem;
   font-weight: 700;
 
@@ -226,22 +226,38 @@ export const TextAreaObservations = styled(TextArea)`
   margin-left: 0.5rem;
   margin-top: 0.2rem;
 `
-export const DivergenteInfoContainer = styled.div`
+export const ContainerUnlistedRequirements = styled.div`
 width: 100%;
-display: flex; 
-flex-direction: column;
-align-items: flex-start;
+display: flex;
 justify-content: center;
+align-items: center;
 gap: 1rem;
-`
+margin-bottom: 1rem;
 
-export const SelectedStateInfoDivergente = styled.select`
-width: 13rem;
-padding: 0.5rem;
-border: 0;
-border-radius: 8px;
+ input {
+  width: 100%;
+  padding: 0.9rem 0.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.875rem;
+ }
 
-font-weight: 600;
+ #delete {
+  width: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-weight: 900;
 
-background-color: #fff;
+  background-color: #ffffff;
+
+  &:hover {
+    background-color: #2b3d63;
+    color: #ffffff;
+  }
+}
 `

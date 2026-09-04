@@ -113,6 +113,13 @@ export const LabelCheck = styled.label`
     color: ${({ theme }) => theme.colors['base-hover']};
   }
 
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+
   @media (max-width: 768px) {
     span {
       font-size: 0.625rem;
@@ -134,23 +141,83 @@ export const ContainerIcons = styled.div`
   z-index: 22px;
 `
 
-export const ContainerInformacaoDivergente = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 1rem;
+export const ContainerUnilestedRequirement = styled.div`
+width: 100%;
+height: max-content;
 
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 1.5rem;
+
+padding: 0.7rem;
+
+h1 {
+  align-self: start;
   margin-top: 1rem;
+}
+
+
 `
-export const SelectedStateInfoDivergente = styled.select`
-width: 13rem;
-padding: 0.5rem;
-border: 0;
-border-radius: 8px;
 
-font-weight: 600;
+export const ContentUnilestedRequirement = styled.div`
+  width: 100%;
+  height: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
 
-background-color: #fff;
+
+
+  select {
+    width: 8.5rem;
+    height: 4.5rem;
+
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+
+    font-size: 1rem;
+
+
+     background: ${({ theme }) => theme.colors['bg-input']};
+  }
+`
+
+export const ContainerAddUnlistedRequirements = styled.div`
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 1rem;
+margin-bottom: 1rem;
+
+ input {
+  width: 100%;
+  padding: 0.9rem 0.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.875rem;
+ }
+
+ #delete {
+  width: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-weight: 900;
+
+  background-color: #ffffff;
+
+  &:hover {
+    background-color: #2b3d63;
+    color: #ffffff;
+  }
+}
 `
