@@ -8,8 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
-    "engines": {
-    "node": "24.x"
+  "engines": {
+    "node": "22.x"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",

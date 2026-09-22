@@ -1,5 +1,5 @@
 import { Pen, Trash, Warning } from 'phosphor-react'
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
@@ -1262,7 +1262,7 @@ export const UpdateControllerFormInputs = ({
                     <ContentEditingRequirement>
                       <TextAreaObservations
                         value={editingRequirement.name}
-                        onChange={(event) =>
+                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                           setEditingRequirement((prev) => ({
                             ...prev,
                             name: event.target.value,
@@ -1272,7 +1272,7 @@ export const UpdateControllerFormInputs = ({
 
                       <TextAreaObservations
                         value={editingRequirement.observacao}
-                        onChange={(event) =>
+                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                           setEditingRequirement((prev) => ({
                             ...prev,
                             observacao: event.target.value,
