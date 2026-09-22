@@ -116,3 +116,10 @@ export interface Pagination {
   total: number;
   totalPages: number;
 }
+
+export interface UpdateUnlistedRequirementProps {
+  id: number
+  observacao?: string
+  status?: string
+  name?: string
+}

@@ -1,11 +1,19 @@
+
 import { Info, NotePencil, Trash } from 'phosphor-react'
+
 import { ChangeEvent, useState } from 'react'
-import { Control, useFieldArray, UseFormRegister } from 'react-hook-form'
+
+import {
+  Control,
+  useFieldArray,
+  useWatch,
+  UseFormRegister,
+} from 'react-hook-form'
+
 import { toast } from 'react-toastify'
-
-
 import { useRequeriment } from '../../hooks/useRequeriment'
 import api from '../../services/api'
+
 import { Button } from '../Button'
 import { CreateRequerimentFormInputs } from '../CreateRequerimentModal/Components/CreateRequeriment'
 import { TextRegular } from '../typography'
@@ -21,7 +29,11 @@ import {
   TextAreaObservations,
   ContainerUnlistedRequirements,
 } from './styled'
-import { AssociationProps, ListRequerimentProps } from '../../@types/typesRequerimentContext'
+
+import {
+  AssociationProps,
+  ListRequerimentProps,
+} from '../../@types/typesRequerimentContext'
 
 
 interface StateInputListProps {
@@ -59,20 +71,38 @@ export const ControllerFormInputs = ({
   requerimentSelected,
 }: ControllerProps) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemsProps[]>([])
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'unlisted_requirements',
-  })  
+  })
 
-  const { setDataListPendingRequirements, dataListPendingRequirements } = useRequeriment()
+  const {
+    setDataListPendingRequirements,
+    dataListPendingRequirements,
+  } = useRequeriment()
+
+  /**
+   * Observa os valores atuais das exigências não listadas.
+   *
+   * Assim conseguimos pegar o valor de um item específico
+   * através do index, sem precisar enviar o formulário inteiro.
+   */
+  const unlistedRequirements = useWatch({
+    control,
+    name: 'unlisted_requirements',
+  })
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement>,
     itemId: string
   ) => {
     const { name, checked } = event.target
+
     setSelectedItems((prevSelectedItems) => {
-      const existingItem = prevSelectedItems.find((item) => item.id === itemId)
+      const existingItem = prevSelectedItems.find(
+        (item) => item.id === itemId
+      )
 
       if (!existingItem) {
         return [...prevSelectedItems, { id: itemId, name, checked }]
@@ -80,44 +110,95 @@ export const ControllerFormInputs = ({
 
       return prevSelectedItems.map((item) =>
         item.id === itemId ? { ...item, checked } : item
-    )})
-  }
-
-
-const handleUpdateRequirementStatus = async (nameList: string) => {
-  if (!arrayUpdateInputList) return
-
-  try {
-    const updateRequerimentResponse = await toast.promise(
-      api.patch(
-        `updateRequeriment/${arrayUpdateInputList.id}`,
-         {
-          [nameList]: 'Pendente',
-        }
-      ),
-      {
-        pending: 'Verificando seus dados',
-        success: 'Exigência Adicionada com Sucesso!',
-        error: 'Ops! Verifique os Dados Digitados',
-      }
-    )
-
-    const { data } = updateRequerimentResponse
-
-    setDataListPendingRequirements(
-      dataListPendingRequirements.map((item: AssociationProps) =>
-        item.exigencia?.id === data.id
-          ? {
-              ...item,
-              exigencia: data,
-            }
-          : item
       )
-    )
-  } catch (error) {
-    console.log(error)
+    })
   }
-}
+
+  /**
+   * Atualiza uma exigência que já existe.
+   *
+   * Exemplo:
+   * Documento X: "Não-Listado" -> "Pendente"
+   */
+  const handleUpdateRequirementStatus = async (nameList: string) => {
+    if (!arrayUpdateInputList) return
+
+    try {
+      const updateRequerimentResponse = await toast.promise(
+        api.patch(
+          `updateRequeriment/${arrayUpdateInputList.id}`,
+          {
+            [nameList]: 'Pendente',
+          }
+        ),
+        {
+          pending: 'Verificando seus dados',
+          success: 'Exigência Adicionada com Sucesso!',
+          error: 'Ops! Verifique os Dados Digitados',
+        }
+      )
+
+      const { data } = updateRequerimentResponse
+
+      setDataListPendingRequirements(
+        dataListPendingRequirements.map(
+          (item: AssociationProps) =>
+            item.exigencia?.id === data.id
+              ? {
+                ...item,
+                exigencia: data,
+              }
+              : item
+        )
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * Cria UMA exigência não listada.
+   *
+   * Cada botão "Enviar" chama essa função passando
+   * o index do item correspondente.
+   */
+  const handleCreateUnlistedRequirement = async (
+    index: number,
+    requirementId?: number
+  ) => {
+    const requirement = unlistedRequirements?.[index]
+
+    if (requirementId === undefined) {
+      toast.warning('Não foi possível identificar a exigência.')
+      return
+    }
+
+    if (!requirement?.name?.trim()) {
+      toast.warning('Informe o nome da exigência')
+      return
+    }
+
+    try {
+      await toast.promise(
+        api.post('unlisted-requirements', {
+          name: requirement.name,
+          observacao: requirement.observacao,
+          status: 'Pendente',
+          requirement_id: requirementId,
+        }),
+        {
+          pending: 'Adicionando exigência...',
+          success: 'Exigência adicionada com sucesso!',
+          error: 'Erro ao adicionar exigência.',
+        }
+      )
+
+      // Remove somente o item que foi enviado
+      remove(index)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const unselectedRequestsFilter =
     arrayInputList &&
@@ -125,7 +206,8 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
       (list) =>
         arrayUpdateInputList &&
         Object.entries(arrayUpdateInputList).some(
-          ([name, value]) => value === 'Não-Listado' && name === list.name
+          ([name, value]) =>
+            value === 'Não-Listado' && name === list.name
         )
     )
 
@@ -136,6 +218,7 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
           <TextRegular size="m" weight={700}>
             A exigência foi Concluída?
           </TextRegular>
+
           <div>
             <Button
               selected={requerimentSelected === 'Concluído'}
@@ -148,6 +231,7 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
             >
               Sim
             </Button>
+
             <Button
               selected={requerimentSelected === 'Pendente'}
               selectButton
@@ -164,16 +248,18 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
       )}
 
       <ContentInput>
-        {(requerimentSelected === 'Pendente' && (
+        {requerimentSelected === 'Pendente' && (
           <TextRegular size="l" weight={700}>
             Selecione os Documentos Pendentes
           </TextRegular>
-        )) ||
-          (requerimentSelected === 'Concluído' && (
-            <TextRegular size="l" weight={700}>
-              Selecione os Documentos Concluídos
-            </TextRegular>
-          ))}
+        )}
+
+        {requerimentSelected === 'Concluído' && (
+          <TextRegular size="l" weight={700}>
+            Selecione os Documentos Concluídos
+          </TextRegular>
+        )}
+
         <ContainerCheckInput>
           {controllerUsageStatus === 'Created'
             ? arrayInputList.map((list) => (
@@ -187,27 +273,37 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
                     )}
                     name={list.name}
                   />
+
                   <LabelCheck htmlFor={list.id}>
                     <NotePencil size={30} />
+
                     <div>
                       {list.text}
-                      {list.spanText && <span> {list.spanText} </span>}
+
+                      {list.spanText && (
+                        <span> {list.spanText} </span>
+                      )}
                     </div>
                   </LabelCheck>
+
                   {list.observation && (
                     <ContainerInfo>
                       <input
                         type="checkbox"
                         id={list.observation}
-                        onChange={(e) => handleChange(e, list.id)}
+                        onChange={(e) =>
+                          handleChange(e, list.id)
+                        }
                         name={list.observation}
                       />
+
                       <ContentInfo htmlFor={list.observation}>
                         <Info size={32} id="info" />
                       </ContentInfo>
                     </ContainerInfo>
                   )}
                 </div>
+
                 {selectedItems.map((item) =>
                   item.checked &&
                     item.id === list.id &&
@@ -218,7 +314,7 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
                       {...register(
                         list.observation as keyof CreateRequerimentFormInputs
                       )}
-                    ></TextAreaObservations>
+                    />
                   ) : null
                 )}
               </ContainerInput>
@@ -227,7 +323,9 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
               <ContainerInput key={list.id}>
                 <div>
                   <input
-                    onClick={() => handleUpdateRequirementStatus(list.name)}
+                    onClick={() =>
+                      handleUpdateRequirementStatus(list.name)
+                    }
                     id={list.id}
                     type="checkbox"
                     {...register(
@@ -235,11 +333,16 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
                     )}
                     name={list.name}
                   />
+
                   <LabelCheck htmlFor={list.id}>
                     <NotePencil size={30} />
+
                     <div>
                       {list.text}
-                      {list.spanText && <span> {list.spanText} </span>}
+
+                      {list.spanText && (
+                        <span> {list.spanText} </span>
+                      )}
                     </div>
                   </LabelCheck>
 
@@ -248,9 +351,12 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
                       <input
                         type="checkbox"
                         id={list.observation}
-                        onChange={(e) => handleChange(e, list.id)}
+                        onChange={(e) =>
+                          handleChange(e, list.id)
+                        }
                         name={list.observation}
                       />
+
                       <ContentInfo htmlFor={list.observation}>
                         <Info size={32} id="info" />
                       </ContentInfo>
@@ -262,38 +368,62 @@ const handleUpdateRequirementStatus = async (nameList: string) => {
         </ContainerCheckInput>
 
         <ContainerButtonInfo>
-          <TextRegular size='l' weight={700}>
+          <TextRegular size="l" weight={700}>
             Adicionar Exigências Não Listadas?
           </TextRegular>
 
           {fields.map((field, index) => (
             <ContainerUnlistedRequirements key={field.id}>
               <input
-                {...register(`unlisted_requirements.${index}.name`)}
+                {...register(
+                  `unlisted_requirements.${index}.name`
+                )}
                 placeholder="Exigência"
               />
-        
+
               <input
-                {...register(`unlisted_requirements.${index}.observacao`)}
+                {...register(
+                  `unlisted_requirements.${index}.observacao`
+                )}
                 placeholder="Observação da Exigência"
               />
-        
+
+              {controllerUsageStatus === 'Update' && (
+                <Button
+                  type="button"
+                  onClick={() =>
+                    handleCreateUnlistedRequirement(
+                      index,
+                      arrayUpdateInputList!.id
+                    )
+                  }
+                >
+                  Enviar
+                </Button>
+              )}
+
               <button
-                id='delete'
+                id="delete"
                 type="button"
                 onClick={() => remove(index)}
               >
-                <Trash size={32}/>
+                <Trash size={32} />
               </button>
             </ContainerUnlistedRequirements>
           ))}
 
-            <Button
-              type="button" onClick={() =>
-                append({ name: '', observacao: '', status: 'Pendente'})}
-            >
-              Adicionar exigência
-            </Button>
+          <Button
+            type="button"
+            onClick={() =>
+              append({
+                name: '',
+                observacao: '',
+                status: 'Pendente',
+              })
+            }
+          >
+            Adicionar exigência
+          </Button>
         </ContainerButtonInfo>
       </ContentInput>
     </ContainerControllerInput>

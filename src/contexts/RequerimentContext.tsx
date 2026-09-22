@@ -27,6 +27,7 @@ import {
   UpdateAssociationProps,
   UpdateListProps,
   UpdatestatusProps,
+  UpdateUnlistedRequirementProps,
 } from '../@types/typesRequerimentContext'
 
 interface RequerimentContextType {
@@ -49,6 +50,7 @@ interface RequerimentContextType {
   paginationCompletedAssociations: Pagination
   currentPageCompletedAssociations: number
 
+  updateUnlistedRequirement: (data: UpdateUnlistedRequirementProps) => Promise<void>
   searchFunction: (data: filteredRequerimentProps) => void
   setSelectAListRequeriment: (curatedList: ListRequerimentProps[]) => void
   setDataListRequeriment: (data: ListRequerimentProps[]) => void
@@ -216,7 +218,6 @@ export const RequerimentContextProvider = ({
         )
 
         const { data } = response
-
         setDataListPendingRequirements(
           data.associationDataList,
         )
@@ -303,32 +304,32 @@ export const RequerimentContextProvider = ({
     currentPageCompletedAssociations,
     dataInputSearchConcluted,
     getCompletedAssociations,
-   ])
- 
+  ])
+
   const searchFunction = (
-   data: filteredRequerimentProps,
-)  => {
-   const { query, formTable } = data
- 
-   switch (formTable) {
-     case 'Listas-Instancias':
-       setDataInputSearchAssociation(query)
-       setCurrentPageWithoutRequirement(1)
-       break
- 
-     case 'Listas-Exigências':
-       setDataInputSearchRequirement(query)
-       setCurrentPagePendingRequirements(1)
-       break
- 
-     case 'Exigências-Concluídas':
-       setDataInputSearchConcluted(query)
-       setCurrentPageCompletedAssociations(1)
-       break
- 
-     default:
-       break
-   }
+    data: filteredRequerimentProps,
+  ) => {
+    const { query, formTable } = data
+
+    switch (formTable) {
+      case 'Listas-Instancias':
+        setDataInputSearchAssociation(query)
+        setCurrentPageWithoutRequirement(1)
+        break
+
+      case 'Listas-Exigências':
+        setDataInputSearchRequirement(query)
+        setCurrentPagePendingRequirements(1)
+        break
+
+      case 'Exigências-Concluídas':
+        setDataInputSearchConcluted(query)
+        setCurrentPageCompletedAssociations(1)
+        break
+
+      default:
+        break
+    }
   }
 
   const findAssociationById = useCallback(
@@ -379,15 +380,41 @@ export const RequerimentContextProvider = ({
       }
 
       try {
- 
+
 
         const listSendEmail = {
-          ...filteredAssociation,
+          id: filteredAssociation.id,
+          numero_do_protocolo:
+            filteredAssociation.numero_do_protocolo,
+          nome_da_instituicao:
+            filteredAssociation.nome_da_instituicao,
+          cnpj_cpf:
+            filteredAssociation.cnpj_cpf,
+          nome_do_representante:
+            filteredAssociation.nome_do_representante,
+          email_do_representante:
+            filteredAssociation.email_do_representante,
+          telefone_contato:
+            filteredAssociation.telefone_contato,
+          sobre_exigencia:
+            filteredAssociation.sobre_exigencia,
+          status_association:
+            filteredAssociation.status_association,
+          data_da_recepcao:
+            filteredAssociation.data_da_recepcao,
+          createdAt:
+            filteredAssociation.createdAt,
+          updatedAt:
+            filteredAssociation.updatedAt,
+
           itens_da_lista_pendetes:
             filteredAssociation.exigencia,
+
           registration,
           name,
         }
+
+        console.log(listSendEmail)
 
         const apiEndpoint =
           filteredAssociation.exigencia === null
@@ -448,8 +475,8 @@ export const RequerimentContextProvider = ({
 
       try {
         await api.post(
-           'sendMailAssociation',
-           listSendEmailAssociation,
+          'sendMailAssociation',
+          listSendEmailAssociation,
         )
       } catch (error) {
         console.log(error)
@@ -921,11 +948,11 @@ export const RequerimentContextProvider = ({
   const updateRequeriment = useCallback(
     async (data: UpdateListProps) => {
       const currentDate = new Date()
-  
+
       const dataString = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`
-  
+
       const { name, registration } = userDataLogin
-  
+
       const dataRequerimentUpdated = {
         id: data.id,
         assinatura_do_advogado: data.assinatura_do_advogado,
@@ -958,9 +985,9 @@ export const RequerimentContextProvider = ({
         requerimento_eletronico_rcpj:
           data.requerimento_eletronico_rcpj,
       }
-  
+
       const filteredAssociation = findAssociationById(data.id)
-  
+
       try {
         const updateRequermentResponse =
           await toast.promise(
@@ -974,28 +1001,28 @@ export const RequerimentContextProvider = ({
               error: 'Ops! Verifique os dados digitados',
             },
           )
-  
+
         const { data: updatedRequeriment } =
           updateRequermentResponse
-  
+
         setDataListRequeriment((prev) => [
           ...prev,
           updatedRequeriment,
         ])
-  
+
         if (filteredAssociation) {
           const date = format(
             new Date(
               updatedRequeriment.updatedAt ??
-                updatedRequeriment.updateAt ??
-                new Date(),
+              updatedRequeriment.updateAt ??
+              new Date(),
             ),
             'dd/MM/yyyy',
             {
               locale: ptBR,
             },
           )
-  
+
           await sendMailRequeriment({
             ...filteredAssociation,
             name,
@@ -1005,7 +1032,7 @@ export const RequerimentContextProvider = ({
             data_da_recepcao: date,
           })
         }
-  
+
         await Promise.all([
           getPendingRequirements(
             currentPagePendingRequirements,
@@ -1125,7 +1152,67 @@ export const RequerimentContextProvider = ({
       dataInputSearchConcluted,
     ],
   )
-  
+
+  const updateUnlistedRequirement = useCallback(
+    async (data: UpdateUnlistedRequirementProps) => {
+      const { id, observacao, status, name } = data
+
+      try {
+        await toast.promise(
+          api.patch(
+            `unlisted-requirements/${id}`,
+            {
+              observacao,
+              status,
+              name
+            },
+          ),
+          {
+            pending: 'Atualizando exigência...',
+            success: 'Exigência atualizada com sucesso!',
+            error: 'Ops! Não foi possível atualizar a exigência.',
+          },
+        )
+
+        setDataListPendingRequirements((prev) =>
+          prev.map((association) => {
+            if (!association.exigencia) {
+              return association
+            }
+
+            const updatedUnlistedRequirements =
+              association.exigencia.unlisted_requirements?.map(
+                (requirement) =>
+                  requirement.id === id
+                    ? {
+                      ...requirement,
+                      observacao,
+                      status,
+                    }
+                    : requirement,
+              ) as typeof association.exigencia.unlisted_requirements
+
+            return {
+              ...association,
+              exigencia: {
+                ...association.exigencia,
+                unlisted_requirements:
+                  updatedUnlistedRequirements,
+              },
+            }
+          }),
+        )
+      } catch (error) {
+        console.error(
+          'Erro ao atualizar exigência não listada:',
+          error,
+        )
+      }
+    },
+    [],
+  )
+
+
   return (
     <RequerimentContext.Provider
       value={{
@@ -1145,6 +1232,7 @@ export const RequerimentContextProvider = ({
         dataInputSearchConcluted,
         paginationCompletedAssociations,
         currentPageCompletedAssociations,
+        updateUnlistedRequirement,
         CreateRequeriment,
         setSelectAListRequeriment,
         updateRequeriment,

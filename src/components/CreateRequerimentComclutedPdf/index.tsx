@@ -1,3 +1,4 @@
+
 import {
   Document,
   Page,
@@ -6,10 +7,12 @@ import {
   View,
   Image,
 } from '@react-pdf/renderer'
+
 import { format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
 import ImageLogo from '../../assets/Logo-Cartorio.jpg'
+
 import { AssociationProps } from '../../@types/typesRequerimentContext'
 import { ResponseDataUser } from '../../@types/typesUserContext'
 
@@ -19,20 +22,27 @@ interface DataProps {
 }
 
 const styles = StyleSheet.create({
-  page: { backgroundColor: '#FFF', textTransform: 'uppercase' },
+  page: {
+    backgroundColor: '#FFF',
+    textTransform: 'uppercase',
+  },
+
   header: {
     margin: 30,
     marginBottom: 30,
   },
+
   main: {
     margin: 30,
     marginBottom: 10,
   },
+
   headerImage: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   contentInfoUser: {
     display: 'flex',
     alignContent: 'center',
@@ -40,40 +50,55 @@ const styles = StyleSheet.create({
     margin: 30,
     marginBottom: 0,
   },
+
   image: {
     width: 150,
   },
+
   titleText: {
     fontSize: 10,
     fontWeight: 700,
     marginBottom: 30,
     textAlign: 'center',
   },
+
   titleList: {
     fontSize: 14,
     fontWeight: 700,
     marginBottom: 20,
   },
+
   text: {
     fontSize: 9,
     marginBottom: 8,
   },
+
+  textObservation: {
+    fontSize: 8,
+    marginBottom: 8,
+    marginLeft: 12,
+  },
+
   textheader2: {
     fontSize: 10,
     fontWeight: 700,
     marginBottom: 3,
   },
+
   titleInfo: {
     fontSize: 10,
     fontWeight: 500,
   },
+
   textInfo: {
     fontSize: 10,
   },
+
   line: {
     fontSize: 10,
     marginBottom: 3,
   },
+
   textFooter: {
     fontSize: 11,
     fontWeight: 700,
@@ -91,58 +116,56 @@ export const CreateRequerimentConclutedPdf = ({
         <View style={styles.headerImage}>
           <Image src={ImageLogo} style={styles.image} />
         </View>
+
         <View style={styles.header}>
           <Text style={styles.titleList}>
-            Nº do Exame: {data && data.numero_do_protocolo}
+            Nº do Exame: {data?.numero_do_protocolo}
           </Text>
+
           <Text style={styles.textheader2}>
-            Sobre o Serviço: {data && data.sobre_exigencia}
+            Sobre o Serviço: {data?.sobre_exigencia}
           </Text>
 
           <Text style={styles.textheader2}>
             Data da Recepção:{' '}
-            {data?.createdAt &&
-              format(new Date(data?.createdAt), 'dd/MM/yyyy', {
+            {data?.data_da_recepcao &&
+              format(new Date(data.data_da_recepcao), 'dd/MM/yyyy', {
                 locale: ptBR,
               })}
           </Text>
 
-          {data?.updatedAt === '' && (
-            <Text style={styles.textheader2}>
-              Data da Exigência:{' '}
-              {data.createdAt &&
-                format(new Date(data.updatedAt), 'dd/MM/yyyy', {
-                  locale: ptBR,
-                })}
-            </Text>
-          )}
           <Text style={styles.textheader2}>
-            Nome da Instituição: {data && data.nome_da_instituicao}
+            Nome da Instituição: {data?.nome_da_instituicao}
           </Text>
 
           <Text style={styles.textheader2}>
-            CNPJ ou CPF: {data && data.cnpj_cpf}
+            CNPJ ou CPF: {data?.cnpj_cpf}
           </Text>
 
           <Text style={styles.textheader2}>
-            Nome do Representante: {data && data.nome_do_representante}
+            Nome do Representante: {data?.nome_do_representante}
           </Text>
+
           <Text style={styles.textheader2}>
-            Email do Representante: {data && data.email_do_representante}
+            Email do Representante: {data?.email_do_representante}
           </Text>
+
           <Text style={styles.textheader2}>
-            Telefone de Contato: {data && data.telefone_contato}
+            Telefone de Contato: {data?.telefone_contato}
           </Text>
         </View>
 
         <View style={styles.main}>
-          <Text style={styles.titleText}>Lista de Exigências Concluída</Text>
+          <Text style={styles.titleText}>
+            Lista de Exigências Concluída
+          </Text>
 
           {data?.exigencia?.lista_e_edital === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar lista de presença e edital; (CNCGJ Art. 951)
             </Text>
           )}
+
           {data?.exigencia?.documento_inelegivel === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar Uma nova copia do documento apresentado,
@@ -150,6 +173,7 @@ export const CreateRequerimentConclutedPdf = ({
               inelegível para registro;
             </Text>
           )}
+
           {data?.exigencia?.assinatura_do_advogado === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Colher assinatura do advogado no ato apresentado para
@@ -167,7 +191,7 @@ export const CreateRequerimentConclutedPdf = ({
           {data?.exigencia?.requisitos_estatuto === 'Recebido' && (
             <Text style={styles.text}>
               [ ] Apresentar cópia do estatuto registrado no Distrito Federal
-              (Obs:para diretórios de partidos políticos); (CNCGJ Art. 945)
+              (Obs: para diretórios de partidos políticos); (CNCGJ Art. 945)
             </Text>
           )}
 
@@ -193,12 +217,12 @@ export const CreateRequerimentConclutedPdf = ({
 
           {data?.exigencia?.requisitos_de_estatutos_fundadores ===
             'Recebido' && (
-              <Text style={styles.text}>
-                [ ] No caso de dissolução ou extinção deverá conter no documento:
-                (liquidação, divisão de cotas de sócios, inexistência de ativo e
-                passivo, guarda dos livros etc.) (CNCGJ Art. 953)
-              </Text>
-            )}
+            <Text style={styles.text}>
+              [ ] No caso de dissolução ou extinção deverá conter no documento:
+              (liquidação, divisão de cotas de sócios, inexistência de ativo e
+              passivo, guarda dos livros etc.) (CNCGJ Art. 953)
+            </Text>
+          )}
 
           {data?.exigencia?.dissolucao_ou_exticao === 'Recebido' && (
             <Text style={styles.text}>
@@ -242,12 +266,12 @@ export const CreateRequerimentConclutedPdf = ({
 
           {data?.exigencia?.requisitos_de_estatutos_fundadores ===
             'Recebido' && (
-              <Text style={styles.text}>
-                [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
-                documentos de fundadores; ( CNCGJ Art. 945 / Lei 6.015 no Art. 120
-                / Lei 10.406 Art. 46)
-              </Text>
-            )}
+            <Text style={styles.text}>
+              [ ] Apresentar os requisitos obrigatórios no Estatuto: relação de
+              documentos de fundadores; (CNCGJ Art. 945 / Lei 6.015 no Art. 120
+              / Lei 10.406 Art. 46)
+            </Text>
+          )}
 
           {data?.exigencia?.requisitos_criacao_de_estatuto === 'Recebido' && (
             <Text style={styles.text}>
@@ -267,35 +291,66 @@ export const CreateRequerimentConclutedPdf = ({
               [ ] Preencher todos os campos de assinatura
             </Text>
           )}
+
+          {/* Exigências não listadas */}
+          {data?.exigencia?.unlisted_requirements
+            ?.filter((requirement) => requirement.status === 'Concluído')
+            .map((requirement) => (
+              <View key={requirement.id}>
+                <Text style={styles.text}>
+                  [ ] {requirement.name}
+                </Text>
+
+                {requirement.observacao && (
+                  <Text style={styles.textObservation}>
+                    Observação: {requirement.observacao}
+                  </Text>
+                )}
+              </View>
+            ))}
         </View>
 
         <View style={styles.contentInfoUser}>
           <Text style={styles.line}>
-            ______________________________________________
+            ________________________________________________________________
           </Text>
+
           <Text style={styles.titleInfo}>
             Funcionário Responsável Pela Análise: {dataUser.name}
           </Text>
+
           <Text style={styles.titleInfo}>
             Matricula: {dataUser.registration}
           </Text>
         </View>
+
         <View style={styles.main}>
-          <Text style={styles.titleInfo}>Informações importantes:</Text>
-          <Text style={styles.textInfo}> - Prazo para análise 15 dias</Text>
+          <Text style={styles.titleInfo}>
+            Informações importantes:
+          </Text>
+
           <Text style={styles.textInfo}>
-            - A parte interessada terá 30 dias, a partir da exigência, para cumpri-la ou desistir do pedido sob pena de
-            cancelamento da prenotação. O documento registrado ou em exigência, não retirado no prazo de 180 dias,
-            poderá ser eliminado pelo registrador. (CNCGJ/RJ Art. 922 § 2º)
+            - Prazo para análise 15 dias
+          </Text>
+
+          <Text style={styles.textInfo}>
+            - A parte interessada terá 30 dias, a partir da exigência, para
+            cumpri-la ou desistir do pedido sob pena de cancelamento da
+            prenotação. O documento registrado ou em exigência, não retirado
+            no prazo de 180 dias, poderá ser eliminado pelo registrador.
+            (CNCGJ/RJ Art. 922 § 2º)
           </Text>
         </View>
+
         <View style={styles.header}>
           <Text style={styles.textFooter}>
             Rua Pereira de Souza, nº 104 - Centro, Macaé, RJ CEP:27.913-110
           </Text>
+
           <Text style={styles.textFooter}>
             Tel: (22) 2106-1902 WhatsApp: (22) 99979.6222
           </Text>
+
           <Text style={styles.textFooter}>
             E-mail: rtd-pj@macae1oficio.com.br
           </Text>
@@ -304,3 +359,4 @@ export const CreateRequerimentConclutedPdf = ({
     </Document>
   )
 }
+

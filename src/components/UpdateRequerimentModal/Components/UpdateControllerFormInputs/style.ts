@@ -158,22 +158,20 @@ h1 {
   margin-top: 1rem;
 }
 
-
 `
 
 export const ContentUnilestedRequirement = styled.div`
   width: 100%;
   height: max-content;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
 
-
-
   select {
     width: 8.5rem;
-    height: 4.5rem;
+    height: 3.5rem;
 
     border: none;
     border-radius: 8px;
@@ -184,6 +182,42 @@ export const ContentUnilestedRequirement = styled.div`
 
      background: ${({ theme }) => theme.colors['bg-input']};
   }
+`
+
+export const ContentLabel = styled.div`
+width: 100%;
+
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 1rem;
+
+> button {
+  width: 4rem;
+  height: 4rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.5rem;
+  border: none;
+  border-radius: 10px;
+
+  background-color: ${({theme}) => theme.colors['base-button']};
+  cursor: pointer;
+
+  transition: ease-in-out 0.2s;
+
+  > svg {
+    color: #ffffff;
+    font-size: 2rem;
+  }
+
+  &:hover {
+    background-color: ${({theme}) => theme.colors['base-blue']};
+  }
+}
 `
 
 export const ContainerAddUnlistedRequirements = styled.div`
@@ -220,4 +254,14 @@ margin-bottom: 1rem;
     color: #ffffff;
   }
 }
+`
+
+export const ContentEditingRequirement = styled.div`
+width: 100%;
+
+display: flex;
+align-items: end;
+justify-content: center;
+gap: 1rem;
+
 `
