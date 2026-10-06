@@ -10,9 +10,9 @@ interface RequerimentProps {
 }
 
 export const UpdateAssociationModal = ({ AssociationId }: RequerimentProps) => {
-  const { dataListPendingRequirements } = useRequeriment()
+  const { dataListAssociationWithoutRequirement } = useRequeriment()
 
-  const associationSelected = dataListPendingRequirements.find(
+  const associationSelected = dataListAssociationWithoutRequirement.find(
     (list) => list.id === AssociationId
   )
 

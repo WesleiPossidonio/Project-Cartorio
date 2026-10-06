@@ -184,6 +184,8 @@ export const RequerimentContextProvider = ({
 
         const { data } = response
 
+      
+
         setDataListAssociationWithoutRequirement(
           data.associationDataList,
         )
