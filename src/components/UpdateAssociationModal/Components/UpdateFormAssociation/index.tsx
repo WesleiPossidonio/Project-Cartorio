@@ -43,29 +43,57 @@ export const FormUpdateAssociation = ({
 
   const { handleUpdateAssociation } = useRequeriment()
 
-  const {
-    control,
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<UpdateAssociationFormInputs>({
-    resolver: zodResolver(UpdateAssociationFormSchema),
-  })
+const {
+  control,
+  register,
+  handleSubmit,
+  setValue,
+  formState: { errors, isSubmitting },
+} = useForm<UpdateAssociationFormInputs>({
+  resolver: zodResolver(UpdateAssociationFormSchema),
+  defaultValues: {
+    nome_da_instituicao: '',
+    nome_do_representante: '',
+    cnpj_cpf: '',
+    email_do_representante: '',
+    telefone_contato: '',
+    sobre_exigencia: '',
+  },
+})
 
-  // 🔹 Atualiza formulário quando dados da API chegam
-  useEffect(() => {
-    if (dataAssociation) {
-      reset({
-        nome_da_instituicao: dataAssociation.nome_da_instituicao,
-        nome_do_representante: dataAssociation.nome_do_representante,
-        cnpj_cpf: dataAssociation.cnpj_cpf,
-        email_do_representante: dataAssociation.email_do_representante,
-        telefone_contato: dataAssociation.telefone_contato,
-        sobre_exigencia: dataAssociation.sobre_exigencia,
-      })
-    }
-  }, [dataAssociation, reset])
+useEffect(() => {
+  if (!dataAssociation) return
+
+  setValue(
+    'nome_da_instituicao',
+    dataAssociation.nome_da_instituicao ?? '',
+  )
+
+  setValue(
+    'nome_do_representante',
+    dataAssociation.nome_do_representante ?? '',
+  )
+
+  setValue(
+    'cnpj_cpf',
+    dataAssociation.cnpj_cpf ?? '',
+  )
+
+  setValue(
+    'email_do_representante',
+    dataAssociation.email_do_representante ?? '',
+  )
+
+  setValue(
+    'telefone_contato',
+    dataAssociation.telefone_contato ?? '',
+  )
+
+  setValue(
+    'sobre_exigencia',
+    dataAssociation.sobre_exigencia ?? '',
+  )
+}, [dataAssociation, setValue])
 
 
   const handleAddAssociation = async (data: UpdateAssociationFormInputs) => {
