@@ -133,7 +133,7 @@ export const UpdateControllerFormInputs = ({
     if (dataRequeriment) {
       try {
         const updateRequermentResponse = await toast.promise(
-          api.put(
+          api.patch(
             `updateRequeriment/${dataRequeriment.id}`,
             deleteList,
           ),

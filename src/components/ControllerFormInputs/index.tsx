@@ -129,6 +129,7 @@ export const ControllerFormInputs = ({
           `updateRequeriment/${arrayUpdateInputList.id}`,
           {
             [nameList]: 'Pendente',
+            exigencias_id: arrayUpdateInputList.exigencias_id,
           }
         ),
         {
