@@ -20,13 +20,6 @@ export const arrayInputList = [
     observation: 'observations_assinatura_do_advogado',
   },
   {
-    id: 'documento_inelegivel_true',
-    name: 'documento_inelegivel',
-    text: 'Documento Inelegível. Solicitar documento legível para o registro do ato;',
-    spanText: '(CNCGJ Art. 932 § 1º)',
-    observation: 'observations_documento_inelegivel',
-  },
-  {
     id: 'declaracao_criminal_true',
     name: 'declaracao_criminal',
     text: 'Apresentar declaração de desimpedimento e/ou certidão criminal;',

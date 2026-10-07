@@ -15,7 +15,6 @@ import { arrayInputList } from '../../../ArrayInputList'
 import { Button } from '../../../Button'
 
 export const CreateRequerimentFormSchema = zod.object({
-  documento_inelegivel: zod.boolean().optional(),
   lista_e_edital: zod.boolean().optional().optional(),
   assinatura_do_advogado: zod.boolean().optional(),
   declaracao_criminal: zod.boolean().optional(),
@@ -45,7 +44,6 @@ export const CreateRequerimentFormSchema = zod.object({
     })
   )
   .default([]),
-  observations_documento_inelegivel: zod.string().optional(),
   observations_lista_e_edital: zod.string().optional(),
   observations_assinatura_do_advogado: zod.string().optional(),
   observations_declaracao_criminal: zod.string().optional(),
@@ -117,7 +115,6 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
     })
 
     const {
-      observations_documento_inelegivel,
       observations_lista_e_edital,
       observations_assinatura_do_advogado,
       observations_declaracao_criminal,
@@ -140,7 +137,6 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
 
     const {
       declaracao_sindical,
-      documento_inelegivel,
       lista_e_edital,
       assinatura_do_advogado,
       declaracao_criminal,
@@ -174,7 +170,6 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
     const createRequerimentData = {
       id,
       declaracao_sindical,
-      documento_inelegivel,
       lista_e_edital,
       assinatura_do_advogado,
       declaracao_criminal,
@@ -195,7 +190,6 @@ export const FormCreateRequeriment = ({ id }: RequerimentProps) => {
       unlisted_requirements: normalizedUnlistedRequirements,
       estado_do_requerimento:
         requerimentSelected === 'Pendente' ? 'Pendente' : 'Concluído',
-      observations_documento_inelegivel,
       observations_lista_e_edital,
       observations_assinatura_do_advogado,
       observations_declaracao_criminal,

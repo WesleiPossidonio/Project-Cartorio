@@ -227,56 +227,6 @@ export const UpdateControllerFormInputs = ({
           />
         )}
 
-        {/* DOCUMENTO INELEGÍVEL */}
-        {updateList.documento_inelegivel === 'Pendente' && (
-          <ContainerInput>
-            <input
-              id="documento_inelegivel_true"
-              type="checkbox"
-              {...register('documento_inelegivel')}
-              name="documento_inelegivel"
-            />
-
-            <LabelCheck htmlFor="documento_inelegivel_true">
-              <p>Documento Inelegível</p>
-
-              <ContainerIcons>
-                <Trash
-                  onClick={() =>
-                    handleDeleteRequest('documento_inelegivel')
-                  }
-                  size={35}
-                />
-
-                <Warning
-                  size={32}
-                  color={
-                    updateList.observations_documento_inelegivel !==
-                      'Sem observações'
-                      ? '#FF0000'
-                      : '#000'
-                  }
-                  onClick={() =>
-                    toggleObservationInput(
-                      'documento_inelegivel',
-                    )
-                  }
-                />
-              </ContainerIcons>
-            </LabelCheck>
-          </ContainerInput>
-        )}
-
-        {openInputsObservations.documento_inelegivel && (
-          <TextAreaObservations
-            {...register(
-              'observations_documento_inelegivel',
-            )}
-            defaultValue={
-              updateList.observations_documento_inelegivel
-            }
-          />
-        )}
 
         {/* ASSINATURA DO ADVOGADO */}
         {updateList.assinatura_do_advogado === 'Pendente' && (
