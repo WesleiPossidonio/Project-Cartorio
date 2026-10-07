@@ -30,6 +30,12 @@ export const TableRequerimentCompleted = () => {
     handleUpdateStatus,
   } = useRequeriment()
 
+
+  console.log(
+    'dataListCompletedAssociations',
+    dataListCompletedAssociations,
+  )
+
   const handleChangePage = (
     _event: unknown,
     newPage: number,

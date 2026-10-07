@@ -4,6 +4,7 @@ import { ListRequerimentCompleted } from './components/ListRequerimentCompleted'
 import { CloseButton, Content, Overlay } from './style'
 import { AssociationProps } from '../../@types/typesRequerimentContext'
 
+
 interface RequerimentListCompletedModalProps {
   idRequerimentSelected: number
   listCompleted: AssociationProps[]
@@ -14,7 +15,7 @@ export const RequerimentListCompletedModal = ({
   listCompleted,
 }: RequerimentListCompletedModalProps) => {
   const curatedList = listCompleted.find(
-    (data) => data.id === idRequerimentSelected
+    (data) => data.exigencia?.id === idRequerimentSelected
   )
 
   return (
