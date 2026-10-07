@@ -220,6 +220,43 @@ export const TextArea = styled.textarea`
     width: 100%;
   }
 `
+
+export const ContainerButtonInfoUpdate = styled.div`
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 1rem;
+
+  margin-top: 0.2rem;
+  padding-left: 0.5rem;
+
+  text-area: {
+    flex: 1;
+    width: auto;
+    margin: 0;
+  }
+
+  button {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    text-area: {
+      width: 100%;
+    }
+
+    button {
+      align-self: flex-end;
+    }
+  }
+`
+
 export const TextAreaObservations = styled(TextArea)`
   width: 85%;
   height: 6rem;

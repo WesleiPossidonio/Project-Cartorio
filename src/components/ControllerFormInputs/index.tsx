@@ -17,6 +17,7 @@ import api from '../../services/api'
 import { Button } from '../Button'
 import { CreateRequerimentFormInputs } from '../CreateRequerimentModal/Components/CreateRequeriment'
 import { TextRegular } from '../typography'
+
 import {
   ContainerInput,
   ContainerCheckInput,
@@ -28,13 +29,13 @@ import {
   ContainerInfo,
   TextAreaObservations,
   ContainerUnlistedRequirements,
+  ContainerButtonInfoUpdate,
 } from './styled'
 
 import {
   AssociationProps,
   ListRequerimentProps,
 } from '../../@types/typesRequerimentContext'
-
 
 interface StateInputListProps {
   id: string
@@ -83,16 +84,26 @@ export const ControllerFormInputs = ({
   } = useRequeriment()
 
   /**
-   * Observa os valores atuais das exigências não listadas.
-   *
-   * Assim conseguimos pegar o valor de um item específico
-   * através do index, sem precisar enviar o formulário inteiro.
+   * Observa os valores das exigências não listadas.
    */
   const unlistedRequirements = useWatch({
     control,
     name: 'unlisted_requirements',
   })
 
+  /**
+   * Observa todos os valores do formulário.
+   *
+   * Isso permite pegar a observação digitada no textarea
+   * antes de enviar o PATCH.
+   */
+  const formValues = useWatch({
+    control,
+  })
+
+  /**
+   * Controla a abertura/fechamento da observação.
+   */
   const handleChange = (
     event: ChangeEvent<HTMLInputElement>,
     itemId: string
@@ -105,22 +116,37 @@ export const ControllerFormInputs = ({
       )
 
       if (!existingItem) {
-        return [...prevSelectedItems, { id: itemId, name, checked }]
+        return [
+          ...prevSelectedItems,
+          {
+            id: itemId,
+            name,
+            checked,
+          },
+        ]
       }
 
       return prevSelectedItems.map((item) =>
-        item.id === itemId ? { ...item, checked } : item
+        item.id === itemId
+          ? {
+            ...item,
+            checked,
+          }
+          : item
       )
     })
   }
 
   /**
-   * Atualiza uma exigência que já existe.
+   * Atualiza uma exigência que estava como "Não-Listado"
+   * para "Pendente".
    *
-   * Exemplo:
-   * Documento X: "Não-Listado" -> "Pendente"
+   * Essa função continua sendo chamada quando o usuário
+   * clica diretamente na exigência.
    */
-  const handleUpdateRequirementStatus = async (nameList: string) => {
+  const handleUpdateRequirementStatus = async (
+    nameList: string
+  ) => {
     if (!arrayUpdateInputList) return
 
     try {
@@ -158,10 +184,70 @@ export const ControllerFormInputs = ({
   }
 
   /**
-   * Cria UMA exigência não listada.
+   * Atualiza uma exigência já existente enviando:
    *
-   * Cada botão "Enviar" chama essa função passando
-   * o index do item correspondente.
+   * - status = Pendente
+   * - observação
+   * - exigencias_id
+   *
+   * Tudo em um único PATCH.
+   */
+  const handleUpdateRequirementWithObservation = async (
+    list: StateInputListProps
+  ) => {
+    if (!arrayUpdateInputList) return
+
+    if (!list.observation) {
+      await handleUpdateRequirementStatus(list.name)
+      return
+    }
+
+    const observationValue =
+      formValues[
+        list.observation as keyof CreateRequerimentFormInputs
+      ]
+
+    try {
+      const updateRequerimentResponse = await toast.promise(
+        api.patch(
+          `updateRequeriment/${arrayUpdateInputList.id}`,
+          {
+            [list.name]: 'Pendente',
+            [list.observation]: observationValue ?? '',
+            exigencias_id: arrayUpdateInputList.exigencias_id,
+          }
+        ),
+        {
+          pending: 'Atualizando exigência...',
+          success: 'Exigência atualizada com sucesso!',
+          error: 'Erro ao atualizar exigência.',
+        }
+      )
+
+      const { data } = updateRequerimentResponse
+
+      /**
+       * A API já retorna a exigência completa,
+       * incluindo unlisted_requirements.
+       */
+      setDataListPendingRequirements(
+        dataListPendingRequirements.map(
+          (item: AssociationProps) =>
+            item.exigencia?.id === data.id
+              ? {
+                ...item,
+                exigencia: data,
+              }
+              : item
+        )
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * Cria UMA exigência não listada.
    */
   const handleCreateUnlistedRequirement = async (
     index: number,
@@ -194,7 +280,6 @@ export const ControllerFormInputs = ({
         }
       )
 
-      // Remove somente o item que foi enviado
       remove(index)
     } catch (error) {
       console.log(error)
@@ -364,6 +449,34 @@ export const ControllerFormInputs = ({
                     </ContainerInfo>
                   )}
                 </div>
+
+                {selectedItems.map((item) =>
+                  item.checked &&
+                    item.id === list.id &&
+                    item.name === list.observation ? (
+                    <ContainerButtonInfoUpdate
+                      key={list.id}
+                    >
+                      <TextAreaObservations
+                        placeholder="Escreva a observação do documento"
+                        {...register(
+                          list.observation as keyof CreateRequerimentFormInputs
+                        )}
+                      />
+
+                      <Button
+                        type="button"
+                        onClick={() =>
+                          handleUpdateRequirementWithObservation(
+                            list
+                          )
+                        }
+                      >
+                        Enviar
+                      </Button>
+                    </ContainerButtonInfoUpdate>
+                  ) : null
+                )}
               </ContainerInput>
             ))}
         </ContainerCheckInput>
@@ -432,3 +545,4 @@ export const ControllerFormInputs = ({
 }
 
 export default ControllerFormInputs
+
