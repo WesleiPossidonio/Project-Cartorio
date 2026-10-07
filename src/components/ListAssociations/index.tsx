@@ -18,7 +18,7 @@ import {
   Trash,
 } from 'phosphor-react'
 
-import { useRequeriment } from '../../hooks/useRequeriment'
+
 
 import { CreateRequerimentModal } from '../CreateRequerimentModal'
 import { UpdateAssociationModal } from '../UpdateAssociationModal'
@@ -29,6 +29,7 @@ import {
   TableContentList,
   TableRowContentList,
 } from './style'
+import { useRequeriment } from '../../hooks/useRequeriment'
 
 export const TableAssociation = () => {
   const {
@@ -36,7 +37,7 @@ export const TableAssociation = () => {
     paginationWithoutRequirement,
     dataListAssociationWithoutRequirement,
     setCurrentPageWithoutRequirement,
-    sendMailAssociation,
+    sendMail,
     handleUpdateAssociation,
     handleDeleteAssociation
   } = useRequeriment()
@@ -146,13 +147,7 @@ export const TableAssociation = () => {
               </Dialog.Root>
 
               <TableContentList
-                onClick={() =>
-                  sendMailAssociation({
-                    ...data,
-                    name: data.nome_da_instituicao,
-                    registration: String(data.numero_do_protocolo),
-                  })
-                }
+                onClick={() => sendMail(data.id)}
               >
                 <PaperPlaneTilt size={29} />
               </TableContentList>

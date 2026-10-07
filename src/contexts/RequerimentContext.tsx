@@ -382,8 +382,6 @@ export const RequerimentContextProvider = ({
       }
 
       try {
-
-
         const listSendEmail = {
           id: filteredAssociation.id,
           numero_do_protocolo:
@@ -415,13 +413,14 @@ export const RequerimentContextProvider = ({
           registration,
           name,
         }
-
-        console.log(listSendEmail)
+       
 
         const apiEndpoint =
-          filteredAssociation.exigencia === null
+          !filteredAssociation.exigencia
             ? 'sendMailAssociation'
             : 'sendMailRequeriments'
+
+            console.log(apiEndpoint)
 
         await toast.promise(
           api.post(apiEndpoint, listSendEmail),
