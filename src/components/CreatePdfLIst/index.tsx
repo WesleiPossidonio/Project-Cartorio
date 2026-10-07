@@ -1,4 +1,3 @@
-
 import {
   Document,
   Page,
@@ -102,10 +101,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export const CreatePdfList = ({
-  data,
-  dataUser,
-}: DataProps) => {
+export const CreatePdfList = ({ data, dataUser }: DataProps) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -130,9 +126,7 @@ export const CreatePdfList = ({
             Nome da Instituição: {data.nome_da_instituicao}
           </Text>
 
-          <Text style={styles.textheader2}>
-            CNPJ ou CPF: {data.cnpj_cpf}
-          </Text>
+          <Text style={styles.textheader2}>CNPJ ou CPF: {data.cnpj_cpf}</Text>
 
           <Text style={styles.textheader2}>
             Nome do Representante: {data.nome_do_representante}
@@ -149,9 +143,7 @@ export const CreatePdfList = ({
 
         <View style={styles.main}>
           {data.exigencia !== undefined && (
-            <Text style={styles.titleText}>
-              Lista de Exigências Pendentes
-            </Text>
+            <Text style={styles.titleText}>Lista de Exigências Pendentes</Text>
           )}
 
           {data.exigencia?.lista_e_edital === 'Pendente' && (
@@ -162,9 +154,9 @@ export const CreatePdfList = ({
 
           {data.exigencia?.documento_inelegivel === 'Pendente' && (
             <Text style={styles.text}>
-              [ ] Apresentar Uma nova copia do documento apresentado,
-              caso o original ou a cópia anterior tenha sido considerado
-              inelegível para registro;
+              [ ] Apresentar Uma nova copia do documento apresentado, caso o
+              original ou a cópia anterior tenha sido considerado inelegível
+              para registro;
             </Text>
           )}
 
@@ -172,6 +164,12 @@ export const CreatePdfList = ({
             <Text style={styles.text}>
               [ ] Colher assinatura do advogado no ato apresentado para
               registro; (Lei 8.906 Art. 1º §2º / CNCGJ Artigo 944 § 3º)
+            </Text>
+          )}
+
+          {data.exigencia?.requerimento_eletronico_rcpj === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Colher Requerimento Eletrônico do CNPJ
             </Text>
           )}
 
@@ -291,9 +289,7 @@ export const CreatePdfList = ({
             ?.filter((requirement) => requirement.status === 'Pendente')
             .map((requirement) => (
               <View key={requirement.id}>
-                <Text style={styles.text}>
-                  [ ] {requirement.name}
-                </Text>
+                <Text style={styles.text}>[ ] {requirement.name}</Text>
 
                 {requirement.observacao && (
                   <Text style={styles.textObservation}>
@@ -315,20 +311,16 @@ export const CreatePdfList = ({
         </View>
 
         <View style={styles.main}>
-          <Text style={styles.titleInfo}>
-            Informações importantes:
-          </Text>
+          <Text style={styles.titleInfo}>Informações importantes:</Text>
 
-          <Text style={styles.textInfo}>
-            - Prazo para análise 15 dias
-          </Text>
+          <Text style={styles.textInfo}>- Prazo para análise 15 dias</Text>
 
           <Text style={styles.textInfo}>
             - A parte interessada terá 30 dias, a partir da exigência, para
             cumpri-la ou desistir do pedido sob pena de cancelamento da
-            prenotação. O documento registrado ou em exigência, não retirado
-            no prazo de 180 dias, poderá ser eliminado pelo registrador.
-            (CNCGJ/RJ Art. 922 § 2º)
+            prenotação. O documento registrado ou em exigência, não retirado no
+            prazo de 180 dias, poderá ser eliminado pelo registrador. (CNCGJ/RJ
+            Art. 922 § 2º)
           </Text>
         </View>
 
@@ -349,4 +341,3 @@ export const CreatePdfList = ({
     </Document>
   )
 }
-

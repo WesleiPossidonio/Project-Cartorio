@@ -110,8 +110,6 @@ export const CreateRequerimentPdfList = ({
   data,
   dataUser,
 }: DataProps) => {
-
-  console.log(data?.exigencia?.unlisted_requirements)
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -183,6 +181,12 @@ export const CreateRequerimentPdfList = ({
             </Text>
           )}
 
+          {data?.exigencia?.requerimento_eletronico_rcpj === 'Pendente' && (
+            <Text style={styles.text}>
+              [ ] Colher Requerimento Eletrônico do CNPJ
+            </Text>
+          )}
+
           {data?.exigencia?.declaracao_criminal === 'Pendente' && (
             <Text style={styles.text}>
               [ ] Apresentar declaração de desimpedimento e/ou certidão
@@ -221,13 +225,13 @@ export const CreateRequerimentPdfList = ({
 
           {data?.exigencia?.requisitos_de_estatutos_fundadores ===
             'Pendente' && (
-            <Text style={styles.text}>
-              [ ] No caso de dissolução ou extinção deverá conter no
-              documento: (liquidação, divisão de cotas de sócios,
-              inexistência de ativo e passivo, guarda dos livros etc.)
-              (CNCGJ Art. 953)
-            </Text>
-          )}
+              <Text style={styles.text}>
+                [ ] No caso de dissolução ou extinção deverá conter no
+                documento: (liquidação, divisão de cotas de sócios,
+                inexistência de ativo e passivo, guarda dos livros etc.)
+                (CNCGJ Art. 953)
+              </Text>
+            )}
 
           {data?.exigencia?.dissolucao_ou_exticao === 'Pendente' && (
             <Text style={styles.text}>
@@ -271,12 +275,12 @@ export const CreateRequerimentPdfList = ({
 
           {data?.exigencia?.requisitos_de_estatutos_fundadores ===
             'Pendente' && (
-            <Text style={styles.text}>
-              [ ] Apresentar os requisitos obrigatórios no Estatuto: relação
-              de documentos de fundadores; (CNCGJ Art. 945 / Lei 6.015 no
-              Art. 120 / Lei 10.406 Art. 46)
-            </Text>
-          )}
+              <Text style={styles.text}>
+                [ ] Apresentar os requisitos obrigatórios no Estatuto: relação
+                de documentos de fundadores; (CNCGJ Art. 945 / Lei 6.015 no
+                Art. 120 / Lei 10.406 Art. 46)
+              </Text>
+            )}
 
           {data?.exigencia?.requisitos_criacao_de_estatuto === 'Pendente' && (
             <Text style={styles.text}>
