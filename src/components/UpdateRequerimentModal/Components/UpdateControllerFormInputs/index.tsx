@@ -21,7 +21,6 @@ import {
 
 import { ListRequerimentProps } from '../../../../@types/typesRequerimentContext'
 import { CreateRequerimentFormInputs } from '../../../CreateRequerimentModal/Components/CreateRequeriment'
-import { TitleText } from '../../../typography'
 import { Button } from '../../../Button'
 
 interface ControllerUpdateProps {
@@ -34,7 +33,6 @@ export const UpdateControllerFormInputs = ({
   dataRequeriment,
 }: ControllerUpdateProps) => {
   const {
-    dataListPendingRequirements,
     setDataListPendingRequirements,
     updateUnlistedRequirement,
   } = useRequeriment()
@@ -146,10 +144,16 @@ export const UpdateControllerFormInputs = ({
 
         const { data } = updateRequermentResponse
 
-        setDataListPendingRequirements([
-          ...dataListPendingRequirements,
-          data,
-        ])
+        setDataListPendingRequirements((prev) =>
+          prev.map((association) =>
+            association.exigencia?.id === data.id
+              ? {
+                ...association,
+                exigencia: data,
+              }
+              : association
+          )
+        )
 
         setUpdateList(data)
       } catch (error) {
@@ -167,6 +171,35 @@ export const UpdateControllerFormInputs = ({
           success: 'Exigência deletada com sucesso!',
           error: 'Ops! Verifique os dados digitados',
         },
+      )
+
+      // Atualiza o estado local do modal
+      setUpdateList((prev) => ({
+        ...prev,
+        unlisted_requirements:
+          prev.unlisted_requirements?.filter(
+            (item) => item.id !== id
+          ) ?? [],
+      }))
+
+      // Atualiza o estado global
+      setDataListPendingRequirements((prev) =>
+        prev.map((association) => {
+          if (!association.exigencia) {
+            return association
+          }
+
+          return {
+            ...association,
+            exigencia: {
+              ...association.exigencia,
+              unlisted_requirements:
+                association.exigencia.unlisted_requirements?.filter(
+                  (item) => item.id !== id
+                ) ?? [],
+            },
+          }
+        })
       )
     } catch (error) {
       console.log(error)
@@ -1160,23 +1193,18 @@ export const UpdateControllerFormInputs = ({
           />
         )}
 
+
         {/* EXIGÊNCIAS NÃO LISTADAS */}
         <ContainerUnilestedRequirement>
-          <TitleText
-            size="s"
-            weight={600}
-            id="title-requirement"
-          >
-            Exigências não Listadas
-          </TitleText>
 
           {updateList.unlisted_requirements?.map((list) => (
-            <ContainerUnilestedRequirement key={list.id}>
-              <ContentUnilestedRequirement>
+            list.status !== 'Concluído' && (
+              <ContentUnilestedRequirement key={list.id}>
                 <ContainerInput>
                   <ContentLabel>
                     <LabelCheck>
                       <p>{list.name}</p>
+
                       <ContainerIcons>
                         <Trash
                           size={35}
@@ -1188,6 +1216,7 @@ export const UpdateControllerFormInputs = ({
                         />
                       </ContainerIcons>
                     </LabelCheck>
+
                     <button
                       type="button"
                       onClick={() => {
@@ -1209,55 +1238,50 @@ export const UpdateControllerFormInputs = ({
                 </ContainerInput>
 
                 {editingRequirementId === list.id && (
-                    <ContentEditingRequirement>
-                      <TextAreaObservations
-                        value={editingRequirement.name}
-                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                          setEditingRequirement((prev) => ({
-                            ...prev,
-                            name: event.target.value,
-                          }))
-                        }
-                      />
+                  <ContentEditingRequirement>
+                    <TextAreaObservations
+                      value={editingRequirement.name}
+                      onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                        setEditingRequirement((prev) => ({
+                          ...prev,
+                          name: event.target.value,
+                        }))
+                      }
+                    />
 
-                      <TextAreaObservations
-                        value={editingRequirement.observacao}
-                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                          setEditingRequirement((prev) => ({
-                            ...prev,
-                            observacao: event.target.value,
-                          }))
-                        }
-                      />
+                    <TextAreaObservations
+                      value={editingRequirement.observacao}
+                      onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                        setEditingRequirement((prev) => ({
+                          ...prev,
+                          observacao: event.target.value,
+                        }))
+                      }
+                    />
 
-                      <select
-                        value={editingRequirement.status}
-                        onChange={(event) =>
-                          setEditingRequirement((prev) => ({
-                            ...prev,
-                            status: event.target.value,
-                          }))
-                        }
-                      >
-                        <option value="Pendente">
-                          Pendente
-                        </option>
+                    <select
+                      value={editingRequirement.status}
+                      onChange={(event) =>
+                        setEditingRequirement((prev) => ({
+                          ...prev,
+                          status: event.target.value,
+                        }))
+                      }
+                    >
+                      <option value="Pendente">Pendente</option>
+                      <option value="Concluído">Concluído</option>
+                    </select>
 
-                        <option value="Concluído">
-                          Concluído
-                        </option>
-                      </select>
-
-                      <Button
-                        type="button"
-                        onClick={handleUpdateUnlistedRequirement}
-                      >
-                        Atualizar
-                      </Button>
-                    </ContentEditingRequirement>
-                  )}
+                    <Button
+                      type="button"
+                      onClick={handleUpdateUnlistedRequirement}
+                    >
+                      Atualizar
+                    </Button>
+                  </ContentEditingRequirement>
+                )}
               </ContentUnilestedRequirement>
-            </ContainerUnilestedRequirement>
+            )
           ))}
         </ContainerUnilestedRequirement>
 

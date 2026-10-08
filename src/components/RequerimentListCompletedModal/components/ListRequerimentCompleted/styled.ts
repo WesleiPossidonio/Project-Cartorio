@@ -53,3 +53,46 @@ export const TextListModal = styled.p`
 
   cursor: pointer;
 `
+
+
+export const ContainerUnlistedRequirements = styled.div`
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 1rem;
+
+div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  >svg {
+  width: 5%;
+  height: 3rem;
+  padding: 0.5rem 0.3rem;
+  background-color: ${({ theme }) => theme.colors['base-background']};
+
+   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+>p {
+  width: 95%;
+}}
+
+textarea {
+ width: 100%;
+ height: 7rem;
+ border: none;
+ color: #000;
+ border-radius: 12px;
+ background-color: ${({ theme }) => theme.colors['base-background']};
+ box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+`

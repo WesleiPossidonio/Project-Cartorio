@@ -70,6 +70,7 @@ export const ControllerFormInputs = ({
   arrayUpdateInputList,
   handleSelectedRequeriment,
   requerimentSelected,
+  
 }: ControllerProps) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemsProps[]>([])
 
@@ -249,42 +250,63 @@ export const ControllerFormInputs = ({
   /**
    * Cria UMA exigência não listada.
    */
-  const handleCreateUnlistedRequirement = async (
-    index: number,
-    requirementId?: number
-  ) => {
-    const requirement = unlistedRequirements?.[index]
+const handleCreateUnlistedRequirement = async (
+  index: number,
+  requirementId?: number
+) => {
+  const requirement = unlistedRequirements?.[index]
 
-    if (requirementId === undefined) {
-      toast.warning('Não foi possível identificar a exigência.')
-      return
-    }
-
-    if (!requirement?.name?.trim()) {
-      toast.warning('Informe o nome da exigência')
-      return
-    }
-
-    try {
-      await toast.promise(
-        api.post('unlisted-requirements', {
-          name: requirement.name,
-          observacao: requirement.observacao,
-          status: 'Pendente',
-          requirement_id: requirementId,
-        }),
-        {
-          pending: 'Adicionando exigência...',
-          success: 'Exigência adicionada com sucesso!',
-          error: 'Erro ao adicionar exigência.',
-        }
-      )
-
-      remove(index)
-    } catch (error) {
-      console.log(error)
-    }
+  if (requirementId === undefined) {
+    toast.warning('Não foi possível identificar a exigência.')
+    return
   }
+
+  if (!requirement?.name?.trim()) {
+    toast.warning('Informe o nome da exigência')
+    return
+  }
+
+  try {
+    const response = await toast.promise(
+      api.post('unlisted-requirements', {
+        name: requirement.name,
+        observacao: requirement.observacao,
+        status: 'Pendente',
+        requirement_id: requirementId,
+      }),
+      {
+        pending: 'Adicionando exigência...',
+        success: 'Exigência adicionada com sucesso!',
+        error: 'Erro ao adicionar exigência.',
+      }
+    )
+
+    const { data: createdRequirement } = response
+
+    setDataListPendingRequirements((prev) =>
+      prev.map((association) => {
+        if (association.exigencia?.id !== requirementId) {
+          return association
+        }
+
+        return {
+          ...association,
+          exigencia: {
+            ...association.exigencia,
+            unlisted_requirements: [
+              ...(association.exigencia.unlisted_requirements ?? []),
+              createdRequirement.data,
+            ],
+          },
+        }
+      })
+    )
+
+    remove(index)
+  } catch (error) {
+    console.log(error)
+  }
+}
 
   const unselectedRequestsFilter =
     arrayInputList &&
@@ -359,6 +381,7 @@ export const ControllerFormInputs = ({
                     )}
                     name={list.name}
                   />
+                  
 
                   <LabelCheck htmlFor={list.id}>
                     <NotePencil size={30} />
@@ -373,6 +396,7 @@ export const ControllerFormInputs = ({
                   </LabelCheck>
 
                   {list.observation && (
+                    
                     <ContainerInfo>
                       <input
                         type="checkbox"

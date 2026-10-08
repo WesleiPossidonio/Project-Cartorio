@@ -191,6 +191,10 @@ export const ContainerButtonInfo = styled.div`
   align-items: flex-start;
   justify-content: center;
   margin-top: 1.5rem;
+ 
+  button {
+    margin-top: 1rem !important;
+  }
 
   div {
     display: flex;

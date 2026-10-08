@@ -146,7 +146,7 @@ export const TableRequerimentCompleted = () => {
 
                     <RequerimentListCompletedModal
                       idRequerimentSelected={
-                        data.id
+                        data.exigencia?.id
                       }
                       listCompleted={
                         dataListCompletedAssociations

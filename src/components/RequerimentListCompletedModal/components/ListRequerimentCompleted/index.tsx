@@ -6,11 +6,14 @@ import { CreateRequerimentConclutedPdf } from '../../../CreateRequerimentComclut
 import {
   ContainerModal,
   ContainerRequeriments,
+  ContainerUnlistedRequirements,
   ContentText,
   HeaderModal,
   TextListModal,
 } from './styled'
 import { AssociationProps } from '../../../../@types/typesRequerimentContext'
+import { Warning } from 'phosphor-react'
+import { useState } from 'react'
 
 interface ListRequerimentCompletedProps {
   RequerimentCompleted?: AssociationProps
@@ -20,6 +23,8 @@ export const ListRequerimentCompleted = ({
   RequerimentCompleted,
 }: ListRequerimentCompletedProps) => {
   const { userDataLogin } = useUser()
+  const [statusObservation, setStatusObservation] = useState<number>()
+
 
   return (
     <div>
@@ -194,6 +199,30 @@ export const ListRequerimentCompleted = ({
                 Retificar redação do documento apresentado;
               </TextListModal>
             )}
+
+
+            {
+              RequerimentCompleted?.exigencia?.unlisted_requirements?.map(
+                list => {
+                  return (
+                    <ContainerUnlistedRequirements key={list.id}>
+                      <div>
+                      <TextListModal>{list.name}</TextListModal>
+                      <Warning onClick={() => setStatusObservation(list.id)}/>
+                      </div>
+                       
+                       {
+                        statusObservation === list.id && list.observacao && (
+                          <textarea placeholder={list.observacao} disabled></textarea>
+                        )
+                       }
+                      
+
+                    </ContainerUnlistedRequirements>
+                  )
+                }
+              )
+            }
         </ContainerRequeriments>
 
         <div className="PdfContainer">

@@ -9,6 +9,8 @@ import {
   useEffect,
   useState,
   createContext,
+  Dispatch,
+  SetStateAction,
 } from 'react'
 
 import { toast } from 'react-toastify'
@@ -61,7 +63,9 @@ interface RequerimentContextType {
   sendMailAssociation: (data: SendMailAssociationProps) => Promise<void>
   handleUpdateAssociation: (data: UpdateAssociationProps) => Promise<void>
   handleUpdateStatus: (data: UpdatestatusProps) => Promise<void>
-  setDataListPendingRequirements: (data: AssociationProps[]) => void
+  setDataListPendingRequirements: Dispatch<
+    SetStateAction<AssociationProps[]>
+  >
   setCurrentPageWithoutRequirement: (page: number) => void
   setCurrentPagePendingRequirements: (page: number) => void
   setCurrentPageCompletedAssociations: (page: number) => void
@@ -184,7 +188,7 @@ export const RequerimentContextProvider = ({
 
         const { data } = response
 
-      
+
 
         setDataListAssociationWithoutRequirement(
           data.associationDataList,
@@ -220,6 +224,7 @@ export const RequerimentContextProvider = ({
         )
 
         const { data } = response
+
         setDataListPendingRequirements(
           data.associationDataList,
         )
@@ -413,14 +418,12 @@ export const RequerimentContextProvider = ({
           registration,
           name,
         }
-       
+
 
         const apiEndpoint =
           !filteredAssociation.exigencia
             ? 'sendMailAssociation'
             : 'sendMailRequeriments'
-
-            console.log(apiEndpoint)
 
         await toast.promise(
           api.post(apiEndpoint, listSendEmail),
@@ -858,7 +861,6 @@ export const RequerimentContextProvider = ({
         unlisted_requirements: unlisted_requirements?.map((list) => ({
           name: list.name,
           observacao: list.observacao,
-          status: 'Pendente',
         })),
       }
 
@@ -1158,7 +1160,7 @@ export const RequerimentContextProvider = ({
       const { id, observacao, status, name } = data
 
       try {
-        await toast.promise(
+         await toast.promise(
           api.patch(
             `unlisted-requirements/${id}`,
             {
@@ -1173,6 +1175,8 @@ export const RequerimentContextProvider = ({
             error: 'Ops! Não foi possível atualizar a exigência.',
           },
         )
+
+  
 
         setDataListPendingRequirements((prev) =>
           prev.map((association) => {

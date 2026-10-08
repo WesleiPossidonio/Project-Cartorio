@@ -28,6 +28,13 @@ export interface SendMailAssociationProps extends CreateAssociationProps {
   registration: string
 }
 
+export interface UnlistedPequirementsProps {
+  id?: number
+  name?: string
+  status?: string
+  observacao?: string
+}
+
 export interface ListRequerimentProps {
   id?: number
   exigencias_id?: number
@@ -47,12 +54,7 @@ export interface ListRequerimentProps {
   documentacao_de_identificacao?: string
   campo_de_assinatura?: string
   retificacao_de_redacao?: string
-  unlisted_requirements?: [{
-    id?: number
-    name?: string,
-    status?: string,
-    observacao?: string
-  }]
+  unlisted_requirements?: UnlistedPequirementsProps[]
   requerimento_eletronico_rcpj?: string
   updatedAt?: string
   data_da_recepcao?: string

@@ -2,7 +2,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios'
 
 const api = axios.create({
   baseURL: 'https://api-cartorio.vercel.app/',
-  withCredentials: true,
+  withCredentials: true,  
 })
 
 api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {

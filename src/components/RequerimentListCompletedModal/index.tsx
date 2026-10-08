@@ -6,7 +6,7 @@ import { AssociationProps } from '../../@types/typesRequerimentContext'
 
 
 interface RequerimentListCompletedModalProps {
-  idRequerimentSelected: number
+  idRequerimentSelected?: number
   listCompleted: AssociationProps[]
 }
 

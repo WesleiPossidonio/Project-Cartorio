@@ -4,12 +4,14 @@ interface RegularTextProps {
   size?: 'l' | 'm' | 's'
   color?: 'title' | 'subtitle' | 'text' | 'error' | 'blue'
   weight?: string | number
+  mt?: '1rem'
 }
 
 interface TitleTextProps {
   size?: 'l' | 'm' | 's' | 'sm'
   color?: 'title' | 'subtitle' | 'text'
   weight?: string | number
+
 }
 
 export const TextRegular = styled.p<RegularTextProps>`
@@ -18,6 +20,7 @@ export const TextRegular = styled.p<RegularTextProps>`
     theme.fontSizes[`text-regular-${size ?? 's'}`]};
   line-height: 130%;
   font-weight: ${({ weight }) => weight ?? 400};
+  margin-top: ${({mt}) => mt}
 `
 export const TitleText = styled.h1<TitleTextProps>`
   color: ${({ theme, color }) => theme.colors[`base-${color ?? 'text'}`]};

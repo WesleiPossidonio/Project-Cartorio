@@ -74,7 +74,7 @@ export const UpdateRequerimentModal = ({
   
     const updatedData = {
       ...booleanData,
-      id: dataRequerimentSelected?.id,
+      id: dataRequerimentSelected?.exigencia?.id,
       exigencias_id: AssociationId,
       unlisted_requirements: normalizedUnlistedRequirements
     }
@@ -92,6 +92,7 @@ export const UpdateRequerimentModal = ({
       <Overlay />
 
       <Content>
+        
         <Dialog.Title>Atualizar Exigências</Dialog.Title>
 
         <CloseButton>
