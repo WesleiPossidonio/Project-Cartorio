@@ -1160,15 +1160,12 @@ export const RequerimentContextProvider = ({
       const { id, observacao, status, name } = data
 
       try {
-         await toast.promise(
-          api.patch(
-            `unlisted-requirements/${id}`,
-            {
-              observacao,
-              status,
-              name
-            },
-          ),
+        const response = await toast.promise(
+          api.patch(`unlisted-requirements/${id}`, {
+            observacao,
+            status,
+            name,
+          }),
           {
             pending: 'Atualizando exigência...',
             success: 'Exigência atualizada com sucesso!',
@@ -1176,35 +1173,37 @@ export const RequerimentContextProvider = ({
           },
         )
 
-  
+        const { requeriment } = response.data.data
+
+        if (requeriment.estado_do_requerimento === 'Concluído') {
+          setDataListCompletedAssociations((prev) => [
+            ...prev,
+            requeriment,
+          ])
+
+          setDataListPendingRequirements((prev) =>
+            prev.filter(
+              (association) =>
+                association.exigencia?.id !== requeriment.id
+            )
+          )
+
+          return
+        }
 
         setDataListPendingRequirements((prev) =>
           prev.map((association) => {
-            if (!association.exigencia) {
+            if (
+              association.exigencia?.id !== requeriment.id
+            ) {
               return association
             }
 
-            const updatedUnlistedRequirements =
-              association.exigencia.unlisted_requirements?.map(
-                (requirement) =>
-                  requirement.id === id
-                    ? {
-                      ...requirement,
-                      observacao,
-                      status,
-                    }
-                    : requirement,
-              ) as typeof association.exigencia.unlisted_requirements
-
             return {
               ...association,
-              exigencia: {
-                ...association.exigencia,
-                unlisted_requirements:
-                  updatedUnlistedRequirements,
-              },
+              exigencia: requeriment,
             }
-          }),
+          })
         )
       } catch (error) {
         console.error(
@@ -1215,7 +1214,6 @@ export const RequerimentContextProvider = ({
     },
     [],
   )
-
 
   return (
     <RequerimentContext.Provider
